@@ -1,8 +1,9 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
+import Header from './components/Header';
 
 const backendUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
-const SessionContext = createContext(null);
+export const SessionContext = createContext(null);
 
 function App() {
   const [session, setSession] = useState(null);
@@ -76,27 +77,33 @@ function App() {
 
   return (
     <SessionContext.Provider value={{ session, login, logout }}>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={() => login(username, password)}>Log In</button>
-      <button onClick={logout}>Log Out</button>
-      {session === 'admin' ? (
-        <h1>ADMIN</h1>
-      ) : session === 'user' ? (
-        <h1>USER</h1>
-      ) : (
-        <h1>NULL</h1>
-      )}
+      <Header />
     </SessionContext.Provider>
   );
+  // PREVIOUS RENDER FOR TESTING
+  // return (
+  //   <SessionContext.Provider value={{ session, login, logout }}>
+  //     <input
+  //       type="text"
+  //       value={username}
+  //       onChange={(e) => setUsername(e.target.value)}
+  //     />
+  //     <input
+  //       type="password"
+  //       value={password}
+  //       onChange={(e) => setPassword(e.target.value)}
+  //     />
+  //     <button onClick={() => login(username, password)}>Log In</button>
+  //     <button onClick={logout}>Log Out</button>
+  //     {session === 'admin' ? (
+  //       <h1>ADMIN</h1>
+  //     ) : session === 'user' ? (
+  //       <h1>USER</h1>
+  //     ) : (
+  //       <h1>NULL</h1>
+  //     )}
+  //   </SessionContext.Provider>
+  // );
 }
 
 export default App;
