@@ -1,5 +1,8 @@
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import styled, { useTheme } from 'styled-components';
 import Menu from './Menu';
-import styled from 'styled-components';
 
 const OuterHeader = styled.header`
   display: flex;
@@ -24,18 +27,57 @@ const InnerHeader = styled.div`
       width: min(80%, 1000px);
     }
   }
+
+  a {
+    font-size: 32px;
+    font-weight: bold;
+    text-decoration: none;
+    user-select: none;
+  }
+`;
+
+const MenuButton = styled.button`
+  /* must set color this way instead of with usual 'color' prop on FontAwesomeIcon, otherwise styled-components GlobalStyle will override it */
+  path {
+    fill: ${({ theme }) => theme.colors.blue};
+  }
+
+  background: transparent;
+  border: none;
+  border-radius: 1000px;
+  width: 38px;
+  height: 38px;
+  transition: background 150ms;
+
+  :hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  :active {
+    background: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 function Header() {
+  const theme = useTheme();
+
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+
   return (
-    <OuterHeader>
-      <InnerHeader>
-        <h1>
-          code<span style={{ color: 'rgb(30, 130, 255)' }}>Blog</span>
-        </h1>
-        <Menu />
-      </InnerHeader>
-    </OuterHeader>
+    <>
+      <OuterHeader>
+        <InnerHeader>
+          <a href="/">
+            code<span style={{ color: `${theme.colors.blue}` }}>Blog</span>
+          </a>
+          <MenuButton onClick={toggleMenu}>
+            <FontAwesomeIcon icon={faBars} size="xl" />
+          </MenuButton>
+        </InnerHeader>
+      </OuterHeader>
+      {isMenuOpen ? <Menu /> : null}
+    </>
   );
 }
 
