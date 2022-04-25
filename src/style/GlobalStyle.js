@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     word-wrap: break-word;
-    /* color: ${({ theme }) => theme.colors.black}; */
+    color: ${({ theme }) => theme.colors.black};
   }
 
   html {
