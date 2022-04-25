@@ -4,15 +4,28 @@ import Header from './components/Header';
 const backendUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 export const SessionContext = createContext(null);
+export const ScreenContext = createContext(null);
 
 function App() {
   const [session, setSession] = useState(null);
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // if viewport 800px or wider, set isDesktop true
+  useEffect(() => {
+    const updateMedia = () => {
+      setDesktop(window.innerWidth > 800);
+    };
+
+    window.addEventListener('resize', updateMedia);
+
+    return () => window.removeEventListener('resize', updateMedia);
+  });
+
+  // check session status on startup/refresh
   useEffect(() => {
     async function syncSession() {
-      // calling /auth/session endpoint returns the server's session status (user, admin, or null)
       const { session } = await fetch(`${backendUrl}/auth/session`).then(
         (res) => res.json()
       );
@@ -24,9 +37,9 @@ function App() {
   }, []);
 
   // TESTING
-  useEffect(() => {
-    console.log(session);
-  }, [session]);
+  // useEffect(() => {
+  //   console.log(session);
+  // }, [session]);
 
   async function login(username, password) {
     try {
@@ -76,9 +89,11 @@ function App() {
   }
 
   return (
-    <SessionContext.Provider value={{ session, login, logout }}>
-      <Header />
-    </SessionContext.Provider>
+    <ScreenContext.Provider value={{ isDesktop }}>
+      <SessionContext.Provider value={{ session, login, logout }}>
+        <Header />
+      </SessionContext.Provider>
+    </ScreenContext.Provider>
   );
   // PREVIOUS RENDER FOR TESTING
   // return (

@@ -8,12 +8,13 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     word-wrap: break-word;
-    color: ${({ theme }) => theme.colors.black};
+    /* color: ${({ theme }) => theme.colors.black}; */
   }
 
   html {
     /* font-family: 'Jost', serif; */
     position: relative;
+    background: ${({ theme }) => theme.colors.white};
   }
 
   body { /* this all copied from create-react-app index.css defaults, subject to change */

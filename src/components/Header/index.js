@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { SessionContext } from '../../App';
+import Menu from './Menu';
 import styled from 'styled-components';
 
 const OuterHeader = styled.header`
@@ -27,30 +26,14 @@ const InnerHeader = styled.div`
   }
 `;
 
-const Button = styled.button`
-  border: none;
-  background: ${({ theme }) => theme.colors.blue};
-  border-radius: 5px;
-  padding: 10px 20px;
-  color: white;
-  font-weight: bold;
-  transition: background 150ms;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.blueGlow};
-  }
-`;
-
 function Header() {
-  const { session } = useContext(SessionContext);
-
   return (
     <OuterHeader>
       <InnerHeader>
         <h1>
           code<span style={{ color: 'rgb(30, 130, 255)' }}>Blog</span>
         </h1>
-        <Button>{session === null ? 'Log In' : 'Log Out'}</Button>
+        <Menu />
       </InnerHeader>
     </OuterHeader>
   );
