@@ -26,9 +26,13 @@ function App() {
   // check session status on startup/refresh
   useEffect(() => {
     async function syncSession() {
-      const { session } = await fetch(`${backendUrl}/auth/session`).then(
-        (res) => res.json()
-      );
+      const { session } = await fetch(`/auth/session`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+        },
+      }).then((res) => res.json());
 
       setSession(session);
     }
@@ -43,12 +47,13 @@ function App() {
 
   async function login(username, password) {
     try {
-      const response = await fetch(`${backendUrl}/auth/login`, {
+      const response = await fetch(`/auth/login`, {
+        method: 'POST',
+        credentials: 'include',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        method: 'POST',
         body: JSON.stringify({ username, password }),
       });
 
@@ -69,12 +74,13 @@ function App() {
 
   async function logout() {
     try {
-      const response = await fetch(`${backendUrl}/auth/logout`, {
+      const response = await fetch(`/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        method: 'POST',
       });
 
       if (!response.ok) {

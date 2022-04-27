@@ -1,15 +1,17 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { SessionContext, ScreenContext } from '../../App';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
   position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: flex-end;
   gap: 8px;
-  width: 90%;
-  height: 60px;
+  width: min(90%, 500px);
+  min-height: 60px;
+  padding: 24px 12px;
 
   /* horizonatal divider at top */
   :before {
@@ -29,6 +31,8 @@ const Wrapper = styled.div`
   @media screen and (min-width: 800px) {
     & {
       width: min(80%, 1000px);
+      flex-direction: row;
+      align-items: center;
     }
   }
 `;
@@ -55,11 +59,21 @@ const UserButton = styled.button`
 
 const Greeting = styled.span`
   display: block;
+  text-align: center;
 `;
 
-const LoginField = styled.input``;
+const LoginField = styled.input`
+  height: 32px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.08);
+`;
 
 function Menu() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const { session, login, logout } = useContext(SessionContext);
   const { isDesktop } = useContext(ScreenContext);
 
@@ -67,9 +81,21 @@ function Menu() {
     <Wrapper>
       {!session ? (
         <>
-          <LoginField type="text" placeholder="Username" />
-          <LoginField type="password" placeholder="Password" />
-          <UserButton>Log In</UserButton>
+          <LoginField
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <LoginField
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <UserButton onClick={() => login(username, password)}>
+            Log In
+          </UserButton>
           <UserButton solid>Sign Up</UserButton>
         </>
       ) : (
@@ -78,7 +104,7 @@ function Menu() {
           {session.status === 'admin' ? (
             <UserButton solid>New Post</UserButton>
           ) : null}
-          <UserButton>Log Out</UserButton>
+          <UserButton onClick={logout}>Log Out</UserButton>
         </>
       )}
     </Wrapper>
