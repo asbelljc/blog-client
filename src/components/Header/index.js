@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import Menu from './Menu';
 
@@ -17,6 +18,7 @@ const Wrapper = styled.header`
 
 const Bar = styled.div`
   display: flex;
+  flex-grow: 1;
   align-items: center;
   justify-content: space-between;
   width: 90%;
@@ -77,7 +79,14 @@ function Header() {
           <FontAwesomeIcon icon={faBars} size="xl" />
         </MenuButton>
       </Bar>
-      {isMenuOpen ? <Menu /> : null}
+      <CSSTransition
+        in={isMenuOpen}
+        timeout={500}
+        classNames="menu"
+        unmountOnExit
+      >
+        <Menu />
+      </CSSTransition>
     </Wrapper>
   );
 }

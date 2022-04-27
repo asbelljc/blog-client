@@ -1,16 +1,12 @@
 import { createContext, useState, useEffect } from 'react';
 import Header from './components/Header';
 
-const backendUrl = process.env.REACT_APP_BACKEND_BASE_URL;
-
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
 
 function App() {
   const [session, setSession] = useState(null);
   const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
   // if viewport 800px or wider, set isDesktop true
   useEffect(() => {
@@ -39,11 +35,6 @@ function App() {
 
     syncSession().catch((err) => console.log(err));
   }, []);
-
-  // TESTING
-  // useEffect(() => {
-  //   console.log(session);
-  // }, [session]);
 
   async function login(username, password) {
     try {

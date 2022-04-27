@@ -35,6 +35,23 @@ const Wrapper = styled.div`
       align-items: center;
     }
   }
+
+  /* transition info for react-transition-group */
+  overflow: hidden;
+  &.menu-enter {
+    max-height: 0;
+  }
+  &.menu-enter-active {
+    max-height: 300px;
+    transition: max-height 500ms;
+  }
+  &.menu-exit {
+    max-height: 300px;
+  }
+  &.menu-exit-active {
+    max-height: 0;
+    transition: max-height 500ms;
+  }
 `;
 
 const UserButton = styled.button`
