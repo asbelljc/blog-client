@@ -84,11 +84,6 @@ const UserButton = styled.button`
   }
 `;
 
-const Greeting = styled.span`
-  display: block;
-  text-align: center;
-`;
-
 const LoginField = styled.input`
   height: 32px;
   padding: 0 8px;
@@ -171,7 +166,6 @@ function Menu({ timeout, toggleFn }) {
           </>
         ) : (
           <>
-            <Greeting>Hello, {session.username}!</Greeting>
             {session.status === 'admin' ? (
               <UserButton solid>New Post</UserButton>
             ) : null}

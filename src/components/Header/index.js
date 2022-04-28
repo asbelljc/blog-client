@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
+import { SessionContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { CSSTransition } from 'react-transition-group';
@@ -28,7 +29,6 @@ const DynamicInner = styled.div`
 
 const Bar = styled.div`
   display: flex;
-  flex-grow: 1;
   align-items: center;
   justify-content: space-between;
   width: 90%;
@@ -50,6 +50,13 @@ const Brand = styled.a`
   span {
     color: ${({ theme }) => theme.colors.primary};
   }
+`;
+
+const ActiveUser = styled.span`
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: 8px;
 `;
 
 const MenuButton = styled.button`
@@ -79,6 +86,8 @@ function Header() {
 
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
+  const { session } = useContext(SessionContext);
+
   const content = useRef(null);
   const rect = useResizeObserver(content);
 
@@ -91,6 +100,7 @@ function Header() {
           <Brand href="/">
             code<span>Blog</span>
           </Brand>
+          {!session ? null : <ActiveUser>{session.username}</ActiveUser>}
           <MenuButton onClick={toggleMenu}>
             <FontAwesomeIcon icon={faBars} size="xl" />
           </MenuButton>
