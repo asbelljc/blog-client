@@ -12,9 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    /* font-family: 'Jost', serif; */
     position: relative;
-    background: ${({ theme }) => theme.colors.white};
   }
 
   body { /* this all copied from create-react-app index.css defaults, subject to change */

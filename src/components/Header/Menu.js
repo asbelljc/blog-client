@@ -55,22 +55,24 @@ const Wrapper = styled.div`
 `;
 
 const UserButton = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.blue};
-  background: ${(props) => (props.solid && props.theme.colors.blue) || 'none'};
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background: ${(props) =>
+    (props.solid && props.theme.colors.primary) || 'none'};
   border-radius: 5px;
   padding: 10px 20px;
   color: ${(props) =>
-    (props.solid && props.theme.colors.white) || props.theme.colors.blue};
+    (props.solid && props.theme.colors.white) || props.theme.colors.primary};
   font-weight: bold;
   transition: background 150ms;
   cursor: pointer;
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.blueGlow};
+    border: 1px solid ${({ theme }) => theme.colors.primaryGlow};
     background: ${(props) =>
-      (props.solid && props.theme.colors.blueGlow) || 'none'};
+      (props.solid && props.theme.colors.primaryGlow) || 'none'};
     color: ${(props) =>
-      (props.solid && props.theme.colors.white) || props.theme.colors.blueGlow};
+      (props.solid && props.theme.colors.white) ||
+      props.theme.colors.primaryGlow};
   }
 `;
 

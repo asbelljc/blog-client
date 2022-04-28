@@ -9,7 +9,7 @@ import Menu from './Menu';
 const DynamicWrapper = styled.header`
   position: fixed;
   width: 100%;
-  background: white;
+  background: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
   /* critical bits for dynamic resizing */
@@ -48,14 +48,14 @@ const Brand = styled.a`
   user-select: none;
 
   span {
-    color: ${({ theme }) => theme.colors.blue};
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const MenuButton = styled.button`
   /* must set color this way instead of with usual 'color' prop on FontAwesomeIcon, otherwise styled-components GlobalStyle will override it */
   path {
-    fill: ${({ theme }) => theme.colors.blue};
+    fill: ${({ theme }) => theme.colors.primary};
   }
 
   background: transparent;

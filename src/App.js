@@ -92,30 +92,6 @@ function App() {
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );
-  // PREVIOUS RENDER FOR TESTING
-  // return (
-  //   <SessionContext.Provider value={{ session, login, logout }}>
-  //     <input
-  //       type="text"
-  //       value={username}
-  //       onChange={(e) => setUsername(e.target.value)}
-  //     />
-  //     <input
-  //       type="password"
-  //       value={password}
-  //       onChange={(e) => setPassword(e.target.value)}
-  //     />
-  //     <button onClick={() => login(username, password)}>Log In</button>
-  //     <button onClick={logout}>Log Out</button>
-  //     {session === 'admin' ? (
-  //       <h1>ADMIN</h1>
-  //     ) : session === 'user' ? (
-  //       <h1>USER</h1>
-  //     ) : (
-  //       <h1>NULL</h1>
-  //     )}
-  //   </SessionContext.Provider>
-  // );
 }
 
 export default App;
