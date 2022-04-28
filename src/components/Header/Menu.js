@@ -36,21 +36,21 @@ const Wrapper = styled.div`
     }
   }
 
-  /* transition info for react-transition-group */
-  overflow: hidden;
+  /* critical bits for react-transition-group */
+  transform-origin: top;
   &.menu-enter {
-    max-height: 0;
+    transform: scaleY(0);
   }
   &.menu-enter-active {
-    max-height: 300px;
-    transition: max-height 500ms;
+    transform: scaleY(1);
+    transition: transform ${(props) => props.timeout}ms;
   }
   &.menu-exit {
-    max-height: 300px;
+    opacity: 1;
   }
   &.menu-exit-active {
-    max-height: 0;
-    transition: max-height 500ms;
+    opacity: 0;
+    transition: opacity ${(props) => props.timeout}ms;
   }
 `;
 
@@ -87,7 +87,7 @@ const LoginField = styled.input`
   background: rgba(0, 0, 0, 0.08);
 `;
 
-function Menu() {
+function Menu({ timeout }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -95,7 +95,7 @@ function Menu() {
   const { isDesktop } = useContext(ScreenContext);
 
   return (
-    <Wrapper>
+    <Wrapper timeout={timeout}>
       {!session ? (
         <>
           <LoginField

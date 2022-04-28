@@ -1,19 +1,29 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+import useResizeObserver from '../../hooks/useResizeObserver';
 import Menu from './Menu';
 
-const Wrapper = styled.header`
-  display: flex;
-  flex-direction: column;
+const DynamicWrapper = styled.header`
   position: fixed;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   background: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  /* critical bits for dynamic resizing */
+  height: ${(props) => props.height}px;
+  transition: height 300ms;
+`;
+
+const DynamicInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
 `;
 
 const Bar = styled.div`
@@ -69,25 +79,32 @@ function Header() {
 
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
+  const content = useRef(null);
+  const rect = useResizeObserver(content);
+
+  const transitionTimeout = 300;
+
   return (
-    <Wrapper>
-      <Bar>
-        <Brand href="/">
-          code<span>Blog</span>
-        </Brand>
-        <MenuButton onClick={toggleMenu}>
-          <FontAwesomeIcon icon={faBars} size="xl" />
-        </MenuButton>
-      </Bar>
-      <CSSTransition
-        in={isMenuOpen}
-        timeout={500}
-        classNames="menu"
-        unmountOnExit
-      >
-        <Menu />
-      </CSSTransition>
-    </Wrapper>
+    <DynamicWrapper height={rect.height}>
+      <DynamicInner ref={content}>
+        <Bar>
+          <Brand href="/">
+            code<span>Blog</span>
+          </Brand>
+          <MenuButton onClick={toggleMenu}>
+            <FontAwesomeIcon icon={faBars} size="xl" />
+          </MenuButton>
+        </Bar>
+        <CSSTransition
+          in={isMenuOpen}
+          timeout={transitionTimeout}
+          classNames="menu"
+          unmountOnExit
+        >
+          <Menu timeout={transitionTimeout} />
+        </CSSTransition>
+      </DynamicInner>
+    </DynamicWrapper>
   );
 }
 
