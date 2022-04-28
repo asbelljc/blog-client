@@ -101,7 +101,7 @@ function Header() {
           classNames="menu"
           unmountOnExit
         >
-          <Menu timeout={transitionTimeout} />
+          <Menu timeout={transitionTimeout} toggleFn={toggleMenu} />
         </CSSTransition>
       </DynamicInner>
     </DynamicWrapper>

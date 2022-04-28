@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { SessionContext, ScreenContext } from '../../App';
+import { SessionContext } from '../../App';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -87,12 +87,17 @@ const LoginField = styled.input`
   background: rgba(0, 0, 0, 0.08);
 `;
 
-function Menu({ timeout }) {
+function Menu({ timeout, toggleFn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const { session, login, logout } = useContext(SessionContext);
-  const { isDesktop } = useContext(ScreenContext);
+
+  // helps sync close animation with login/logout process
+  const hideAndThen = (callback) => {
+    toggleFn();
+    setTimeout(callback, timeout);
+  };
 
   return (
     <Wrapper timeout={timeout}>
@@ -110,7 +115,11 @@ function Menu({ timeout }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <UserButton onClick={() => login(username, password)}>
+          <UserButton
+            onClick={() => {
+              hideAndThen(() => login(username, password));
+            }}
+          >
             Log In
           </UserButton>
           <UserButton solid>Sign Up</UserButton>
@@ -121,7 +130,13 @@ function Menu({ timeout }) {
           {session.status === 'admin' ? (
             <UserButton solid>New Post</UserButton>
           ) : null}
-          <UserButton onClick={logout}>Log Out</UserButton>
+          <UserButton
+            onClick={() => {
+              hideAndThen(logout);
+            }}
+          >
+            Log Out
+          </UserButton>
         </>
       )}
     </Wrapper>
