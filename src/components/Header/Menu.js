@@ -1,8 +1,33 @@
 import { useState, useContext } from 'react';
 import { SessionContext } from '../../App';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Wrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  /* critical bits for react-transition-group */
+  transform-origin: top;
+  &.menu-enter {
+    transform: scaleY(0);
+  }
+  &.menu-enter-active {
+    transform: scaleY(1);
+    transition: transform ${(props) => props.timeout}ms;
+  }
+  &.menu-exit {
+    opacity: 1;
+  }
+  &.menu-exit-active {
+    opacity: 0;
+    transition: opacity ${(props) => props.timeout}ms;
+  }
+`;
+
+const UserControls = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -11,7 +36,7 @@ const Wrapper = styled.div`
   gap: 8px;
   width: min(90%, 500px);
   min-height: 60px;
-  padding: 24px 12px;
+  padding: 32px 12px;
 
   /* horizonatal divider at top */
   :before {
@@ -34,23 +59,6 @@ const Wrapper = styled.div`
       flex-direction: row;
       align-items: center;
     }
-  }
-
-  /* critical bits for react-transition-group */
-  transform-origin: top;
-  &.menu-enter {
-    transform: scaleY(0);
-  }
-  &.menu-enter-active {
-    transform: scaleY(1);
-    transition: transform ${(props) => props.timeout}ms;
-  }
-  &.menu-exit {
-    opacity: 1;
-  }
-  &.menu-exit-active {
-    opacity: 0;
-    transition: opacity ${(props) => props.timeout}ms;
   }
 `;
 
@@ -87,11 +95,31 @@ const LoginField = styled.input`
   border: none;
   border-radius: 5px;
   background: rgba(0, 0, 0, 0.08);
+
+  ${(props) =>
+    props.error &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.error};
+    `};
+`;
+
+const ErrorMessage = styled.div`
+  height: fit-content;
+  margin: -16px 0 16px 0;
+
+  div {
+    font-size: 12px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors.error};
+  }
 `;
 
 function Menu({ timeout, toggleFn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const { session, login, logout } = useContext(SessionContext);
 
@@ -101,46 +129,68 @@ function Menu({ timeout, toggleFn }) {
     setTimeout(callback, timeout);
   };
 
+  const validateUsername = () => {
+    !username.trim() ? setUsernameError(true) : setUsernameError(false);
+  };
+
+  const validatePassword = () => {
+    password.trim().length < 8
+      ? setPasswordError(true)
+      : setPasswordError(false);
+  };
+
   return (
     <Wrapper timeout={timeout}>
-      {!session ? (
-        <>
-          <LoginField
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <LoginField
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <UserButton
-            onClick={() => {
-              hideAndThen(() => login(username, password));
-            }}
-          >
-            Log In
-          </UserButton>
-          <UserButton solid>Sign Up</UserButton>
-        </>
-      ) : (
-        <>
-          <Greeting>Hello, {session.username}!</Greeting>
-          {session.status === 'admin' ? (
-            <UserButton solid>New Post</UserButton>
-          ) : null}
-          <UserButton
-            onClick={() => {
-              hideAndThen(logout);
-            }}
-          >
-            Log Out
-          </UserButton>
-        </>
-      )}
+      <UserControls>
+        {!session ? (
+          <>
+            <LoginField
+              error={usernameError}
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onBlur={validateUsername}
+            />
+            <LoginField
+              error={passwordError}
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={validatePassword}
+            />
+            <UserButton
+              onClick={() => {
+                hideAndThen(() => login(username, password));
+              }}
+            >
+              Log In
+            </UserButton>
+            <UserButton solid>Sign Up</UserButton>
+          </>
+        ) : (
+          <>
+            <Greeting>Hello, {session.username}!</Greeting>
+            {session.status === 'admin' ? (
+              <UserButton solid>New Post</UserButton>
+            ) : null}
+            <UserButton
+              onClick={() => {
+                hideAndThen(logout);
+              }}
+            >
+              Log Out
+            </UserButton>
+          </>
+        )}
+      </UserControls>
+      <ErrorMessage>
+        {usernameError ? <div>Username must not be blank.</div> : null}
+        {passwordError ? (
+          <div>Password must be at least 8 characters.</div>
+        ) : null}
+      </ErrorMessage>
     </Wrapper>
   );
 }
