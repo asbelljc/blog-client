@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import { SessionContext } from '../../App';
 import styled, { css } from 'styled-components';
+import { CSSTransition } from 'react-transition-group';
 
 const Wrapper = styled.div`
   position: relative;
@@ -109,7 +110,7 @@ const ErrorMessage = styled.div`
   }
 `;
 
-function Menu({ timeout, toggleFn }) {
+function Menu({ isOpen, toggleFn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -117,6 +118,8 @@ function Menu({ timeout, toggleFn }) {
   const [passwordError, setPasswordError] = useState(false);
 
   const { session, login, logout } = useContext(SessionContext);
+
+  const timeout = 300; // timeout (ms) for open/close animation
 
   // helps sync close animation with login/logout process
   const hideAndThen = (callback) => {
@@ -135,57 +138,64 @@ function Menu({ timeout, toggleFn }) {
   };
 
   return (
-    <Wrapper timeout={timeout}>
-      <UserControls>
-        {!session ? (
-          <>
-            <LoginField
-              error={usernameError}
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              onBlur={validateUsername}
-            />
-            <LoginField
-              error={passwordError}
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={validatePassword}
-            />
-            <UserButton
-              onClick={() => {
-                hideAndThen(() => login(username, password));
-              }}
-            >
-              Log In
-            </UserButton>
-            <UserButton solid>Sign Up</UserButton>
-          </>
-        ) : (
-          <>
-            {session.status === 'admin' ? (
-              <UserButton solid>New Post</UserButton>
-            ) : null}
-            <UserButton
-              onClick={() => {
-                hideAndThen(logout);
-              }}
-            >
-              Log Out
-            </UserButton>
-          </>
-        )}
-      </UserControls>
-      <ErrorMessage>
-        {usernameError ? <div>Username must not be blank.</div> : null}
-        {passwordError ? (
-          <div>Password must be at least 8 characters.</div>
-        ) : null}
-      </ErrorMessage>
-    </Wrapper>
+    <CSSTransition
+      in={isOpen}
+      timeout={timeout}
+      classNames="menu"
+      unmountOnExit
+    >
+      <Wrapper timeout={timeout}>
+        <UserControls>
+          {!session ? (
+            <>
+              <LoginField
+                error={usernameError}
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                onBlur={validateUsername}
+              />
+              <LoginField
+                error={passwordError}
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={validatePassword}
+              />
+              <UserButton
+                onClick={() => {
+                  hideAndThen(() => login(username, password));
+                }}
+              >
+                Log In
+              </UserButton>
+              <UserButton solid>Sign Up</UserButton>
+            </>
+          ) : (
+            <>
+              {session.status === 'admin' ? (
+                <UserButton solid>New Post</UserButton>
+              ) : null}
+              <UserButton
+                onClick={() => {
+                  hideAndThen(logout);
+                }}
+              >
+                Log Out
+              </UserButton>
+            </>
+          )}
+        </UserControls>
+        <ErrorMessage>
+          {usernameError ? <div>Username must not be blank.</div> : null}
+          {passwordError ? (
+            <div>Password must be at least 8 characters.</div>
+          ) : null}
+        </ErrorMessage>
+      </Wrapper>
+    </CSSTransition>
   );
 }
 

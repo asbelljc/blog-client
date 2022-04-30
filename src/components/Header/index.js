@@ -1,4 +1,4 @@
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import { SessionContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -52,11 +52,27 @@ const Brand = styled.a`
   }
 `;
 
-const ActiveUser = styled.span`
+const UserLabel = styled.span`
   display: block;
   text-align: center;
   margin-left: auto;
   margin-right: 8px;
+
+  /* critical bits for react-transition-group */
+  &.user-label-enter {
+    opacity: 0;
+  }
+  &.user-label-enter-active {
+    opacity: 1;
+    transition: opacity ${(props) => props.timeout}ms;
+  }
+  &.user-label-exit {
+    opacity: 1;
+  }
+  &.user-label-exit-active {
+    opacity: 0;
+    transition: opacity ${(props) => props.timeout}ms;
+  }
 `;
 
 const MenuButton = styled.button`
@@ -83,15 +99,24 @@ const MenuButton = styled.button`
 
 function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const [activeUser, setActiveUser] = useState('');
 
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
   const { session } = useContext(SessionContext);
 
+  // this ensures UserLabel text doesn't vanish before unmount animation
+  useEffect(() => {
+    if (!!session) {
+      setActiveUser(session.username);
+    }
+  }, [session]);
+
+  // critical bits for content-based dynamic resizing
   const content = useRef(null);
   const rect = useResizeObserver(content);
 
-  const transitionTimeout = 300;
+  const timeout = 300; // timeout (ms) for ActiveUser mount/unmount animation
 
   return (
     <DynamicWrapper height={rect.height}>
@@ -100,19 +125,20 @@ function Header() {
           <Brand href="/">
             code<span>Blog</span>
           </Brand>
-          {!session ? null : <ActiveUser>{session.username}</ActiveUser>}
+          <CSSTransition
+            in={!!session}
+            timeout={timeout}
+            classNames="user-label"
+            unmountOnExit
+          >
+            <UserLabel timeout={timeout}>{activeUser}</UserLabel>
+          </CSSTransition>
           <MenuButton onClick={toggleMenu}>
             <FontAwesomeIcon icon={faBars} size="xl" />
           </MenuButton>
         </Bar>
-        <CSSTransition
-          in={isMenuOpen}
-          timeout={transitionTimeout}
-          classNames="menu"
-          unmountOnExit
-        >
-          <Menu timeout={transitionTimeout} toggleFn={toggleMenu} />
-        </CSSTransition>
+
+        <Menu isOpen={isMenuOpen} toggleFn={toggleMenu} />
       </DynamicInner>
     </DynamicWrapper>
   );
