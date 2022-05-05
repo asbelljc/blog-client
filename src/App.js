@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
-import Header from './components/Header';
+import Layout from './components/Layout';
+import { Routes, Route, Outlet } from 'react-router-dom';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -88,10 +89,23 @@ function App() {
   return (
     <ScreenContext.Provider value={{ isDesktop }}>
       <SessionContext.Provider value={{ session, login, logout }}>
-        <Header />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="test" element={<Test />} />
+          </Route>
+        </Routes>
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );
+}
+
+function Home() {
+  return <h1>HOME</h1>;
+}
+
+function Test() {
+  return <h1>TEST</h1>;
 }
 
 export default App;
