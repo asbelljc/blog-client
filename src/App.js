@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import Layout from './components/Layout';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route, Outlet, Link } from 'react-router-dom';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -101,11 +101,21 @@ function App() {
 }
 
 function Home() {
-  return <h1>HOME</h1>;
+  return (
+    <>
+      <h1>HOME</h1>
+      <Link to="/test">Test</Link>
+    </>
+  );
 }
 
 function Test() {
-  return <h1>TEST</h1>;
+  return (
+    <>
+      <h1>TEST</h1>
+      <Link to="/">Home</Link>
+    </>
+  );
 }
 
 export default App;
