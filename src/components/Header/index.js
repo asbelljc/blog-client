@@ -1,4 +1,5 @@
 import { useState, useRef, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { SessionContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +42,7 @@ const Bar = styled.div`
   }
 `;
 
-const Brand = styled.a`
+const Brand = styled(Link)`
   font-size: 32px;
   font-weight: bold;
   text-decoration: none;
@@ -122,7 +123,7 @@ function Header() {
     <DynamicWrapper height={rect.height}>
       <DynamicInner ref={content}>
         <Bar>
-          <Brand href="/">
+          <Brand to="/">
             code<span>Blog</span>
           </Brand>
           <CSSTransition
