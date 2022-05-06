@@ -8,7 +8,7 @@ export const ScreenContext = createContext(null);
 
 function App() {
   const [session, setSession] = useState(null);
-  const [error, setError] = useState(null);
+  const [requestError, setRequestError] = useState(null);
   const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
 
   // if viewport 800px or wider, set isDesktop true
@@ -65,9 +65,9 @@ function App() {
       setSession(data.session);
     } catch (error) {
       if (401 === error.response.status) {
-        setError('Invalid credentials. Please try again.');
+        setRequestError('Invalid credentials. Please try again.');
       } else {
-        setError('Something went wrong. Please try again.');
+        setRequestError('Something went wrong. Please try again.');
       }
     }
   }
@@ -92,7 +92,13 @@ function App() {
   return (
     <ScreenContext.Provider value={{ isDesktop }}>
       <SessionContext.Provider
-        value={{ session, error, setError, login, logout }}
+        value={{
+          session,
+          error: requestError,
+          setError: setRequestError,
+          login,
+          logout,
+        }}
       >
         <Routes>
           <Route path="/" element={<Layout />}>

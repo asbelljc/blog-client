@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { SessionContext } from '../../../App';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import UserControls from './UserControls';
 
