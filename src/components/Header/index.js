@@ -138,7 +138,6 @@ function Header() {
             <FontAwesomeIcon icon={faBars} size="xl" />
           </MenuButton>
         </Bar>
-
         <Menu isOpen={isMenuOpen} toggleFn={toggleMenu} />
       </DynamicInner>
     </DynamicWrapper>

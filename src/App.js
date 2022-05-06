@@ -1,12 +1,14 @@
 import { createContext, useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import { Routes, Route, Outlet, Link } from 'react-router-dom';
+import axios from 'axios';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
 
 function App() {
   const [session, setSession] = useState(null);
+  const [error, setError] = useState(null);
   const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
 
   // if viewport 800px or wider, set isDesktop true
@@ -23,72 +25,75 @@ function App() {
   // check session status on startup/refresh
   useEffect(() => {
     async function syncSession() {
-      const { session } = await fetch(`/auth/session`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-        },
-      }).then((res) => res.json());
+      try {
+        const { data } = await axios.get(`/auth/session`, {
+          withCredentials: true,
+          headers: {
+            Accept: 'application/json',
+          },
+          timeout: 10000, // wait up to 10s for response
+        });
 
-      setSession(session);
+        setSession(data.session);
+      } catch (error) {
+        // if request fails, only log the error; no need to inform user as this is a background session retrieval
+        console.error(error);
+      }
     }
 
-    syncSession().catch((err) => console.log(err));
+    syncSession();
   }, []);
 
   async function login(username, password) {
     try {
-      const response = await fetch(`/auth/login`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+      const { data } = await axios.post(
+        `/auth/login`,
+        {
+          username,
+          password,
         },
-        body: JSON.stringify({ username, password }),
-      });
+        {
+          withCredentials: true,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          timeout: 10000,
+        }
+      );
 
-      if (response.status === 401) {
-        return console.log('Credentials invalid.');
-      } else if (!response.ok) {
-        return console.log('Something went wrong.');
+      setSession(data.session);
+    } catch (error) {
+      if (401 === error.response.status) {
+        setError('Invalid credentials. Please try again.');
       } else {
-        await response.json().then((res) => {
-          setSession(res.session);
-          console.log('Logged in.');
-        });
+        setError('Something went wrong. Please try again.');
       }
-    } catch (err) {
-      console.log(err);
     }
   }
 
   async function logout() {
     try {
-      const response = await fetch(`/auth/logout`, {
-        method: 'POST',
+      await axios.post(`/auth/logout`, {
         credentials: 'include',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
+        timeout: 10000,
       });
 
-      if (!response.ok) {
-        return console.log('Something went wrong.');
-      } else {
-        console.log('Logout worked.');
-        await response.json().then((res) => setSession(null));
-      }
-    } catch (err) {
-      console.log(err);
+      setSession(null);
+    } catch (error) {
+      console.log(error); // only log error for now; might add offline logout functionality in future
     }
   }
 
   return (
     <ScreenContext.Provider value={{ isDesktop }}>
-      <SessionContext.Provider value={{ session, login, logout }}>
+      <SessionContext.Provider
+        value={{ session, error, setError, login, logout }}
+      >
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
