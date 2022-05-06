@@ -6,6 +6,9 @@ const Theme = {
     primaryGlow: 'rgb(50, 150, 255)',
     error: 'rgb(255, 60, 70)',
   },
+  timeouts: {
+    toggleMenu: 300,
+  },
 };
 
 export default Theme;

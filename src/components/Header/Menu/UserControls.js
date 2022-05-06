@@ -1,4 +1,6 @@
-import styled, { css } from 'styled-components';
+import { useState, useEffect, useContext } from 'react';
+import { SessionContext } from '../../../App';
+import styled, { css, useTheme } from 'styled-components';
 
 const Wrapper = styled.div`
   position: relative;
@@ -71,50 +73,101 @@ const LoginField = styled.input`
     `};
 `;
 
-export default function UserControls({
-  session,
-  username,
-  usernameError,
-  onChangeUsername,
-  onBlurUsername,
-  password,
-  passwordError,
-  onChangePassword,
-  onBlurPassword,
-  onClickLogin,
-  onClickLogout,
-}) {
+const ErrorMessage = styled.div`
+  height: fit-content;
+  margin: -16px 0 16px 0;
+
+  div {
+    font-size: 12px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors.error};
+  }
+`;
+
+export default function UserControls({ setMenuOpen }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const { session, requestError, setRequestError, login, logout } =
+    useContext(SessionContext);
+
+  const theme = useTheme();
+
+  useEffect(() => {
+    if (requestError) {
+      // request error takes precedence over un/pw errors, so hide those
+      setUsernameError(false);
+      setPasswordError(false);
+    }
+  }, [requestError]);
+
+  const validateUsername = () => {
+    // if there was a request error before, user no longer needs to see it
+    setRequestError(null);
+    !username.trim() ? setUsernameError(true) : setUsernameError(false);
+  };
+
+  const validatePassword = () => {
+    // if there was a request error before, user no longer needs to see it
+    setRequestError(null);
+    password.trim().length < 8
+      ? setPasswordError(true)
+      : setPasswordError(false);
+  };
+
+  // helps sync close animation with login/logout process
+  const hideAndThen = (callback) => {
+    setMenuOpen(false);
+    setTimeout(callback, theme.timeouts.toggleMenu);
+  };
+
   return (
-    <Wrapper>
-      {!session ? (
-        <>
-          <LoginField
-            error={usernameError}
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={onChangeUsername}
-            onBlur={onBlurUsername}
-          />
-          <LoginField
-            error={passwordError}
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={onChangePassword}
-            onBlur={onBlurPassword}
-          />
-          <UserButton onClick={onClickLogin}>Log In</UserButton>
-          <UserButton solid>Sign Up</UserButton>
-        </>
-      ) : (
-        <>
-          {session.status === 'admin' ? (
-            <UserButton solid>New Post</UserButton>
-          ) : null}
-          <UserButton onClick={onClickLogout}>Log Out</UserButton>
-        </>
-      )}
-    </Wrapper>
+    <>
+      <Wrapper>
+        {!session ? (
+          <>
+            <LoginField
+              error={usernameError}
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              onBlur={validateUsername}
+            />
+            <LoginField
+              error={passwordError}
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={validatePassword}
+            />
+            <UserButton
+              onClick={() => hideAndThen(() => login(username, password))}
+            >
+              Log In
+            </UserButton>
+            <UserButton solid>Sign Up</UserButton>
+          </>
+        ) : (
+          <>
+            {session.status === 'admin' ? (
+              <UserButton solid>New Post</UserButton>
+            ) : null}
+            <UserButton onClick={() => hideAndThen(logout)}>Log Out</UserButton>
+          </>
+        )}
+      </Wrapper>
+      <ErrorMessage>
+        {usernameError ? <div>Username must not be blank.</div> : null}
+        {passwordError ? (
+          <div>Password must be at least 8 characters.</div>
+        ) : null}
+        {requestError ? <div>{requestError}</div> : null}
+      </ErrorMessage>
+    </>
   );
 }

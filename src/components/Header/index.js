@@ -4,7 +4,7 @@ import { SessionContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import Menu from './Menu';
 
@@ -65,14 +65,14 @@ const UserLabel = styled.span`
   }
   &.user-label-enter-active {
     opacity: 1;
-    transition: opacity ${(props) => props.timeout}ms;
+    transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
   }
   &.user-label-exit {
     opacity: 1;
   }
   &.user-label-exit-active {
     opacity: 0;
-    transition: opacity ${(props) => props.timeout}ms;
+    transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
   }
 `;
 
@@ -104,7 +104,9 @@ function Header() {
 
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
-  const { session } = useContext(SessionContext);
+  const { session, requestError } = useContext(SessionContext);
+
+  const theme = useTheme();
 
   // this ensures UserLabel text doesn't vanish before unmount animation
   useEffect(() => {
@@ -113,11 +115,15 @@ function Header() {
     }
   }, [session]);
 
+  useEffect(() => {
+    if (requestError) {
+      setMenuOpen(true); // open menu to reveal request error message
+    }
+  }, [requestError, setMenuOpen]);
+
   // critical bits for content-based dynamic resizing
   const content = useRef(null);
   const rect = useResizeObserver(content);
-
-  const timeout = 300; // timeout (ms) for ActiveUser mount/unmount animation
 
   return (
     <DynamicWrapper height={rect.height}>
@@ -128,17 +134,17 @@ function Header() {
           </Brand>
           <CSSTransition
             in={!!session}
-            timeout={timeout}
+            timeout={theme.timeouts.toggleMenu}
             classNames="user-label"
             unmountOnExit
           >
-            <UserLabel timeout={timeout}>{activeUser}</UserLabel>
+            <UserLabel>{activeUser}</UserLabel>
           </CSSTransition>
           <MenuButton onClick={toggleMenu}>
             <FontAwesomeIcon icon={faBars} size="xl" />
           </MenuButton>
         </Bar>
-        <Menu isOpen={isMenuOpen} setMenuOpen={setMenuOpen} />
+        <Menu isOpen={isMenuOpen} setOpen={setMenuOpen} />
       </DynamicInner>
     </DynamicWrapper>
   );
