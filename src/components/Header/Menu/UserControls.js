@@ -118,10 +118,21 @@ export default function UserControls({ setMenuOpen }) {
       : setPasswordError(false);
   };
 
-  // helps sync close animation with login/logout process
-  const hideAndThen = (callback) => {
+  // HOF to sync close animation with login/logout process
+  const closeMenuThen = (callback) => {
     setMenuOpen(false);
     setTimeout(callback, theme.timeouts.toggleMenu);
+  };
+
+  // HOF to validate before submitting login/signup request
+  const validateThen = (callback) => {
+    validateUsername();
+    validatePassword();
+    if (usernameError || passwordError) {
+      return;
+    } else {
+      closeMenuThen(callback);
+    }
   };
 
   return (
@@ -146,7 +157,7 @@ export default function UserControls({ setMenuOpen }) {
               onBlur={validatePassword}
             />
             <UserButton
-              onClick={() => hideAndThen(() => login(username, password))}
+              onClick={() => validateThen(() => login(username, password))}
             >
               Log In
             </UserButton>
@@ -157,7 +168,9 @@ export default function UserControls({ setMenuOpen }) {
             {session.status === 'admin' ? (
               <UserButton solid>New Post</UserButton>
             ) : null}
-            <UserButton onClick={() => hideAndThen(logout)}>Log Out</UserButton>
+            <UserButton onClick={() => closeMenuThen(logout)}>
+              Log Out
+            </UserButton>
           </>
         )}
       </Wrapper>
