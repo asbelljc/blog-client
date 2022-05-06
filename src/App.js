@@ -74,6 +74,12 @@ function App() {
   }
 
   async function logout() {
+    setSession(null);
+    setRequestError(null);
+    // delete secondary non-httpOnly cookie to allow offline logout
+    document.cookie =
+      'secondaryAuthToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
     try {
       await axios.post(`/auth/logout`, {
         credentials: 'include',
@@ -83,11 +89,8 @@ function App() {
         },
         timeout: 10000,
       });
-
-      setSession(null);
-      setRequestError(null);
     } catch (error) {
-      console.log(error); // only log error for now; might add offline logout functionality in future
+      console.log(error); // only log error since offline logout functionality is present
     }
   }
 
