@@ -63,6 +63,7 @@ function App() {
       );
 
       setSession(data.session);
+      setRequestError(null);
     } catch (error) {
       if (401 === error.response.status) {
         setRequestError('Invalid credentials. Please try again.');
@@ -84,6 +85,7 @@ function App() {
       });
 
       setSession(null);
+      setRequestError(null);
     } catch (error) {
       console.log(error); // only log error for now; might add offline logout functionality in future
     }
@@ -94,8 +96,8 @@ function App() {
       <SessionContext.Provider
         value={{
           session,
-          error: requestError,
-          setError: setRequestError,
+          requestError,
+          setRequestError,
           login,
           logout,
         }}

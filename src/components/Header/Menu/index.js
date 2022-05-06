@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { SessionContext } from '../../../App';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
@@ -40,28 +40,42 @@ const ErrorMessage = styled.div`
   }
 `;
 
-function Menu({ isOpen, toggleFn }) {
+function Menu({ isOpen, setMenuOpen }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  const { session, login, logout } = useContext(SessionContext);
+  const { session, requestError, setRequestError, login, logout } =
+    useContext(SessionContext);
+
+  useEffect(() => {
+    if (requestError) {
+      // request error takes precedence over un/pw errors, so hide those
+      setUsernameError(false);
+      setPasswordError(false);
+      setMenuOpen(true); // open menu to reveal request error message
+    }
+  }, [requestError, setMenuOpen]);
 
   const timeout = 300; // timeout (ms) for open/close animation
 
   // helps sync close animation with login/logout process
   const hideAndThen = (callback) => {
-    toggleFn();
+    setMenuOpen(false);
     setTimeout(callback, timeout);
   };
 
   const validateUsername = () => {
+    // if there was a request error before, user no longer needs to see it
+    setRequestError(null);
     !username.trim() ? setUsernameError(true) : setUsernameError(false);
   };
 
   const validatePassword = () => {
+    // if there was a request error before, user no longer needs to see it
+    setRequestError(null);
     password.trim().length < 8
       ? setPasswordError(true)
       : setPasswordError(false);
@@ -82,6 +96,7 @@ function Menu({ isOpen, toggleFn }) {
           onChangeUsername={(e) => setUsername(e.target.value)}
           onBlurUsername={validateUsername}
           password={password}
+          passwordError={passwordError}
           onChangePassword={(e) => setPassword(e.target.value)}
           onBlurPassword={validatePassword}
           onClickLogin={() => {
@@ -96,6 +111,7 @@ function Menu({ isOpen, toggleFn }) {
           {passwordError ? (
             <div>Password must be at least 8 characters.</div>
           ) : null}
+          {requestError ? <div>{requestError}</div> : null}
         </ErrorMessage>
       </Wrapper>
     </CSSTransition>
