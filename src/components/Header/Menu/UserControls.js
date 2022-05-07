@@ -113,15 +113,30 @@ export default function UserControls({ setMenuOpen }) {
   const validateUsername = () => {
     // if there was a request error before, user no longer needs to see it
     setRequestErrors([]);
-    !username.trim() ? setUsernameError(true) : setUsernameError(false);
+
+    const isBadLength =
+      username.trim().length < 1 || username.trim().length > 12;
+    const hasSpaces = username.trim().includes(' ');
+
+    if (isBadLength || hasSpaces) {
+      setUsernameError(true);
+    } else {
+      setUsernameError(false);
+    }
   };
 
   const validatePassword = () => {
     // if there was a request error before, user no longer needs to see it
     setRequestErrors([]);
-    password.trim().length < 8
-      ? setPasswordError(true)
-      : setPasswordError(false);
+
+    const isBadLength =
+      password.trim().length < 8 || password.trim().length > 48;
+
+    if (isBadLength) {
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
   };
 
   // HOF to sync close animation with login/logout/signup process
@@ -186,10 +201,10 @@ export default function UserControls({ setMenuOpen }) {
         )}
       </Wrapper>
       <ErrorMessage>
-        {usernameError ? <div>Username must not be blank.</div> : null}
-        {passwordError ? (
-          <div>Password must be at least 8 characters.</div>
+        {usernameError ? (
+          <div>Username must be 1-12 characters (no spaces).</div>
         ) : null}
+        {passwordError ? <div>Password must be 8-48 characters.</div> : null}
         {requestErrors.map((error) => (
           <div>{error}</div>
         ))}
