@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { SessionContext } from '../../../App';
+import { SessionContext, ScreenContext } from '../../../App';
 import styled, { css, useTheme } from 'styled-components';
 
 const Wrapper = styled.div`
@@ -28,13 +28,17 @@ const Wrapper = styled.div`
     );
   }
 
-  @media screen and (min-width: 800px) {
-    & {
-      width: min(80%, 1000px);
-      flex-direction: row;
-      align-items: center;
-    }
-  }
+  ${({ screen }) =>
+    screen === 'wide' &&
+    css`
+       {
+        & {
+          width: min(80%, 1000px);
+          flex-direction: row;
+          align-items: center;
+        }
+      }
+    `}
 `;
 
 const UserButton = styled.button`
@@ -94,6 +98,8 @@ export default function UserControls({ setMenuOpen }) {
   const { session, requestErrors, setRequestErrors, signup, login, logout } =
     useContext(SessionContext);
 
+  const { screen } = useContext(ScreenContext);
+
   const theme = useTheme();
 
   useEffect(() => {
@@ -137,7 +143,7 @@ export default function UserControls({ setMenuOpen }) {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper screen={screen}>
         {!session ? (
           <>
             <LoginField

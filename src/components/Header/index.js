@@ -4,7 +4,7 @@ import { SessionContext, ScreenContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { CSSTransition } from 'react-transition-group';
-import styled, { css, useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import Menu from './Menu';
 
