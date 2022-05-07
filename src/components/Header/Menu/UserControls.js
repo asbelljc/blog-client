@@ -91,34 +91,34 @@ export default function UserControls({ setMenuOpen }) {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  const { session, requestError, setRequestError, login, logout } =
+  const { session, requestErrors, setRequestErrors, signup, login, logout } =
     useContext(SessionContext);
 
   const theme = useTheme();
 
   useEffect(() => {
-    if (requestError) {
+    if (requestErrors.length) {
       // request error takes precedence over un/pw errors, so hide those
       setUsernameError(false);
       setPasswordError(false);
     }
-  }, [requestError]);
+  }, [requestErrors]);
 
   const validateUsername = () => {
     // if there was a request error before, user no longer needs to see it
-    setRequestError(null);
+    setRequestErrors([]);
     !username.trim() ? setUsernameError(true) : setUsernameError(false);
   };
 
   const validatePassword = () => {
     // if there was a request error before, user no longer needs to see it
-    setRequestError(null);
+    setRequestErrors([]);
     password.trim().length < 8
       ? setPasswordError(true)
       : setPasswordError(false);
   };
 
-  // HOF to sync close animation with login/logout process
+  // HOF to sync close animation with login/logout/signup process
   const closeMenuThen = (callback) => {
     setMenuOpen(false);
     setTimeout(callback, theme.timeouts.toggleMenu);
@@ -161,7 +161,12 @@ export default function UserControls({ setMenuOpen }) {
             >
               Log In
             </UserButton>
-            <UserButton solid>Sign Up</UserButton>
+            <UserButton
+              solid
+              onClick={() => validateThen(() => signup(username, password))}
+            >
+              Sign Up
+            </UserButton>
           </>
         ) : (
           <>
@@ -179,7 +184,9 @@ export default function UserControls({ setMenuOpen }) {
         {passwordError ? (
           <div>Password must be at least 8 characters.</div>
         ) : null}
-        {requestError ? <div>{requestError}</div> : null}
+        {requestErrors.map((error) => (
+          <div>{error}</div>
+        ))}
       </ErrorMessage>
     </>
   );

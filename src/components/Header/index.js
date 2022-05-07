@@ -1,10 +1,10 @@
 import { useState, useRef, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { SessionContext } from '../../App';
+import { SessionContext, ScreenContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { CSSTransition } from 'react-transition-group';
-import styled, { useTheme } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import Menu from './Menu';
 
@@ -32,18 +32,13 @@ const Bar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 90%;
-  height: 80px;
-
-  @media screen and (min-width: 800px) {
-    & {
-      width: min(80%, 1000px);
-    }
-  }
+  width: ${({ screen }) => (screen === 'wide' ? 'min(80%, 1000px)' : '90%')};
+  height: ${({ screen, theme }) =>
+    screen === 'narrow' ? theme.barHeight.small : theme.barHeight.large};
 `;
 
 const Brand = styled(Link)`
-  font-size: 32px;
+  font-size: ${({ screen }) => (screen === 'narrow' ? 24 : 32)}px;
   font-weight: bold;
   text-decoration: none;
   user-select: none;
@@ -54,7 +49,7 @@ const Brand = styled(Link)`
 `;
 
 const UserLabel = styled.span`
-  display: block;
+  font-size: ${({ screen }) => (screen === 'narrow' ? 14 : 16)}px;
   text-align: center;
   margin-left: auto;
   margin-right: 8px;
@@ -71,6 +66,27 @@ const UserLabel = styled.span`
     opacity: 1;
   }
   &.user-label-exit-active {
+    opacity: 0;
+    transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
+  }
+`;
+
+const Welcome = styled.span`
+  text-align: center;
+  margin-left: auto;
+
+  /* critical bits for react-transition-group */
+  &.welcome-enter {
+    opacity: 0;
+  }
+  &.welcome-enter-active {
+    opacity: 1;
+    transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
+  }
+  &.welcome-exit {
+    opacity: 1;
+  }
+  &.welcome-exit-active {
     opacity: 0;
     transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
   }
@@ -104,7 +120,8 @@ function Header() {
 
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
-  const { session, requestError } = useContext(SessionContext);
+  const { session, requestErrors, justSignedUp } = useContext(SessionContext);
+  const { screen } = useContext(ScreenContext);
 
   const theme = useTheme();
 
@@ -116,10 +133,10 @@ function Header() {
   }, [session]);
 
   useEffect(() => {
-    if (requestError) {
+    if (requestErrors.length) {
       setMenuOpen(true); // open menu to reveal request error message
     }
-  }, [requestError, setMenuOpen]);
+  }, [requestErrors, setMenuOpen]);
 
   // critical bits for content-based dynamic resizing
   const content = useRef(null);
@@ -128,8 +145,8 @@ function Header() {
   return (
     <DynamicWrapper height={rect.height}>
       <DynamicInner ref={content}>
-        <Bar>
-          <Brand to="/">
+        <Bar screen={screen}>
+          <Brand screen={screen} to="/">
             code<span>Blog</span>
           </Brand>
           <CSSTransition
@@ -138,7 +155,17 @@ function Header() {
             classNames="user-label"
             unmountOnExit
           >
-            <UserLabel>{activeUser}</UserLabel>
+            <UserLabel screen={screen}>
+              <CSSTransition
+                in={justSignedUp}
+                timeout={theme.timeouts.toggleMenu}
+                classNames="welcome"
+                unmountOnExit
+              >
+                <Welcome>Welcome, </Welcome>
+              </CSSTransition>
+              {activeUser}
+            </UserLabel>
           </CSSTransition>
           <MenuButton onClick={toggleMenu}>
             <FontAwesomeIcon icon={faBars} size="xl" />

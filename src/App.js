@@ -2,19 +2,22 @@ import { createContext, useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import { Routes, Route, Outlet, Link } from 'react-router-dom';
 import axios from 'axios';
+import { useTheme } from 'styled-components';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
 
 function App() {
   const [session, setSession] = useState(null);
-  const [requestError, setRequestError] = useState(null);
-  const [isDesktop, setDesktop] = useState(window.innerWidth > 800);
+  const [justSignedUp, setJustSignedUp] = useState(false);
+  const [requestErrors, setRequestErrors] = useState([]);
+  const [screen, setScreen] = useState(measureScreen());
 
-  // if viewport 800px or wider, set isDesktop true
+  const theme = useTheme();
+
   useEffect(() => {
     const updateMedia = () => {
-      setDesktop(window.innerWidth > 800);
+      setScreen(measureScreen());
     };
 
     window.addEventListener('resize', updateMedia);
@@ -44,6 +47,57 @@ function App() {
     syncSession();
   }, []);
 
+  // this lets header display a welcome message briefly for new users
+  useEffect(() => {
+    if (justSignedUp) {
+      setTimeout(() => {
+        setJustSignedUp(false);
+      }, theme.timeouts.showWelcome);
+    }
+  }, [justSignedUp, setJustSignedUp, theme.timeouts.showWelcome]);
+
+  function measureScreen() {
+    return window.innerWidth > 800
+      ? 'wide'
+      : window.innerWidth > 480
+      ? 'medium'
+      : 'narrow';
+  }
+
+  async function signup(username, password) {
+    try {
+      const { data } = await axios.post(
+        `/auth/signup`,
+        {
+          username,
+          password,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          timeout: 10000,
+        }
+      );
+
+      setSession(data.session);
+      setJustSignedUp(true);
+      setRequestErrors([]);
+    } catch (error) {
+      if (400 === error.response.status) {
+        const errors = error.response.data.errors.map(
+          // express-validator attaches an extraneous label - get rid of it.
+          (error) => error.msg.replace('Error: ', '')
+        );
+        setRequestErrors(errors);
+      } else {
+        setRequestErrors(['Something went wrong. Please try again.']);
+      }
+    }
+  }
+
   async function login(username, password) {
     try {
       const { data } = await axios.post(
@@ -63,19 +117,19 @@ function App() {
       );
 
       setSession(data.session);
-      setRequestError(null);
+      setRequestErrors([]);
     } catch (error) {
       if (401 === error.response.status) {
-        setRequestError('Invalid credentials. Please try again.');
+        setRequestErrors(['Invalid credentials. Please try again.']);
       } else {
-        setRequestError('Something went wrong. Please try again.');
+        setRequestErrors(['Something went wrong. Please try again.']);
       }
     }
   }
 
   async function logout() {
     setSession(null);
-    setRequestError(null);
+    setRequestErrors([]);
     // delete secondary non-httpOnly cookie to allow offline logout
     document.cookie =
       'secondaryAuthToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
@@ -90,19 +144,21 @@ function App() {
         timeout: 10000,
       });
     } catch (error) {
-      console.log(error); // only log error since offline logout functionality is present
+      console.error(error); // only log error since offline logout functionality is present
     }
   }
 
   return (
-    <ScreenContext.Provider value={{ isDesktop }}>
+    <ScreenContext.Provider value={{ screen }}>
       <SessionContext.Provider
         value={{
           session,
-          requestError,
-          setRequestError,
+          requestErrors,
+          setRequestErrors,
           login,
           logout,
+          signup,
+          justSignedUp,
         }}
       >
         <Routes>
