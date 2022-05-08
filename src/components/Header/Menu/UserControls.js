@@ -7,7 +7,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px; /* gap between controls and error messages */
-  padding: min(5vw, 28px) 0;
 `;
 
 const ControlsContainer = styled.div`

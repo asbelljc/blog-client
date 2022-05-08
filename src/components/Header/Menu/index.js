@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import UserControls from './UserControls';
 import { useContext } from 'react';
 import { ScreenContext } from '../../../App';
+import Nav from './Nav';
 
 const Wrapper = styled.div`
   position: relative;
@@ -10,6 +11,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   /* helps keep error messages centered under controls */
   align-items: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'stretch')};
+  gap: min(5vw, 28px);
+  padding: min(5vw, 28px) 0;
 
   /* horizontal divider at top */
   :before {
@@ -57,6 +60,7 @@ function Menu({ isOpen, setOpen }) {
       unmountOnExit
     >
       <Wrapper screen={screen}>
+        <Nav screen={screen} />
         <UserControls setMenuOpen={setOpen} />
       </Wrapper>
     </CSSTransition>
