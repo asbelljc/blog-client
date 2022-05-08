@@ -1,13 +1,30 @@
 import styled, { useTheme } from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import UserControls from './UserControls';
+import { useContext } from 'react';
+import { ScreenContext } from '../../../App';
 
 const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
+  /* helps keep error messages centered under controls */
+  align-items: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'stretch')};
+
+  /* horizontal divider at top */
+  :before {
+    position: absolute;
+    top: 0;
+    content: '';
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0) 0,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
 
   /* critical bits for react-transition-group */
   transform-origin: top;
@@ -28,6 +45,8 @@ const Wrapper = styled.div`
 `;
 
 function Menu({ isOpen, setOpen }) {
+  const { screen } = useContext(ScreenContext);
+
   const theme = useTheme();
 
   return (
@@ -37,7 +56,7 @@ function Menu({ isOpen, setOpen }) {
       classNames="menu"
       unmountOnExit
     >
-      <Wrapper>
+      <Wrapper screen={screen}>
         <UserControls setMenuOpen={setOpen} />
       </Wrapper>
     </CSSTransition>
@@ -45,3 +64,5 @@ function Menu({ isOpen, setOpen }) {
 }
 
 export default Menu;
+
+// HEY JON-JON DO THE FUCKIN NAV BUDDY!

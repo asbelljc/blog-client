@@ -28,17 +28,22 @@ const DynamicInner = styled.div`
   height: fit-content;
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: ${({ screen }) => (screen === 'wide' ? 'min(80%, 1000px)' : '90%')};
+`;
+
 const Bar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: ${({ screen }) => (screen === 'wide' ? 'min(80%, 1000px)' : '90%')};
   height: ${({ screen, theme }) =>
     screen === 'narrow' ? theme.barHeight.small : theme.barHeight.large};
 `;
 
 const Brand = styled(Link)`
-  font-size: ${({ screen }) => (screen === 'narrow' ? 24 : 32)}px;
+  font-size: ${({ screen }) => (screen === 'narrow' ? 20 : 32)}px;
   font-weight: bold;
   text-decoration: none;
   user-select: none;
@@ -145,33 +150,35 @@ function Header() {
   return (
     <DynamicWrapper height={rect.height}>
       <DynamicInner ref={content}>
-        <Bar screen={screen}>
-          <Brand screen={screen} to="/">
-            code<span>Blog</span>
-          </Brand>
-          <CSSTransition
-            in={!!session}
-            timeout={theme.timeouts.toggleMenu}
-            classNames="user-label"
-            unmountOnExit
-          >
-            <UserLabel screen={screen}>
-              <CSSTransition
-                in={justSignedUp}
-                timeout={theme.timeouts.toggleMenu}
-                classNames="welcome"
-                unmountOnExit
-              >
-                <Welcome>Welcome, </Welcome>
-              </CSSTransition>
-              {activeUser}
-            </UserLabel>
-          </CSSTransition>
-          <MenuButton onClick={toggleMenu}>
-            <FontAwesomeIcon icon={faBars} size="xl" />
-          </MenuButton>
-        </Bar>
-        <Menu isOpen={isMenuOpen} setOpen={setMenuOpen} />
+        <Container screen={screen}>
+          <Bar screen={screen}>
+            <Brand screen={screen} to="/">
+              code<span>Blog</span>
+            </Brand>
+            <CSSTransition
+              in={!!session}
+              timeout={theme.timeouts.toggleMenu}
+              classNames="user-label"
+              unmountOnExit
+            >
+              <UserLabel screen={screen}>
+                <CSSTransition
+                  in={justSignedUp}
+                  timeout={theme.timeouts.toggleMenu}
+                  classNames="welcome"
+                  unmountOnExit
+                >
+                  <Welcome>Welcome, </Welcome>
+                </CSSTransition>
+                {activeUser}
+              </UserLabel>
+            </CSSTransition>
+            <MenuButton onClick={toggleMenu}>
+              <FontAwesomeIcon icon={faBars} size="xl" />
+            </MenuButton>
+          </Bar>
+          <Menu isOpen={isMenuOpen} setOpen={setMenuOpen} />
+        </Container>
       </DynamicInner>
     </DynamicWrapper>
   );

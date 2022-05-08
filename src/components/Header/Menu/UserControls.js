@@ -1,47 +1,25 @@
 import { useState, useEffect, useContext } from 'react';
 import { SessionContext, ScreenContext } from '../../../App';
 import styled, { css, useTheme } from 'styled-components';
+import ErrorMessages from './ErrorMessages';
 
 const Wrapper = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  gap: 12px; /* gap between controls and error messages */
+  padding: min(5vw, 28px) 0;
+`;
+
+const ControlsContainer = styled.div`
+  display: flex;
+  flex-direction: ${({ screen }) => (screen === 'narrow' ? 'column' : 'row')};
+  align-items: ${({ screen }) => (screen === 'narrow' ? 'stretch' : 'center')};
   justify-content: flex-end;
   gap: 8px;
-  width: min(90%, 500px);
-  min-height: 60px;
-  padding: 32px 12px;
-
-  /* horizonatal divider at top */
-  :before {
-    position: absolute;
-    top: 0;
-    content: '';
-    height: 1px;
-    width: 100%;
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0) 0,
-      rgba(0, 0, 0, 0.2) 50%,
-      rgba(0, 0, 0, 0) 100%
-    );
-  }
-
-  ${({ screen }) =>
-    screen === 'wide' &&
-    css`
-       {
-        & {
-          width: min(80%, 1000px);
-          flex-direction: row;
-          align-items: center;
-        }
-      }
-    `}
 `;
 
 const UserButton = styled.button`
+  min-width: 93px;
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background: ${(props) =>
     (props.solid && props.theme.colors.primary) || 'none'};
@@ -65,6 +43,9 @@ const UserButton = styled.button`
 
 const LoginField = styled.input`
   height: 32px;
+  /* this keeps it from being too wide on desktops */
+  flex-grow: ${({ screen }) => (screen === 'medium' ? 1 : 0)};
+  min-width: 0; /* this lets it flex-shrink properly */
   padding: 0 8px;
   border: none;
   border-radius: 5px;
@@ -75,17 +56,6 @@ const LoginField = styled.input`
     css`
       border: 1px solid ${({ theme }) => theme.colors.error};
     `};
-`;
-
-const ErrorMessage = styled.div`
-  height: fit-content;
-  margin: -16px 0 16px 0;
-
-  div {
-    font-size: 12px;
-    text-align: center;
-    color: ${({ theme }) => theme.colors.error};
-  }
 `;
 
 export default function UserControls({ setMenuOpen }) {
@@ -157,8 +127,8 @@ export default function UserControls({ setMenuOpen }) {
   };
 
   return (
-    <>
-      <Wrapper screen={screen}>
+    <Wrapper>
+      <ControlsContainer screen={screen}>
         {!session ? (
           <>
             <LoginField
@@ -168,6 +138,7 @@ export default function UserControls({ setMenuOpen }) {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               onBlur={validateUsername}
+              screen={screen}
             />
             <LoginField
               error={passwordError}
@@ -176,6 +147,7 @@ export default function UserControls({ setMenuOpen }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onBlur={validatePassword}
+              screen={screen}
             />
             <UserButton
               onClick={() => validateThen(() => login(username, password))}
@@ -191,24 +163,20 @@ export default function UserControls({ setMenuOpen }) {
           </>
         ) : (
           <>
-            {session.status === 'admin' ? (
+            {session.status === 'admin' && (
               <UserButton solid>New Post</UserButton>
-            ) : null}
+            )}
             <UserButton onClick={() => closeMenuThen(logout)}>
               Log Out
             </UserButton>
           </>
         )}
-      </Wrapper>
-      <ErrorMessage>
-        {usernameError ? (
-          <div>Username must be 1-12 characters (no spaces).</div>
-        ) : null}
-        {passwordError ? <div>Password must be 8-48 characters.</div> : null}
-        {requestErrors.map((error) => (
-          <div>{error}</div>
-        ))}
-      </ErrorMessage>
-    </>
+      </ControlsContainer>
+      <ErrorMessages
+        usernameError={usernameError}
+        passwordError={passwordError}
+        requestErrors={requestErrors}
+      />
+    </Wrapper>
   );
 }
