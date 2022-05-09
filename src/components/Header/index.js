@@ -152,7 +152,7 @@ function Header() {
       <DynamicInner ref={content}>
         <Container screen={screen}>
           <Bar screen={screen}>
-            <Brand screen={screen} to="/">
+            <Brand screen={screen} to="/" onClick={() => setMenuOpen(false)}>
               code<span>Blog</span>
             </Brand>
             <CSSTransition
