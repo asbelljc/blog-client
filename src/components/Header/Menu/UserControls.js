@@ -6,7 +6,7 @@ import ErrorMessages from './ErrorMessages';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px; /* gap between controls and error messages */
+  gap: 1.2rem; /* gap between controls and error messages */
 `;
 
 const ControlsContainer = styled.div`
@@ -14,16 +14,16 @@ const ControlsContainer = styled.div`
   flex-direction: ${({ screen }) => (screen === 'narrow' ? 'column' : 'row')};
   align-items: ${({ screen }) => (screen === 'narrow' ? 'stretch' : 'center')};
   justify-content: flex-end;
-  gap: 8px;
+  gap: 0.8rem;
 `;
 
 const UserButton = styled.button`
-  min-width: 93px;
+  min-width: 9.3rem;
   border: 1px solid ${({ theme }) => theme.colors.primary};
   background: ${(props) =>
     (props.solid && props.theme.colors.primary) || 'none'};
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
   color: ${(props) =>
     (props.solid && props.theme.colors.white) || props.theme.colors.primary};
   font-weight: bold;
@@ -40,13 +40,13 @@ const UserButton = styled.button`
 `;
 
 const LoginField = styled.input`
-  height: 32px;
+  height: 3.2rem;
   /* this keeps it from being too wide on desktops */
   flex-grow: ${({ screen }) => (screen === 'medium' ? 1 : 0)};
   min-width: 0; /* this lets it flex-shrink properly */
-  padding: 0 8px;
+  padding: 0 0.8rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   background: rgba(0, 0, 0, 0.08);
 
   ${(props) =>

@@ -12,7 +12,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    position: relative;
+    /* position: relative; */
+    font-size: 62.5%;
   }
 
   body { /* this all copied from create-react-app index.css defaults, subject to change */

@@ -10,8 +10,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'stretch')};
-  gap: min(5vw, 28px);
-  padding: min(5vw, 28px) 0;
+  gap: min(5vw, 2.8rem);
+  padding: min(5vw, 2.8rem) 0;
 
   /* horizontal divider at top */
   :before {

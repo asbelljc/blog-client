@@ -12,8 +12,8 @@ const Theme = {
     showWelcome: 6000,
   },
   barHeight: {
-    small: '60px',
-    large: '80px',
+    small: '6rem',
+    large: '8rem',
   },
 };
 

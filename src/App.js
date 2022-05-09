@@ -1,8 +1,12 @@
 import { createContext, useState, useEffect } from 'react';
-import Layout from './components/Layout';
 import { Routes, Route, Outlet, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from 'styled-components';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Posts from './pages/Posts';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -163,22 +167,14 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Test name="home" />} />
-            <Route path="about" element={<Test name="about" />} />
-            <Route path="posts" element={<Test name="posts" />} />
-            <Route path="contact" element={<Test name="contact" />} />
+            <Route index element={<Home />} />
+            <Route path="posts" element={<Posts />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
         </Routes>
       </SessionContext.Provider>
     </ScreenContext.Provider>
-  );
-}
-
-function Test({ name }) {
-  return (
-    <>
-      <h1>{name}</h1>
-    </>
   );
 }
 

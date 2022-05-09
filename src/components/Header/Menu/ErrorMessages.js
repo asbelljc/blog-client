@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   margin: 0;
 
   div {
-    font-size: 12px;
+    font-size: 1.2rem;
     text-align: center;
     color: ${({ theme }) => theme.colors.error};
   }

@@ -10,9 +10,10 @@ const Wrapper = styled.div`
 
   & > a {
     color: ${({ theme }) => theme.colors.inactive};
+    font-size: 1.6rem;
     text-decoration: none;
     text-align: ${({ screen }) => (screen === 'wide' ? 'right' : 'left')};
-    margin-left: ${({ screen }) => (screen === 'wide' ? '64px' : 0)};
+    margin-left: ${({ screen }) => (screen === 'wide' ? '6.4rem' : 0)};
 
     &.active {
       color: ${({ theme }) => theme.colors.primary};
@@ -31,7 +32,7 @@ const Wrapper = styled.div`
 export default function Nav({ setMenuOpen }) {
   const { screen } = useContext(ScreenContext);
 
-  const linkNames = ['About', 'Posts', 'Contact'];
+  const linkNames = ['Posts', 'About', 'Contact'];
 
   return (
     <Wrapper screen={screen}>

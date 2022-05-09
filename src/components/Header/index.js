@@ -43,7 +43,7 @@ const Bar = styled.div`
 `;
 
 const Brand = styled(Link)`
-  font-size: ${({ screen }) => (screen === 'narrow' ? 20 : 32)}px;
+  font-size: ${({ screen }) => (screen === 'narrow' ? 2 : 3.2)}rem;
   font-weight: bold;
   text-decoration: none;
   user-select: none;
@@ -54,10 +54,10 @@ const Brand = styled(Link)`
 `;
 
 const UserLabel = styled.span`
-  font-size: ${({ screen }) => (screen === 'narrow' ? 14 : 16)}px;
+  font-size: ${({ screen }) => (screen === 'narrow' ? 1.4 : 1.6)}rem;
   text-align: center;
   margin-left: auto;
-  margin-right: 8px;
+  margin-right: 0.8rem;
 
   /* critical bits for react-transition-group */
   &.user-label-enter {
@@ -106,8 +106,8 @@ const MenuButton = styled.button`
   background: transparent;
   border: none;
   border-radius: 1000px;
-  width: 38px;
-  height: 38px;
+  width: 3.8rem;
+  height: 3.8rem;
   transition: background 150ms;
 
   :hover {
