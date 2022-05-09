@@ -28,14 +28,22 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Nav() {
+export default function Nav({ setMenuOpen }) {
   const { screen } = useContext(ScreenContext);
+
+  const linkNames = ['About', 'Posts', 'Contact'];
 
   return (
     <Wrapper screen={screen}>
-      <NavLink to="/about">About</NavLink>
-      <NavLink to="/posts">Posts</NavLink>
-      <NavLink to="/contact">Contact</NavLink>
+      {linkNames.map((name, index) => {
+        const path = `/${name.toLowerCase()}`;
+
+        return (
+          <NavLink key={index} to={path} onClick={() => setMenuOpen(false)}>
+            {name}
+          </NavLink>
+        );
+      })}
     </Wrapper>
   );
 }

@@ -59,7 +59,7 @@ function Menu({ isOpen, setOpen }) {
       unmountOnExit
     >
       <Wrapper screen={screen}>
-        <Nav screen={screen} />
+        <Nav setMenuOpen={setOpen} />
         <UserControls setMenuOpen={setOpen} />
       </Wrapper>
     </CSSTransition>

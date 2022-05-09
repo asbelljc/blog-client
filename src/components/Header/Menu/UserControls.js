@@ -28,7 +28,6 @@ const UserButton = styled.button`
     (props.solid && props.theme.colors.white) || props.theme.colors.primary};
   font-weight: bold;
   transition: background 150ms;
-  cursor: pointer;
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.primaryGlow};

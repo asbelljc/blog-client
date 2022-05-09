@@ -163,8 +163,10 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="test" element={<Test />} />
+            <Route index element={<Test name="home" />} />
+            <Route path="about" element={<Test name="about" />} />
+            <Route path="posts" element={<Test name="posts" />} />
+            <Route path="contact" element={<Test name="contact" />} />
           </Route>
         </Routes>
       </SessionContext.Provider>
@@ -172,20 +174,10 @@ function App() {
   );
 }
 
-function Home() {
+function Test({ name }) {
   return (
     <>
-      <h1>HOME</h1>
-      <Link to="/test">Test</Link>
-    </>
-  );
-}
-
-function Test() {
-  return (
-    <>
-      <h1>TEST</h1>
-      <Link to="/">Home</Link>
+      <h1>{name}</h1>
     </>
   );
 }
