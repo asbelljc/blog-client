@@ -4,6 +4,7 @@ const Theme = {
     white: 'rgb(255, 255, 255)',
     primary: 'rgb(30, 130, 255)',
     primaryGlow: 'rgb(50, 150, 255)',
+    inactive: 'rgb(150, 150, 150)',
     error: 'rgb(255, 60, 70)',
   },
   timeouts: {

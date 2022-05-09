@@ -5,18 +5,25 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: ${({ screen }) =>
+    screen === 'wide' ? 'flex-end' : 'space-around'};
 
   & > a {
+    color: ${({ theme }) => theme.colors.inactive};
     text-decoration: none;
+    text-align: ${({ screen }) => (screen === 'wide' ? 'right' : 'left')};
+    margin-left: ${({ screen }) => (screen === 'wide' ? '64px' : 0)};
 
     &.active {
-      font-weight: bold;
       color: ${({ theme }) => theme.colors.primary};
+
+      &:hover {
+        color: ${({ theme }) => theme.colors.primaryGlow};
+      }
     }
 
-    &:hover {
-      text-decoration: underline ${({ theme }) => theme.colors.primary};
+    &:not(.active):hover {
+      color: ${({ theme }) => theme.colors.black};
     }
   }
 `;

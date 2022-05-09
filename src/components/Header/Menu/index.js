@@ -9,7 +9,6 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  /* helps keep error messages centered under controls */
   align-items: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'stretch')};
   gap: min(5vw, 28px);
   padding: min(5vw, 28px) 0;
