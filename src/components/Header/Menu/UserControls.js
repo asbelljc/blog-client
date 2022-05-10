@@ -20,22 +20,20 @@ const ControlsContainer = styled.div`
 const UserButton = styled.button`
   min-width: 9.3rem;
   border: 1px solid ${({ theme }) => theme.colors.primary};
-  background: ${(props) =>
-    (props.solid && props.theme.colors.primary) || 'none'};
+  background: ${({ theme, solid }) =>
+    (solid && theme.colors.primary) || 'none'};
   border-radius: 0.5rem;
   padding: 1rem 2rem;
-  color: ${(props) =>
-    (props.solid && props.theme.colors.white) || props.theme.colors.primary};
+  color: ${({ theme, solid }) => (solid && '#FFF') || theme.colors.primary};
   font-weight: bold;
   transition: background 150ms;
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.primaryGlow};
-    background: ${(props) =>
-      (props.solid && props.theme.colors.primaryGlow) || 'none'};
-    color: ${(props) =>
-      (props.solid && props.theme.colors.white) ||
-      props.theme.colors.primaryGlow};
+    background: ${({ theme, solid }) =>
+      (solid && theme.colors.primaryGlow) || theme.colors.primaryTint};
+    color: ${({ theme, solid }) =>
+      (solid && '#FFF') || theme.colors.primaryGlow};
   }
 `;
 
@@ -49,8 +47,8 @@ const LoginField = styled.input`
   border-radius: 0.5rem;
   background: rgba(0, 0, 0, 0.08);
 
-  ${(props) =>
-    props.error &&
+  ${({ error }) =>
+    error &&
     css`
       border: 1px solid ${({ theme }) => theme.colors.error};
     `};

@@ -14,6 +14,7 @@ const Wrapper = styled.div`
     text-decoration: none;
     text-align: ${({ screen }) => (screen === 'wide' ? 'right' : 'left')};
     margin-left: ${({ screen }) => (screen === 'wide' ? '6.4rem' : 0)};
+    transition: none;
 
     &.active {
       color: ${({ theme }) => theme.colors.primary};
@@ -24,7 +25,7 @@ const Wrapper = styled.div`
     }
 
     &:not(.active):hover {
-      color: ${({ theme }) => theme.colors.black};
+      color: ${({ theme }) => theme.colors.text};
     }
   }
 `;

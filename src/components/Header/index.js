@@ -4,22 +4,24 @@ import { SessionContext, ScreenContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { CSSTransition } from 'react-transition-group';
-import styled, { useTheme } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import Menu from './Menu';
 
 const DynamicWrapper = styled.header`
   position: fixed;
   width: 100%;
-  background: ${({ theme }) => theme.colors.white};
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: ${({ theme }) => theme.colors.body};
+  box-shadow: ${({ theme }) => theme.headerShadow};
 
   /* critical bits for dynamic resizing */
   height: ${(props) => props.height}px;
-  transition: height 300ms;
+  transition: ${({ theme }) => theme.themeTransition}, height 300ms;
 `;
 
 const DynamicInner = styled.div`
+  /* background must be this for box-shadow to slide with dynamic wrapper */
+  background: rgba(0, 0, 0, 0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,6 +45,7 @@ const Bar = styled.div`
 `;
 
 const Brand = styled(Link)`
+  color: ${({ theme }) => theme.colors.text};
   font-size: ${({ screen }) => (screen === 'narrow' ? 2 : 3.2)}rem;
   font-weight: bold;
   text-decoration: none;
@@ -58,6 +61,7 @@ const UserLabel = styled.span`
   text-align: center;
   margin-left: auto;
   margin-right: 0.8rem;
+  user-select: none;
 
   /* critical bits for react-transition-group */
   &.user-label-enter {
@@ -111,12 +115,26 @@ const MenuButton = styled.button`
   transition: background 150ms;
 
   :hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.06);
   }
 
   :active {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.12);
   }
+
+  ${({ theme }) =>
+    theme.dark &&
+    css`
+      :hover {
+        background: rgba(255, 255, 255, 0.06);
+        /* background: rgba(0, 0, 0, 0.15); */
+      }
+
+      :active {
+        background: rgba(255, 255, 255, 0.12);
+        /* background: rgba(0, 0, 0, 0.25); */
+      }
+    `}
 `;
 
 function Header() {

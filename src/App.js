@@ -51,7 +51,7 @@ function App() {
     syncSession();
   }, []);
 
-  // this lets header display a welcome message briefly for new users
+  // this lets header briefly display a welcome message for new users
   useEffect(() => {
     if (justSignedUp) {
       setTimeout(() => {

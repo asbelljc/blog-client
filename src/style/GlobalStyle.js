@@ -8,11 +8,12 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     word-wrap: break-word;
-    color: ${({ theme }) => theme.colors.black};
+    color: ${({ theme }) => theme.colors.text};
+    transition: ${({ theme }) => theme.themeTransition};
   }
 
   html {
-    /* position: relative; */
+    background: ${({ theme }) => theme.colors.body};
     font-size: 62.5%;
   }
 
