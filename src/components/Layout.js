@@ -9,8 +9,8 @@ const HeaderSpacer = styled.div`
   width: 100%;
   height: ${({ screen, theme }) =>
     screen === 'narrow'
-      ? theme.barHeight.small
-      : theme.barHeight.large}; /* height of closed header */
+      ? theme.headerHeight.small
+      : theme.headerHeight.large}; /* height of closed header */
 `;
 
 export default function Layout() {

@@ -3,12 +3,11 @@ const timeouts = {
   showWelcome: 6000,
 };
 
-const barHeight = {
+const headerHeight = {
   small: '6rem',
   large: '8rem',
 };
 
-// const themeTransition = 'background 300ms linear, color 300ms linear';
 const themeTransition = 'all 300ms linear';
 
 export const lightTheme = {
@@ -23,7 +22,7 @@ export const lightTheme = {
     error: 'rgb(255, 60, 70)',
   },
   headerShadow: '0 0.4rem 0.8rem rgba(0, 0, 0, 0.2)',
-  barHeight,
+  headerHeight,
   timeouts,
   themeTransition,
 };
@@ -40,7 +39,7 @@ export const darkTheme = {
     error: 'rgb(255, 60, 70)',
   },
   headerShadow: '0 0.4rem 0.8rem rgba(0, 0, 0, 0.3)',
-  barHeight,
+  headerHeight,
   timeouts,
   themeTransition,
 };
