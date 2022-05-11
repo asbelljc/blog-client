@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useEffect } from 'react';
+import { useState, useRef, useContext, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SessionContext, ScreenContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,12 +12,16 @@ const DynamicWrapper = styled.header`
   position: fixed;
   width: 100%;
   background: ${({ theme }) => theme.colors.body};
-  box-shadow: ${({ theme }) => theme.headerShadow};
+  box-shadow: ${({ theme, isHidden, scrollY, isMenuOpen }) =>
+    isHidden || (!scrollY && !isMenuOpen) ? 'none' : theme.headerShadow};
+  transform: ${({ isHidden, isMenuOpen }) =>
+    isHidden ? 'translateY(-100%)' : 'translateY(0)'};
 
   /* critical bits for dynamic resizing */
   height: ${(props) => props.height}px;
   transition: ${({ theme }) => theme.themeTransition},
-    height ${({ theme }) => theme.timeouts.toggleMenu}ms;
+    height ${({ theme }) => theme.timeouts.toggleMenu}ms,
+    transform ${({ theme }) => theme.timeouts.toggleMenu}ms;
 `;
 
 const DynamicInner = styled.div`
@@ -138,15 +142,43 @@ const MenuButton = styled.button`
 `;
 
 function Header() {
+  const [isHidden, setIsHidden] = useState(false);
+  const [scrollY, setScrollY] = useState(window.scrollY);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [activeUser, setActiveUser] = useState('');
-
-  const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
   const { session, requestErrors, justSignedUp } = useContext(SessionContext);
   const { screen } = useContext(ScreenContext);
 
   const theme = useTheme();
+
+  const toggleMenu = () => setMenuOpen(!isMenuOpen);
+
+  const getScrollDirection = useCallback(() => {
+    if (scrollY > window.scrollY) {
+      return 'up';
+    } else {
+      return 'down';
+    }
+  }, [scrollY]);
+
+  // allows for hide/show and conditional render of box-shadow
+  useEffect(() => {
+    const handleScroll = () => {
+      if (getScrollDirection() === 'down' && !isMenuOpen) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [getScrollDirection, isMenuOpen]);
 
   // this ensures UserLabel text doesn't vanish before unmount animation
   useEffect(() => {
@@ -166,7 +198,12 @@ function Header() {
   const rect = useResizeObserver(content);
 
   return (
-    <DynamicWrapper height={rect.height}>
+    <DynamicWrapper
+      height={rect.height}
+      isHidden={isHidden}
+      scrollY={scrollY}
+      isMenuOpen={isMenuOpen}
+    >
       <DynamicInner ref={content}>
         <Container screen={screen}>
           <Bar screen={screen}>

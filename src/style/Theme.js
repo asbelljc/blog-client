@@ -1,5 +1,5 @@
 const timeouts = {
-  toggleMenu: 300,
+  toggleMenu: 250,
   showWelcome: 6000,
 };
 
@@ -12,7 +12,7 @@ const contentWidth = (screen) =>
   screen === 'wide' ? 'min(80%, 1000px)' : '90%';
 
 const themeTransition =
-  'color 300ms linear, background 300ms linear, box-shadow 300ms linear';
+  'color 250ms linear, background 250ms linear, box-shadow 250ms linear';
 
 export const lightTheme = {
   light: true,
