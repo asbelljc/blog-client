@@ -141,6 +141,15 @@ const MenuButton = styled.button`
     `}
 `;
 
+// ensures fixed header does not cover content when closed
+const Spacer = styled.div`
+  width: 100%;
+  height: ${({ screen, theme }) =>
+    screen === 'narrow'
+      ? theme.headerHeight.small
+      : theme.headerHeight.large}; /* height of closed header */
+`;
+
 function Header() {
   const [isHidden, setIsHidden] = useState(false);
   const [scrollY, setScrollY] = useState(window.scrollY);
@@ -198,47 +207,50 @@ function Header() {
   const rect = useResizeObserver(content);
 
   return (
-    <DynamicWrapper
-      height={rect.height}
-      isHidden={isHidden}
-      scrollY={scrollY}
-      isMenuOpen={isMenuOpen}
-    >
-      <DynamicInner ref={content}>
-        <Container screen={screen}>
-          <Bar screen={screen}>
-            <Brand screen={screen} to="/" onClick={() => setMenuOpen(false)}>
-              <span>{'<'}</span>jAsbell<span>{' />'}</span>
-            </Brand>
-            <CSSTransition
-              in={!!session}
-              timeout={theme.timeouts.toggleMenu}
-              classNames="user-label"
-              unmountOnExit
-            >
-              <UserLabel screen={screen}>
-                <CSSTransition
-                  in={justSignedUp}
-                  timeout={theme.timeouts.toggleMenu}
-                  classNames="welcome"
-                  unmountOnExit
-                >
-                  <Welcome>Welcome, </Welcome>
-                </CSSTransition>
-                {activeUser}
-              </UserLabel>
-            </CSSTransition>
-            <MenuButton onClick={toggleMenu}>
-              <FontAwesomeIcon
-                icon={faBars}
-                size={screen === 'narrow' ? 'xl' : '2x'}
-              />
-            </MenuButton>
-          </Bar>
-          <Menu isOpen={isMenuOpen} setOpen={setMenuOpen} />
-        </Container>
-      </DynamicInner>
-    </DynamicWrapper>
+    <>
+      <DynamicWrapper
+        height={rect.height}
+        isHidden={isHidden}
+        scrollY={scrollY}
+        isMenuOpen={isMenuOpen}
+      >
+        <DynamicInner ref={content}>
+          <Container screen={screen}>
+            <Bar screen={screen}>
+              <Brand screen={screen} to="/" onClick={() => setMenuOpen(false)}>
+                <span>{'<'}</span>jAsbell<span>{' />'}</span>
+              </Brand>
+              <CSSTransition
+                in={!!session}
+                timeout={theme.timeouts.toggleMenu}
+                classNames="user-label"
+                unmountOnExit
+              >
+                <UserLabel screen={screen}>
+                  <CSSTransition
+                    in={justSignedUp}
+                    timeout={theme.timeouts.toggleMenu}
+                    classNames="welcome"
+                    unmountOnExit
+                  >
+                    <Welcome>Welcome, </Welcome>
+                  </CSSTransition>
+                  {activeUser}
+                </UserLabel>
+              </CSSTransition>
+              <MenuButton onClick={toggleMenu}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  size={screen === 'narrow' ? 'xl' : '2x'}
+                />
+              </MenuButton>
+            </Bar>
+            <Menu isOpen={isMenuOpen} setOpen={setMenuOpen} />
+          </Container>
+        </DynamicInner>
+      </DynamicWrapper>
+      <Spacer screen={screen} />
+    </>
   );
 }
 

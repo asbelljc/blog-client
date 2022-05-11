@@ -3,10 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from 'styled-components';
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import Posts from './pages/Posts';
-import About from './pages/About';
-import Contact from './pages/Contact';
+import { Home, About, Blog, Portfolio, Contact } from './pages';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -168,9 +165,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="posts" element={<Posts />} />
+            <Route path="blog" element={<Blog />} />
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="portfolio" element={<Portfolio />} />
           </Route>
         </Routes>
       </SessionContext.Provider>

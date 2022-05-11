@@ -1,3 +1,5 @@
-import styled from 'styled-components';
+function About() {
+  return <div>About</div>;
+}
 
-export default function About() {}
+export default About;

@@ -1,3 +1,5 @@
-import styled from 'styled-components';
+function Contact() {
+  return <div>Contact</div>;
+}
 
-export default function Contact() {}
+export default Contact;
