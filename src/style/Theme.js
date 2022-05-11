@@ -8,7 +8,11 @@ const headerHeight = {
   large: '8rem',
 };
 
-const themeTransition = 'all 300ms linear';
+const contentWidth = (screen) =>
+  screen === 'wide' ? 'min(80%, 1000px)' : '90%';
+
+const themeTransition =
+  'color 300ms linear, background 300ms linear, box-shadow 300ms linear';
 
 export const lightTheme = {
   light: true,
@@ -23,6 +27,7 @@ export const lightTheme = {
   },
   headerShadow: '0 0.4rem 0.8rem rgba(0, 0, 0, 0.2)',
   headerHeight,
+  contentWidth,
   timeouts,
   themeTransition,
 };
@@ -40,6 +45,7 @@ export const darkTheme = {
   },
   headerShadow: '0 0.4rem 0.8rem rgba(0, 0, 0, 0.3)',
   headerHeight,
+  contentWidth,
   timeouts,
   themeTransition,
 };

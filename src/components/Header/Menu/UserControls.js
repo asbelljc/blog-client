@@ -25,7 +25,8 @@ const UserButton = styled.button`
   border-radius: 0.5rem;
   padding: 1rem 2rem;
   color: ${({ theme, solid }) => (solid && '#FFF') || theme.colors.primary};
-  font-weight: bold;
+  font-size: 1.3rem;
+  font-weight: 500;
   transition: background 150ms;
 
   &:hover {
@@ -46,6 +47,7 @@ const LoginField = styled.input`
   border: none;
   border-radius: 0.5rem;
   background: rgba(0, 0, 0, 0.08);
+  font-size: 1.4rem;
 
   ${({ error }) =>
     error &&

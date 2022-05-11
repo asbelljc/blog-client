@@ -16,7 +16,8 @@ const DynamicWrapper = styled.header`
 
   /* critical bits for dynamic resizing */
   height: ${(props) => props.height}px;
-  transition: ${({ theme }) => theme.themeTransition}, height 300ms;
+  transition: ${({ theme }) => theme.themeTransition},
+    height ${({ theme }) => theme.timeouts.toggleMenu}ms;
 `;
 
 const DynamicInner = styled.div`
@@ -33,7 +34,7 @@ const DynamicInner = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: ${({ screen }) => (screen === 'wide' ? 'min(80%, 1000px)' : '90%')};
+  width: ${({ screen, theme }) => theme.contentWidth(screen)};
 `;
 
 const Bar = styled.div`
@@ -46,9 +47,10 @@ const Bar = styled.div`
 
 const Brand = styled(Link)`
   color: ${({ theme }) => theme.colors.text};
-  font-size: ${({ screen }) => (screen === 'narrow' ? 2 : 3.2)}rem;
+  font-size: ${({ screen }) => (screen === 'narrow' ? 1.8 : 2.88)}rem;
   font-weight: bold;
   text-decoration: none;
+  white-space: nowrap;
   user-select: none;
 
   span {
@@ -56,7 +58,7 @@ const Brand = styled(Link)`
   }
 `;
 
-const UserLabel = styled.span`
+const UserLabel = styled.div`
   font-size: ${({ screen }) => (screen === 'narrow' ? 1.4 : 1.6)}rem;
   text-align: center;
   margin-left: auto;
@@ -169,7 +171,7 @@ function Header() {
         <Container screen={screen}>
           <Bar screen={screen}>
             <Brand screen={screen} to="/" onClick={() => setMenuOpen(false)}>
-              code<span>Blog</span>
+              <span>{'<'}</span>jAsbell<span>{' />'}</span>
             </Brand>
             <CSSTransition
               in={!!session}
@@ -190,7 +192,10 @@ function Header() {
               </UserLabel>
             </CSSTransition>
             <MenuButton onClick={toggleMenu}>
-              <FontAwesomeIcon icon={faBars} size="xl" />
+              <FontAwesomeIcon
+                icon={faBars}
+                size={screen === 'narrow' ? 'xl' : '2x'}
+              />
             </MenuButton>
           </Bar>
           <Menu isOpen={isMenuOpen} setOpen={setMenuOpen} />

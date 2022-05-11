@@ -4,6 +4,14 @@ import Header from './Header';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 
+const Main = styled.main`
+  width: 100%;
+  height: 200vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 // ensures fixed header does not cover content when closed
 const HeaderSpacer = styled.div`
   width: 100%;
@@ -14,13 +22,15 @@ const HeaderSpacer = styled.div`
 `;
 
 export default function Layout() {
-  const screen = useContext(ScreenContext);
+  const { screen } = useContext(ScreenContext);
 
   return (
     <>
       <Header />
       <HeaderSpacer screen={screen} />
-      <Outlet />
+      <Main>
+        <Outlet />
+      </Main>
     </>
   );
 }

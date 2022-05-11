@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { Routes, Route, Outlet, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from 'styled-components';
 import Layout from './components/Layout';
