@@ -11,7 +11,8 @@ import Menu from './Menu';
 const DynamicWrapper = styled.header`
   position: fixed;
   width: 100%;
-  background: ${({ theme }) => theme.colors.body};
+  background: ${({ theme, scrollY, isMenuOpen }) =>
+    !scrollY && !isMenuOpen ? 'transparent' : theme.colors.body};
   box-shadow: ${({ theme, isHidden, scrollY, isMenuOpen }) =>
     isHidden || (!scrollY && !isMenuOpen) ? 'none' : theme.headerShadow};
   transform: ${({ isHidden, isMenuOpen }) =>
@@ -64,6 +65,7 @@ const Brand = styled(Link)`
 
 const UserLabel = styled.div`
   font-size: ${({ screen }) => (screen === 'narrow' ? 1.4 : 1.6)}rem;
+  font-weight: ${({ theme }) => (theme.light ? 500 : 400)};
   text-align: center;
   margin-left: auto;
   margin-right: 0.8rem;
@@ -142,13 +144,14 @@ const MenuButton = styled.button`
 `;
 
 // ensures fixed header does not cover content when closed
-const Spacer = styled.div`
-  width: 100%;
-  height: ${({ screen, theme }) =>
-    screen === 'narrow'
-      ? theme.headerHeight.small
-      : theme.headerHeight.large}; /* height of closed header */
-`;
+// const Spacer = styled.div`
+//   z-index: -10;
+//   width: 100%;
+//   height: ${({ screen, theme }) =>
+//     screen === 'narrow'
+//       ? theme.headerHeight.small
+//       : theme.headerHeight.large}; /* height of closed header */
+// `;
 
 function Header() {
   const [isHidden, setIsHidden] = useState(false);
@@ -166,14 +169,14 @@ function Header() {
   const getScrollDirection = useCallback(() => {
     if (scrollY > window.scrollY) {
       return 'up';
-    } else {
+    } else if (scrollY < window.scrollY) {
       return 'down';
     }
   }, [scrollY]);
 
-  // allows for hide/show and conditional render of box-shadow
+  // allows for show/hide and box-shadow render based on scrollY
   useEffect(() => {
-    const handleScroll = () => {
+    const updateVisibility = () => {
       if (getScrollDirection() === 'down' && !isMenuOpen) {
         setIsHidden(true);
       } else {
@@ -183,9 +186,9 @@ function Header() {
       setScrollY(window.scrollY);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', updateVisibility);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', updateVisibility);
     };
   }, [getScrollDirection, isMenuOpen]);
 
@@ -249,7 +252,7 @@ function Header() {
           </Container>
         </DynamicInner>
       </DynamicWrapper>
-      <Spacer screen={screen} />
+      {/* <Spacer screen={screen} /> */}
     </>
   );
 }

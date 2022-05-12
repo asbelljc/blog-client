@@ -3,10 +3,12 @@ import { ScreenContext } from '../App';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 100%;
+  position: relative;
+  z-index: -1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 const Component = styled.main`

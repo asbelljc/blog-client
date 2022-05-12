@@ -11,14 +11,14 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 export const ThemeControl = createContext(null);
 
 function Index() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
     try {
       localStorage.setItem('theme', theme);
     } catch {
       console.error(
-        'Local storage either full or deactivated. Using default light mode.'
+        'Local storage either full or deactivated. Using default dark mode.'
       );
     }
   }, [theme]);

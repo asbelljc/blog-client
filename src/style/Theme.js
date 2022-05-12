@@ -11,6 +11,9 @@ const headerHeight = {
 const contentWidth = (screen) =>
   screen === 'wide' ? 'min(80%, 1000px)' : '90%';
 
+const greetingFontSize = (screen) =>
+  screen === 'narrow' ? '2.8rem' : screen === 'medium' ? '3.6rem' : '4.8rem';
+
 const themeTransition =
   'color 250ms linear, background 250ms linear, box-shadow 250ms linear';
 
@@ -19,8 +22,8 @@ export const lightTheme = {
   colors: {
     text: 'rgb(50, 50, 50)',
     body: 'rgb(255, 255, 255)',
-    primary: 'rgb(30, 130, 255)',
-    primaryGlow: 'rgb(50, 150, 255)',
+    primary: 'rgb(40, 140, 255)',
+    primaryGlow: 'rgb(60, 160, 255)',
     primaryTint: 'rgba(30, 130, 255, 0.06)',
     inactive: 'rgb(150, 150, 150)',
     error: 'rgb(255, 60, 70)',
@@ -28,6 +31,7 @@ export const lightTheme = {
   headerShadow: '0 0.4rem 0.8rem rgba(0, 0, 0, 0.2)',
   headerHeight,
   contentWidth,
+  greetingFontSize,
   timeouts,
   themeTransition,
 };
@@ -46,6 +50,7 @@ export const darkTheme = {
   headerShadow: '0 0.4rem 0.8rem rgba(0, 0, 0, 0.3)',
   headerHeight,
   contentWidth,
+  greetingFontSize,
   timeouts,
   themeTransition,
 };
