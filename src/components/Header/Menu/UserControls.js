@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { SessionContext, ScreenContext } from '../../../App';
 import styled, { css, useTheme } from 'styled-components';
 import ErrorMessages from './ErrorMessages';
+import Button from '../../Button';
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,25 +18,8 @@ const ControlsContainer = styled.div`
   gap: 0.8rem;
 `;
 
-const UserButton = styled.button`
+const UserButton = styled(Button)`
   min-width: 9.3rem;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  background: ${({ theme, solid }) =>
-    (solid && theme.colors.primary) || 'none'};
-  border-radius: 0.5rem;
-  padding: 1rem 2rem;
-  color: ${({ theme, solid }) => (solid && '#FFF') || theme.colors.primary};
-  font-size: 1.3rem;
-  font-weight: 500;
-  transition: background 150ms;
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.primaryGlow};
-    background: ${({ theme, solid }) =>
-      (solid && theme.colors.primaryGlow) || theme.colors.primaryTint};
-    color: ${({ theme, solid }) =>
-      (solid && '#FFF') || theme.colors.primaryGlow};
-  }
 `;
 
 const LoginField = styled.input`

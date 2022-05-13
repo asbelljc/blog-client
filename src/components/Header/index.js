@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useCallback, useEffect } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SessionContext, ScreenContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,12 +10,13 @@ import Menu from './Menu';
 
 const DynamicWrapper = styled.header`
   position: fixed;
+  z-index: 100;
   width: 100%;
   background: ${({ theme, scrollY, isMenuOpen }) =>
     !scrollY && !isMenuOpen ? 'transparent' : theme.colors.body};
   box-shadow: ${({ theme, isHidden, scrollY, isMenuOpen }) =>
     isHidden || (!scrollY && !isMenuOpen) ? 'none' : theme.headerShadow};
-  transform: ${({ isHidden, isMenuOpen }) =>
+  transform: ${({ isHidden }) =>
     isHidden ? 'translateY(-100%)' : 'translateY(0)'};
 
   /* critical bits for dynamic resizing */
@@ -122,8 +123,10 @@ const MenuButton = styled.button`
   height: 3.8rem;
   transition: background 150ms;
 
-  :hover {
-    background: rgba(0, 0, 0, 0.06);
+  @media (hover: hover) {
+    :hover {
+      background: rgba(0, 0, 0, 0.06);
+    }
   }
 
   :active {
@@ -133,8 +136,10 @@ const MenuButton = styled.button`
   ${({ theme }) =>
     theme.dark &&
     css`
-      :hover {
-        background: rgba(255, 255, 255, 0.06);
+      @media (hover: hover) {
+        :hover {
+          background: rgba(255, 255, 255, 0.06);
+        }
       }
 
       :active {
@@ -142,16 +147,6 @@ const MenuButton = styled.button`
       }
     `}
 `;
-
-// ensures fixed header does not cover content when closed
-// const Spacer = styled.div`
-//   z-index: -10;
-//   width: 100%;
-//   height: ${({ screen, theme }) =>
-//     screen === 'narrow'
-//       ? theme.headerHeight.small
-//       : theme.headerHeight.large}; /* height of closed header */
-// `;
 
 function Header() {
   const [isHidden, setIsHidden] = useState(false);
@@ -166,16 +161,16 @@ function Header() {
 
   const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
-  const getScrollDirection = useCallback(() => {
-    if (scrollY > window.scrollY) {
-      return 'up';
-    } else if (scrollY < window.scrollY) {
-      return 'down';
-    }
-  }, [scrollY]);
-
-  // allows for show/hide and box-shadow render based on scrollY
+  // allows for show/hide and box-shadow render based on scrollY and isMenuOpen
   useEffect(() => {
+    const getScrollDirection = () => {
+      if (scrollY > window.scrollY) {
+        return 'up';
+      } else if (scrollY < window.scrollY) {
+        return 'down';
+      }
+    };
+
     const updateVisibility = () => {
       if (getScrollDirection() === 'down' && !isMenuOpen) {
         setIsHidden(true);
@@ -190,7 +185,7 @@ function Header() {
     return () => {
       window.removeEventListener('scroll', updateVisibility);
     };
-  }, [getScrollDirection, isMenuOpen]);
+  }, [scrollY, isMenuOpen]);
 
   // this ensures UserLabel text doesn't vanish before unmount animation
   useEffect(() => {
@@ -220,7 +215,11 @@ function Header() {
         <DynamicInner ref={content}>
           <Container screen={screen}>
             <Bar screen={screen}>
-              <Brand screen={screen} to="/" onClick={() => setMenuOpen(false)}>
+              <Brand
+                screen={screen}
+                to={'/'}
+                onClick={() => setMenuOpen(false)}
+              >
                 <span>{'<'}</span>jAsbell<span>{' />'}</span>
               </Brand>
               <CSSTransition
@@ -252,7 +251,6 @@ function Header() {
           </Container>
         </DynamicInner>
       </DynamicWrapper>
-      {/* <Spacer screen={screen} /> */}
     </>
   );
 }

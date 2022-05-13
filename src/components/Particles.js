@@ -2,18 +2,23 @@ import TsParticles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import { useTheme } from 'styled-components';
 
-export default function Particles() {
+export default function Particles({ loaded }) {
   const theme = useTheme();
 
-  const particlesInit = (main) => {
-    loadFull(main);
+  const particlesInit = async (main) => {
+    await loadFull(main);
   };
 
   return (
     <TsParticles
       id="tsparticles"
       init={particlesInit}
+      loaded={loaded}
       options={{
+        fullScreen: {
+          enable: true,
+          zIndex: -1,
+        },
         background: {
           opacity: 0,
         },
@@ -32,10 +37,10 @@ export default function Particles() {
           },
           modes: {
             push: {
-              quantity: 1,
+              quantity: 2,
             },
             repulse: {
-              distance: 50,
+              distance: 75,
               duration: 0.4,
             },
           },
@@ -67,9 +72,9 @@ export default function Particles() {
           number: {
             density: {
               enable: true,
-              area: 800,
+              area: 10,
             },
-            value: 80,
+            value: 1,
           },
           opacity: {
             value: theme.light ? 0.2 : 0.3,

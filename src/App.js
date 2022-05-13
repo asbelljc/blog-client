@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from 'styled-components';
+import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
 import { Home, About, Blog, Portfolio, Contact } from './pages';
 
@@ -15,6 +16,8 @@ function App() {
   const [screen, setScreen] = useState(measureScreen());
 
   const theme = useTheme();
+
+  const location = useLocation();
 
   useEffect(() => {
     const updateMedia = () => {
@@ -162,15 +165,17 @@ function App() {
           justSignedUp,
         }}
       >
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="blog" element={<Blog />} />
-            <Route path="about" element={<About />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="portfolio" element={<Portfolio />} />
-          </Route>
-        </Routes>
+        <AnimatePresence>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="portfolio" element={<Portfolio />} />
+            </Route>
+          </Routes>
+        </AnimatePresence>
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );

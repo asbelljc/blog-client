@@ -22,8 +22,8 @@ export const lightTheme = {
   colors: {
     text: 'rgb(50, 50, 50)',
     body: 'rgb(255, 255, 255)',
-    primary: 'rgb(40, 140, 255)',
-    primaryGlow: 'rgb(60, 160, 255)',
+    primary: 'rgb(60, 135, 225)',
+    primaryGlow: 'rgb(80, 155, 245)',
     primaryTint: 'rgba(30, 130, 255, 0.06)',
     inactive: 'rgb(150, 150, 150)',
     error: 'rgb(255, 60, 70)',

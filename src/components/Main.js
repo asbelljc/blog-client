@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   position: relative;
-  z-index: -1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,8 +11,6 @@ const Wrapper = styled.div`
 `;
 
 const Component = styled.main`
-  display: flex;
-  flex-direction: column;
   width: ${({ screen, theme }) => theme.contentWidth(screen)};
 `;
 
