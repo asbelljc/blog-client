@@ -62,6 +62,7 @@ const ExploreButton = styled(Button)`
 
 function Home() {
   const [greetingShown, setGreetingShown] = useState(false);
+  // const [greetingShown, setGreetingShown] = useState(true);
 
   const { screen } = useContext(ScreenContext);
 
@@ -104,7 +105,9 @@ function Home() {
         timeout={4000}
         classNames={'explore'}
       >
-        <ExploreButton solid>Explore</ExploreButton>
+        <ExploreButton solid link to="about">
+          Explore
+        </ExploreButton>
       </CSSTransition>
     </Wrapper>
   );

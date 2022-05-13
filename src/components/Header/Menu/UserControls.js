@@ -20,6 +20,7 @@ const ControlsContainer = styled.div`
 
 const UserButton = styled(Button)`
   min-width: 9.3rem;
+  font-size: 1.3rem;
 `;
 
 const LoginField = styled.input`
@@ -40,6 +41,7 @@ const LoginField = styled.input`
     `};
 `;
 
+// TODO: add forgot password functionality! (with JWT / one-time reset link)
 export default function UserControls({ setMenuOpen }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
