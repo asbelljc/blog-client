@@ -2,17 +2,14 @@ import { useContext, useState } from 'react';
 import { ScreenContext } from '../App';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
-import { motion } from 'framer-motion';
+import PageWrapper from '../components/PageWrapper';
 import Button from '../components/Button';
 import Particles from '../components/Particles';
 
-const Wrapper = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+const Wrapper = styled(PageWrapper)`
   gap: ${({ screen }) => (screen === 'wide' ? '3.2rem' : '2.8rem')};
   height: 100vh;
+  padding-top: 0; /* override header-based padding because full-screen */
 `;
 
 const Greeting = styled.div`
@@ -62,7 +59,6 @@ const ExploreButton = styled(Button)`
 
 function Home() {
   const [greetingShown, setGreetingShown] = useState(false);
-  // const [greetingShown, setGreetingShown] = useState(true);
 
   const { screen } = useContext(ScreenContext);
 

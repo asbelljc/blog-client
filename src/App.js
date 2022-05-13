@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from 'styled-components';
 import { AnimatePresence } from 'framer-motion';
+import Header from './components/Header';
 import Layout from './components/Layout';
 import { Home, About, Blog, Portfolio, Contact } from './pages';
 
@@ -165,7 +166,8 @@ function App() {
           justSignedUp,
         }}
       >
-        <AnimatePresence>
+        <Header />
+        <AnimatePresence exitBeforeEnter>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />

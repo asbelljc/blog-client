@@ -3,10 +3,7 @@ const timeouts = {
   showWelcome: 6000,
 };
 
-const headerHeight = {
-  small: '6rem',
-  large: '8rem',
-};
+const headerHeight = (screen) => (screen === 'narrow' ? '6rem' : '8rem');
 
 const contentWidth = (screen) =>
   screen === 'wide' ? 'min(80%, 1000px)' : '90%';

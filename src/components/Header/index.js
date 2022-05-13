@@ -47,8 +47,7 @@ const Bar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: ${({ screen, theme }) =>
-    screen === 'narrow' ? theme.headerHeight.small : theme.headerHeight.large};
+  height: ${({ screen, theme }) => theme.headerHeight(screen)};
 `;
 
 const Brand = styled(Link)`
