@@ -7,13 +7,14 @@ import Button from '../components/Button';
 import Particles from '../components/Particles';
 
 const Wrapper = styled(PageWrapper)`
+  align-items: center;
+  justify-content: center;
   gap: ${({ screen }) => (screen === 'wide' ? '3.2rem' : '2.8rem')};
   height: 100vh;
   padding-top: 0; /* override header-based padding because full-screen */
 `;
 
 const Greeting = styled.div`
-  align-self: center;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,7 +59,7 @@ const ExploreButton = styled(Button)`
 `;
 
 function Home() {
-  const [greetingShown, setGreetingShown] = useState(false);
+  const [readyForContent, setReadyForContent] = useState(false);
 
   const { screen } = useContext(ScreenContext);
 
@@ -67,21 +68,17 @@ function Home() {
       screen={screen}
       className="home"
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1, transition: { opacity: { duration: 2 } } }}
+      animate={{ opacity: 1, transition: { opacity: { duration: 1 } } }}
       exit={{ opacity: 0 }}
+      onAnimationComplete={() => setReadyForContent(true)}
     >
-      <Particles
-        loaded={() => {
-          setGreetingShown(true);
-        }}
-      />
       <CSSTransition
         appear
-        in={greetingShown}
+        in={readyForContent}
         timeout={2000}
         classNames={'greeting'}
       >
-        {greetingShown ? ( // without this syntax, greeting jitters visibly before it should even be seen
+        {readyForContent ? ( // without this syntax, greeting jitters visibly before it should even be seen
           <Greeting screen={screen}>
             <div>
               <h1>
@@ -97,13 +94,17 @@ function Home() {
       </CSSTransition>
       <CSSTransition
         appear
-        in={greetingShown}
+        in={readyForContent}
         timeout={4000}
         classNames={'explore'}
       >
-        <ExploreButton solid link to="about">
-          Explore
-        </ExploreButton>
+        {readyForContent ? (
+          <ExploreButton solid link to="about">
+            Explore
+          </ExploreButton>
+        ) : (
+          <></>
+        )}
       </CSSTransition>
     </Wrapper>
   );

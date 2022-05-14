@@ -1,25 +1,38 @@
 import { createContext, useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from 'styled-components';
-import { AnimatePresence } from 'framer-motion';
 import Header from './components/Header';
 import Layout from './components/Layout';
 import { Home, About, Blog, Portfolio, Contact } from './pages';
+import AnimatedRoutes from './components/AnimatedRoutes';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
 
 function App() {
+  const location = useLocation();
+
   const [session, setSession] = useState(null);
   const [justSignedUp, setJustSignedUp] = useState(false);
   const [requestErrors, setRequestErrors] = useState([]);
   const [screen, setScreen] = useState(measureScreen());
+  const [usingParticles, setUsingParticles] = useState(
+    location.pathname === '/' || location.pathname === '/about'
+  );
 
   const theme = useTheme();
 
-  const location = useLocation();
+  // allows us to limit Particles use to Home and About, for aesthetics and performance
+  useEffect(() => {
+    if (location.pathname === '/' || location.pathname === '/about') {
+      setUsingParticles(true);
+    } else {
+      setUsingParticles(false);
+    }
+  }, [location]);
 
+  // allows for JS-based breakpoint styling instead of CSS media queries
   useEffect(() => {
     const updateMedia = () => {
       setScreen(measureScreen());
@@ -167,17 +180,16 @@ function App() {
         }}
       >
         <Header />
-        <AnimatePresence exitBeforeEnter>
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="blog" element={<Blog />} />
-              <Route path="about" element={<About />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="portfolio" element={<Portfolio />} />
-            </Route>
-          </Routes>
-        </AnimatePresence>
+        <AnimatedRoutes location={location} routesKey={location.pathname}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="blog" element={<Blog />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="portfolio" element={<Portfolio />} />
+          </Route>
+        </AnimatedRoutes>
+        {/* <Particles shown={usingParticles} /> */}
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );
