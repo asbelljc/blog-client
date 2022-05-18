@@ -5,6 +5,7 @@ import { useTheme } from 'styled-components';
 import Header from './components/Header';
 import Layout from './components/Layout';
 import { Home, About, Blog, Portfolio, Contact } from './pages';
+import Particles from './components/Particles';
 import AnimatedRoutes from './components/AnimatedRoutes';
 
 export const SessionContext = createContext(null);

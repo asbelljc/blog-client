@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 import PageWrapper from '../components/PageWrapper';
 import Button from '../components/Button';
-import Particles from '../components/Particles';
 
 const Wrapper = styled(PageWrapper)`
   align-items: center;
@@ -39,7 +38,7 @@ const Greeting = styled.div`
   &.greeting-enter-active {
     transform: translateY(0);
     opacity: 1;
-    transition: transform 1s 1s, opacity 1s 1s;
+    transition: transform 1s 0.5s, opacity 1s 0.5s;
   }
 `;
 
@@ -54,7 +53,7 @@ const ExploreButton = styled(Button)`
   }
   &.explore-enter-active {
     opacity: 1;
-    transition: opacity 1s 3s;
+    transition: opacity 1s 2.5s;
   }
 `;
 
@@ -75,7 +74,7 @@ function Home() {
       <CSSTransition
         appear
         in={readyForContent}
-        timeout={2000}
+        timeout={1500}
         classNames={'greeting'}
       >
         {readyForContent ? ( // without this syntax, greeting jitters visibly before it should even be seen
@@ -95,7 +94,7 @@ function Home() {
       <CSSTransition
         appear
         in={readyForContent}
-        timeout={4000}
+        timeout={3500}
         classNames={'explore'}
       >
         {readyForContent ? (
