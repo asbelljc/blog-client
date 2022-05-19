@@ -33,7 +33,7 @@ const Wrapper = styled.div`
 export default function Nav({ setMenuOpen }) {
   const { screen } = useContext(ScreenContext);
 
-  const linkNames = ['About', 'Blog', 'Portfolio', 'Contact'];
+  const linkNames = ['About', 'Portfolio', 'Blog', 'Contact'];
 
   return (
     <Wrapper screen={screen}>

@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import { Home, About, Blog, Portfolio, Contact } from './pages';
 import Particles from './components/Particles';
 import AnimatedRoutes from './components/AnimatedRoutes';
+import Footer from './components/Footer';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -184,13 +185,14 @@ function App() {
         <AnimatedRoutes location={location} routesKey={location.pathname}>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="blog" element={<Blog />} />
             <Route path="about" element={<About />} />
-            <Route path="contact" element={<Contact />} />
             <Route path="portfolio" element={<Portfolio />} />
+            <Route path="blog" element={<Blog />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
         </AnimatedRoutes>
-        {/* <Particles shown={usingParticles} /> */}
+        <Footer />
+        <Particles shown={usingParticles} />
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );
