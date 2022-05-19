@@ -20,7 +20,7 @@ const DynamicWrapper = styled.header`
     isHidden ? 'translateY(-100%)' : 'translateY(0)'};
 
   /* critical bits for dynamic resizing */
-  height: ${(props) => props.height}px;
+  height: ${({ height }) => height}px;
   transition: ${({ theme }) => theme.themeTransition},
     height ${({ theme }) => theme.timeouts.toggleMenu}ms,
     transform ${({ theme }) => theme.timeouts.toggleMenu}ms;

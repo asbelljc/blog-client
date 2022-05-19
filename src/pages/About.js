@@ -116,7 +116,7 @@ const Headshot = styled.div`
 function About() {
   const { screen } = useContext(ScreenContext);
 
-  const wrapper = {
+  const wrapperVariant = {
     hidden: { opacity: 0 },
     shown: {
       opacity: 1,
@@ -128,7 +128,12 @@ function About() {
   };
 
   return (
-    <Wrapper variants={wrapper} initial="hidden" animate="shown" exit="exit">
+    <Wrapper
+      variants={wrapperVariant}
+      initial="hidden"
+      animate="shown"
+      exit="exit"
+    >
       <Heading screen={screen}>
         <span>{'{ '}</span>
         About

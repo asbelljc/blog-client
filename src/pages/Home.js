@@ -14,6 +14,7 @@ const Wrapper = styled(PageWrapper)`
 `;
 
 const Greeting = styled.div`
+  user-select: none;
   display: flex;
   flex-direction: column;
   align-items: center;

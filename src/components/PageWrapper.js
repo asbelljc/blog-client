@@ -1,6 +1,6 @@
+import { useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext } from 'react';
 import { ScreenContext } from '../App';
 
 const Component = styled(motion.div)`
@@ -11,6 +11,11 @@ const Component = styled(motion.div)`
 
 export default function PageWrapper(props) {
   const { screen } = useContext(ScreenContext);
+
+  // ensures page change restores view to top of content
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return <Component screen={screen} {...props} />;
 }

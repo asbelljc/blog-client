@@ -192,7 +192,7 @@ function App() {
           </Route>
         </AnimatedRoutes>
         <Footer />
-        <Particles shown={usingParticles} />
+        {/* <Particles shown={usingParticles} /> */}
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );
