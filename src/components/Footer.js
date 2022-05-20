@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled.footer`
   display: flex;
@@ -33,7 +34,7 @@ const Social = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.6rem;
 
   path {
     transition: fill 0.15s;
@@ -59,6 +60,9 @@ export default function Footer() {
           rel="noreferrer"
         >
           <FontAwesomeIcon icon={faLinkedinIn} size="2x" />
+        </a>
+        <a href="mailto:asbelljc@gmail.com">
+          <FontAwesomeIcon icon={faEnvelope} size="2x" />
         </a>
       </Social>
       <Copyright>

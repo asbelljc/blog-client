@@ -150,6 +150,7 @@ export default function UserControls({ setMenuOpen }) {
             {session.status === 'admin' && (
               <UserButton solid>New Post</UserButton>
             )}
+            {/* TODO: Add logic to redirect to Home if on protected page when logging out */}
             <UserButton onClick={() => closeMenuThen(logout)}>
               Log Out
             </UserButton>
