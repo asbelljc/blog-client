@@ -64,24 +64,75 @@ const BlogList = styled.div`
 `;
 
 const BlogListItem = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
   padding: 1.6rem;
   border-top: 2px solid ${({ theme }) => theme.colors.primary};
-  transition: background 150ms;
+  will-change: background;
+  transition: background 200ms;
 
-  span {
-    font-size: 1.3rem;
-    color: ${({ theme }) => theme.colors.inactive};
+  &::before {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: ${({ theme }) => theme.colors.primary};
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 200ms;
+  }
+
+  &::after {
+    content: ' ';
+    right: 0;
+    top: 0;
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: ${({ theme }) => theme.colors.primary};
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 200ms;
   }
 
   &:last-child {
     border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
   }
 
+  span {
+    font-size: 1.3rem;
+    color: ${({ theme }) => theme.colors.inactive};
+  }
+
   &:hover {
     background: ${({ theme }) => theme.colors.primaryTint};
+
+    &::before {
+      transform: scaleY(1);
+    }
+
+    &::after {
+      transform: scaleY(1);
+    }
+  }
+`;
+
+const Title = styled.a`
+  text-decoration: none;
+
+  h2 {
+    will-change: color;
+    transition: color 200ms;
+  }
+
+  &:hover {
+    h2 {
+      color: ${({ theme }) => theme.colors.primary};
+    }
   }
 `;
 
@@ -93,10 +144,16 @@ const Tags = styled.div`
 
   a {
     text-decoration: none;
-    border-radius: 0.5rem;
+    border-radius: 0.4rem;
     padding: 0.5rem;
     color: ${({ theme }) => theme.colors.body};
     background: ${({ theme }) => theme.colors.inactive};
+    will-change: background;
+    transition: background 200ms;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.primary};
+    }
   }
 `;
 
@@ -108,47 +165,47 @@ const dummyBlogListData = [
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to fix an issue installing Node `canvas` on macOS',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to fix the objectID required error on Algolia',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to define an auto increment primary key in PostgreSQL',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to fix PostgreSQL saying "relation does not exist"',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to dynamically import JavaScript modules',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to remove the shadow from window screenshots in macOS',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to quickly create a Windows 10 computer on AWS',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'Why does useEffect run two times?',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
   {
     date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
+    title: 'How to fix the "Parse failure: Unterminated string constant" error',
     tags: ['Node.js', 'Python', 'JavaScript'],
   },
 ];
@@ -218,7 +275,9 @@ function Blog() {
             return (
               <BlogListItem key={index}>
                 <span>{date}</span>
-                <h2>{item.title}</h2>
+                <Title href="#">
+                  <h2>{item.title}</h2>
+                </Title>
                 <Tags>
                   {item.tags.map((tag) => (
                     <a href="#" key={tag}>
