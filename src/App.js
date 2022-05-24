@@ -9,6 +9,8 @@ import Particles from './components/Particles';
 import AnimatedRoutes from './components/AnimatedRoutes';
 import Footer from './components/Footer';
 import Post from './pages/Blog/Post';
+import Error from './pages/Error';
+import NotFound from './pages/404';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -191,6 +193,8 @@ function App() {
             <Route path="blog" element={<Blog />} />
             <Route path="blog/:post" element={<Post />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="error" element={<Error />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </AnimatedRoutes>
         <Footer />

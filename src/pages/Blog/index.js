@@ -161,59 +161,6 @@ const Tags = styled.div`
   }
 `;
 
-const dummyBlogListData = [
-  {
-    date: new Date(),
-    title: 'How to use the Node.js fs module with async/await',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to fix an issue installing Node `canvas` on macOS',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to fix the objectID required error on Algolia',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to define an auto increment primary key in PostgreSQL',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to fix PostgreSQL saying "relation does not exist"',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to dynamically import JavaScript modules',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to remove the shadow from window screenshots in macOS',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to quickly create a Windows 10 computer on AWS',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'Why does useEffect run two times?',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-  {
-    date: new Date(),
-    title: 'How to fix the "Parse failure: Unterminated string constant" error',
-    tags: ['Node.js', 'Python', 'JavaScript'],
-  },
-];
-
 function Blog() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
@@ -221,13 +168,7 @@ function Blog() {
   useEffect(() => {
     async function getPosts() {
       try {
-        const { data } = await axios.get('/posts', {
-          withCredentials: true,
-          headers: {
-            Accept: 'application/json',
-          },
-          timeout: 10000,
-        });
+        const { data } = await axios.get('/posts', { timeout: 10000 });
 
         const postList = await data.posts.map((post) => ({
           ...post,
@@ -241,7 +182,7 @@ function Blog() {
         if (404 !== error.response.status) {
           setError(true); // something went wrong fetching data
         } else {
-          return; // no need to do anything for 404; just means there are no posts.
+          return; // no posts to show; this is taken care of in rendering rather than state
         }
       }
     }
