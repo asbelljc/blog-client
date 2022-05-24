@@ -198,24 +198,8 @@ function Blog() {
   const containerRef = useRef(null);
   const { width: containerWidth } = useResizeObserver(containerRef);
 
-  const wrapperVariant = {
-    hidden: { opacity: 0 },
-    shown: {
-      opacity: 1,
-      transition: {
-        opacity: { delay: 0.5 },
-      },
-    },
-    exit: { opacity: 0 },
-  };
-
   return (
-    <Wrapper
-      variants={wrapperVariant}
-      initial="hidden"
-      animate="shown"
-      exit="exit"
-    >
+    <Wrapper>
       <Container screen={screen} ref={containerRef}>
         <Description screen={screen} maxWidth={containerWidth * 0.5}>
           <Heading screen={screen} ref={headingRef}>

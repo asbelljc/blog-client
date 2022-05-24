@@ -116,24 +116,8 @@ const Headshot = styled.div`
 function About() {
   const { screen } = useContext(ScreenContext);
 
-  const wrapperVariant = {
-    hidden: { opacity: 0 },
-    shown: {
-      opacity: 1,
-      transition: {
-        opacity: { delay: 0.5 },
-      },
-    },
-    exit: { opacity: 0 },
-  };
-
   return (
-    <Wrapper
-      variants={wrapperVariant}
-      initial="hidden"
-      animate="shown"
-      exit="exit"
-    >
+    <Wrapper>
       <Heading screen={screen}>
         <span>{'{ '}</span>
         About

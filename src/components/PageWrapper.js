@@ -9,7 +9,24 @@ const Component = styled(motion.div)`
   padding-top: ${({ theme, screen }) => theme.headerHeight(screen)};
 `;
 
-export default function PageWrapper(props) {
+const defaultVariant = {
+  hidden: { opacity: 0 },
+  shown: {
+    opacity: 1,
+    transition: {
+      opacity: { delay: 0.5 },
+    },
+  },
+  exit: { opacity: 0 },
+};
+
+export default function PageWrapper({
+  variants = defaultVariant,
+  initial = 'hidden',
+  animate = 'shown',
+  exit = 'exit',
+  ...props
+}) {
   const { screen } = useContext(ScreenContext);
 
   // ensures page change restores view to top of content
@@ -17,5 +34,14 @@ export default function PageWrapper(props) {
     window.scrollTo(0, 0);
   }, []);
 
-  return <Component screen={screen} {...props} />;
+  return (
+    <Component
+      screen={screen}
+      variants={variants}
+      initial={initial}
+      animate={animate}
+      exit={exit}
+      {...props}
+    />
+  );
 }
