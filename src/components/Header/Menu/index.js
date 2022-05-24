@@ -56,7 +56,8 @@ const Wrapper = styled.div`
   }
   &.menu-exit-active {
     opacity: 0;
-    transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
+    transition: opacity 150ms;
+    /* transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms; */
   }
 `;
 

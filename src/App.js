@@ -8,6 +8,7 @@ import { Home, About, Blog, Portfolio, Contact } from './pages';
 import Particles from './components/Particles';
 import AnimatedRoutes from './components/AnimatedRoutes';
 import Footer from './components/Footer';
+import Post from './pages/Blog/Post';
 
 export const SessionContext = createContext(null);
 export const ScreenContext = createContext(null);
@@ -188,6 +189,7 @@ function App() {
             <Route path="about" element={<About />} />
             <Route path="portfolio" element={<Portfolio />} />
             <Route path="blog" element={<Blog />} />
+            <Route path="blog/:post" element={<Post />} />
             <Route path="contact" element={<Contact />} />
           </Route>
         </AnimatedRoutes>

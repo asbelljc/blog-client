@@ -1,8 +1,11 @@
-import { useContext, useRef } from 'react';
-import { ScreenContext } from '../App';
+import { useContext, useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { DateTime } from 'luxon';
+import { Link } from 'react-router-dom';
+import { ScreenContext } from '../../App';
 import styled from 'styled-components';
-import PageWrapper from '../components/PageWrapper';
-import useResizeObserver from '../hooks/useResizeObserver';
+import PageWrapper from '../../components/PageWrapper';
+import useResizeObserver from '../../hooks/useResizeObserver';
 
 const Wrapper = styled(PageWrapper)`
   min-height: 100vh;
@@ -55,7 +58,8 @@ const Text = styled.div`
 const BlogList = styled.div`
   margin-left: ${({ screen }) => (screen === 'wide' ? 'auto' : 'none')};
   align-self: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'auto')};
-  max-width: ${({ screen }) => (screen === 'wide' ? '50%' : 'none')};
+  width: ${({ screen }) => (screen === 'wide' ? '50%' : 'auto')};
+  /* min-width: ${({ screen }) => (screen === 'wide' ? '50%' : 'none')}; */
   display: flex;
   flex-direction: column;
   padding-top: ${({ screen, paddingTop }) =>
@@ -121,7 +125,7 @@ const BlogListItem = styled.div`
   }
 `;
 
-const Title = styled.a`
+const Title = styled(Link)`
   text-decoration: none;
 
   h2 {
@@ -211,6 +215,40 @@ const dummyBlogListData = [
 ];
 
 function Blog() {
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    async function getPosts() {
+      try {
+        const { data } = await axios.get('/posts', {
+          withCredentials: true,
+          headers: {
+            Accept: 'application/json',
+          },
+          timeout: 10000,
+        });
+
+        const postList = await data.posts.map((post) => ({
+          ...post,
+          date: DateTime.fromISO(post.date_time).toLocaleString(
+            DateTime.DATE_MED
+          ),
+        }));
+
+        setPosts(postList);
+      } catch (error) {
+        if (404 !== error.response.status) {
+          setError(true); // something went wrong fetching data
+        } else {
+          return; // no need to do anything for 404; just means there are no posts.
+        }
+      }
+    }
+
+    getPosts();
+  }, []);
+
   const { screen } = useContext(ScreenContext);
 
   const headingRef = useRef(null);
@@ -254,7 +292,24 @@ function Blog() {
           </Text>
         </Description>
         <BlogList screen={screen} paddingTop={headingHeight}>
-          {dummyBlogListData.map((item, index) => {
+          {posts
+            ? posts.map((post, index) => (
+                <BlogListItem key={index}>
+                  <span>{post.date}</span>
+                  <Title to={post.slug}>
+                    <h2>{post.title}</h2>
+                  </Title>
+                  <Tags>
+                    {post.tags.map((tag) => (
+                      <Link to="#" key={tag}>
+                        {tag}
+                      </Link>
+                    ))}
+                  </Tags>
+                </BlogListItem>
+              ))
+            : null}
+          {/* {dummyBlogListData.map((item, index) => {
             const date = `${
               [
                 'January',
@@ -287,8 +342,10 @@ function Blog() {
                 </Tags>
               </BlogListItem>
             );
-          })}
+          })} */}
         </BlogList>
+        {/* TODO: make list actually fetch data, probably with use of Suspense for loading; investigate paginated fetching too */}
+        {/* TODO: figure out how cms is going to work, prob based on that one tutorial, then MAKE IT! */}
       </Container>
     </Wrapper>
   );
