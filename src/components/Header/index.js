@@ -24,6 +24,10 @@ const DynamicWrapper = styled.header`
   transition: ${({ theme }) => theme.themeTransition},
     height ${({ theme }) => theme.timeouts.toggleMenu}ms,
     transform ${({ theme }) => theme.timeouts.toggleMenu}ms;
+
+  * {
+    font-family: 'Ubuntu', sans-serif;
+  }
 `;
 
 const DynamicInner = styled.div`

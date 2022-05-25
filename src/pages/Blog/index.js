@@ -7,9 +7,7 @@ import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import useResizeObserver from '../../hooks/useResizeObserver';
 
-const Wrapper = styled(PageWrapper)`
-  min-height: 100vh;
-`;
+const Wrapper = styled(PageWrapper)``;
 
 const Container = styled.div`
   display: flex;
@@ -108,7 +106,7 @@ const BlogListItem = styled.div`
   }
 
   span {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: ${({ theme }) => theme.colors.inactive};
   }
 

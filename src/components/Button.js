@@ -13,6 +13,7 @@ const styles = css`
   color: ${({ theme, solid }) => (solid && '#FFF') || theme.colors.primary};
   font-size: 1.6rem;
   font-weight: 500;
+  font-family: 'Ubuntu', sans-serif;
   text-decoration: none;
   transition: background 150ms;
 

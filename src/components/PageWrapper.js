@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ScreenContext } from '../App';
 
 const Component = styled(motion.div)`
+  min-height: 100vh; /* keep footer just off-screen at a minimum by default */
   display: flex;
   flex-direction: column;
   padding-top: ${({ theme, screen }) => theme.headerHeight(screen)};
