@@ -310,5 +310,4 @@ function Blog() {
 export default Blog;
 
 // TODO: figure out how cms is going to work, prob based on that one tutorial, then MAKE IT!
-// TODO: add filtering by tag
 // TODO (later, maybe...): add filtering by search (title/tag?)

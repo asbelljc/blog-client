@@ -5,11 +5,11 @@ import axios from 'axios';
 import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
+import Loader from '../../components/Loader';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
-// import '../../style/prismjs.css';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -35,6 +35,8 @@ const Tags = styled.div`
   font-family: 'Roboto Mono';
   font-size: 1.2rem;
   display: flex;
+  align-self: stretch;
+  align-items: center;
   gap: 0.3rem;
 
   a {
@@ -50,6 +52,14 @@ const Tags = styled.div`
       color: ${({ theme }) => theme.colors.body};
       background: ${({ theme }) => theme.colors.primary};
     }
+  }
+
+  &::after {
+    content: '';
+    flex-grow: 1;
+    height: 0.3rem;
+    margin-left: 0.6rem;
+    background: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -111,7 +121,7 @@ export default function Post() {
   useEffect(() => {
     async function getPost() {
       try {
-        const { data } = await axios.get(`/posts/${slug}`);
+        const { data } = await axios.get(`/posts/${slug}`, { timeout: 10000 });
 
         const post = {
           ...data.post,
@@ -139,7 +149,7 @@ export default function Post() {
 
   return (
     <Wrapper>
-      {post && (
+      {post ? (
         <>
           <Heading screen={screen}>
             <span>{post.date_time}</span>
@@ -154,6 +164,8 @@ export default function Post() {
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
         </>
+      ) : (
+        <Loader />
       )}
     </Wrapper>
   );
