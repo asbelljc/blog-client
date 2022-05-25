@@ -19,6 +19,7 @@ export const lightTheme = {
   colors: {
     text: 'rgb(50, 50, 50)',
     body: 'rgb(255, 255, 255)',
+    error: 'rgb(195, 0, 0)',
     preHeader: '#777',
     preHeaderBg: 'rgb(220, 220, 220)',
     prism: {
@@ -51,6 +52,7 @@ export const darkTheme = {
   colors: {
     text: 'rgb(255, 255, 255)',
     body: 'rgb(50, 50, 50)',
+    error: 'rgb(195, 0, 0)',
     preHeader: '#999',
     preHeaderBg: 'rgb(30, 30, 30)',
     prism: {

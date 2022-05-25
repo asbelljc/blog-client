@@ -163,7 +163,13 @@ const Tags = styled.div`
   }
 `;
 
-const ErrorMessage = styled.div``;
+const ListMessage = styled.div`
+  font-size: 1.6rem;
+  font-style: italic;
+  color: ${({ theme, error }) =>
+    error ? theme.colors.error : theme.colors.inactive};
+  text-align: center;
+`;
 
 const FilterBox = styled.div`
   display: flex;
@@ -271,7 +277,7 @@ function Blog() {
         </Description>
         <PostList screen={screen} paddingTop={headingHeight}>
           <FlipMove>
-            {posts && !error ? (
+            {posts.length && !error ? (
               posts
                 .filter((post) => {
                   const tagFilter = searchParams.get('tag');
@@ -296,9 +302,9 @@ function Blog() {
                   </BlogListItem>
                 ))
             ) : error ? (
-              <ErrorMessage>Something went wrong...</ErrorMessage>
+              <ListMessage error>Something went wrong...</ListMessage>
             ) : (
-              <ErrorMessage>No posts to show.</ErrorMessage>
+              <ListMessage>No posts to show.</ListMessage>
             )}
           </FlipMove>
         </PostList>
