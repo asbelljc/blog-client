@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 
@@ -11,6 +12,8 @@ const Heading = styled.div``;
 export default function Post() {
   const [post, setPost] = useState(null);
 
+  const navigate = useNavigate();
+
   const { post: slug } = useParams();
 
   useEffect(() => {
@@ -18,18 +21,25 @@ export default function Post() {
       try {
         const { data } = await axios.get(`/posts/${slug}`);
 
-        setPost(data.post);
+        const post = {
+          ...data.post,
+          date_time: DateTime.fromISO(data.post.date_time).toLocaleString(
+            DateTime.DATETIME_MED
+          ),
+        };
+
+        setPost(post);
       } catch (error) {
         if (404 !== error.response.status) {
-          // redirect to error page!
+          navigate('/error');
         } else {
-          return; // redirect to 404 page!
+          navigate('/404');
         }
       }
     }
 
     getPost();
-  }, [slug]);
+  }, [slug, navigate]);
 
   return (
     <>

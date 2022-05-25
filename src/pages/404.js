@@ -48,7 +48,7 @@ export default function NotFound() {
       </Heading>
       <Text>
         <span>We can't seem to find that page. Sorry...</span>
-        <Link to={-1}>Go back</Link>
+        <Link to="/">Back to home</Link>
       </Text>
     </Wrapper>
   );

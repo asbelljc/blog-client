@@ -48,7 +48,7 @@ export default function Error() {
       </Heading>
       <Text>
         <span>Something went wrong. Sorry...</span>
-        <Link to={-1}>Go back</Link>
+        <Link to="/">Back to home</Link>
       </Text>
     </Wrapper>
   );
