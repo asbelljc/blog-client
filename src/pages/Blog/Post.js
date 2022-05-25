@@ -138,23 +138,25 @@ export default function Post() {
   }, [post]);
 
   return (
-    <>
+    <Wrapper>
       {post && (
-        <Wrapper>
+        <>
           <Heading screen={screen}>
             <span>{post.date_time}</span>
             <h1>{post.title}</h1>
             <Tags>
               {post.tags.map((tag) => (
-                <Link to="#" key={tag}>
+                <Link to={`/blog?tag=${encodeURI(tag)}`} key={tag}>
                   {tag}
                 </Link>
               ))}
             </Tags>
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
-        </Wrapper>
+        </>
       )}
-    </>
+    </Wrapper>
   );
 }
+
+// TODO: figure out fetching and showing comments

@@ -1,11 +1,14 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ScreenContext } from '../../App';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
+import Button from '../../components/Button';
 import useResizeObserver from '../../hooks/useResizeObserver';
+import { motion, AnimatePresence } from 'framer-motion';
+import FlipMove from 'react-flip-move';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -53,7 +56,7 @@ const Text = styled.div`
   }
 `;
 
-const BlogList = styled.div`
+const PostList = styled.div`
   margin-left: ${({ screen }) => (screen === 'wide' ? 'auto' : 'none')};
   align-self: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'auto')};
   width: ${({ screen }) => (screen === 'wide' ? '50%' : 'auto')};
@@ -61,7 +64,7 @@ const BlogList = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: ${({ screen, paddingTop }) =>
-    screen === 'wide' ? paddingTop : 48}px;
+    screen === 'wide' ? paddingTop : 16}px;
   font-size: 1.6rem;
 `;
 
@@ -72,6 +75,8 @@ const BlogListItem = styled.div`
   gap: 1.2rem;
   padding: 1.6rem;
   border-top: 2px solid ${({ theme }) => theme.colors.primary};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
+  margin-bottom: -2px;
   will-change: background;
   transition: background 200ms;
 
@@ -99,10 +104,6 @@ const BlogListItem = styled.div`
     transform: scaleY(0);
     transform-origin: bottom;
     transition: transform 200ms;
-  }
-
-  &:last-child {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
   }
 
   span {
@@ -144,9 +145,10 @@ const Tags = styled.div`
   display: flex;
   gap: 0.3rem;
 
-  a {
+  button {
     text-decoration: none;
     border-radius: 0.4rem;
+    border: none;
     padding: 0.5rem;
     color: ${({ theme }) => theme.colors.body};
     background: ${({ theme }) => theme.colors.inactive};
@@ -163,8 +165,36 @@ const Tags = styled.div`
 
 const ErrorMessage = styled.div``;
 
+const FilterBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 3.8rem;
+
+  div {
+    display: flex;
+    flex-direction: ${({ screen }) => (screen === 'wide' ? 'column' : 'row')};
+    align-items: ${({ screen }) =>
+      screen === 'wide' ? 'flex-start' : 'center'};
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  span {
+    color: ${({ theme }) => theme.colors.inactive};
+    font-size: 1.4rem;
+    font-style: italic;
+  }
+
+  button {
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+  }
+`;
+
 function Blog() {
   const [posts, setPosts] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -217,69 +247,68 @@ function Blog() {
               soon!
             </p>
           </Text>
+          <FilterBox screen={screen}>
+            <AnimatePresence>
+              {(() => {
+                const tag = searchParams.get('tag');
+                return (
+                  tag && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <span>Filtering by tag '{tag}'</span>
+                      <Button onClick={() => setSearchParams({})}>
+                        {screen === 'medium' ? 'Clear Filter' : 'Clear'}
+                      </Button>
+                    </motion.div>
+                  )
+                );
+              })()}
+            </AnimatePresence>
+          </FilterBox>
         </Description>
-        <BlogList screen={screen} paddingTop={headingHeight}>
-          {posts && !error ? (
-            posts.map((post, index) => (
-              <BlogListItem key={index}>
-                <span>{post.date}</span>
-                <Title to={post.slug}>
-                  <h2>{post.title}</h2>
-                </Title>
-                <Tags>
-                  {post.tags.map((tag) => (
-                    <Link to="#" key={tag}>
-                      {tag}
-                    </Link>
-                  ))}
-                </Tags>
-              </BlogListItem>
-            ))
-          ) : error ? (
-            <ErrorMessage>Something went wrong...</ErrorMessage>
-          ) : (
-            <ErrorMessage>No posts to show.</ErrorMessage>
-          )}
-          {/* {dummyBlogListData.map((item, index) => {
-            const date = `${
-              [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'August',
-                'September',
-                'October',
-                'November',
-                'December',
-              ][item.date.getMonth()]
-            } ${item.date.getDate()} ${item.date.getFullYear()}`;
-
-            return (
-              <BlogListItem key={index}>
-                <span>{date}</span>
-                <Title href="#">
-                  <h2>{item.title}</h2>
-                </Title>
-                <Tags>
-                  {item.tags.map((tag) => (
-                    <a href="#" key={tag}>
-                      {tag}
-                    </a>
-                  ))}
-                </Tags>
-              </BlogListItem>
-            );
-          })} */}
-        </BlogList>
-        {/* TODO: make list actually fetch data, probably with use of Suspense for loading; investigate paginated fetching too */}
-        {/* TODO: figure out how cms is going to work, prob based on that one tutorial, then MAKE IT! */}
+        <PostList screen={screen} paddingTop={headingHeight}>
+          <FlipMove>
+            {posts && !error ? (
+              posts
+                .filter((post) => {
+                  const tagFilter = searchParams.get('tag');
+                  return tagFilter ? post.tags.includes(tagFilter) : true;
+                })
+                .map((post) => (
+                  <BlogListItem key={post.title}>
+                    <span>{post.date}</span>
+                    <Title to={post.slug}>
+                      <h2>{post.title}</h2>
+                    </Title>
+                    <Tags>
+                      {post.tags.map((tag) => (
+                        <button
+                          onClick={() => setSearchParams({ tag })}
+                          key={tag}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </Tags>
+                  </BlogListItem>
+                ))
+            ) : error ? (
+              <ErrorMessage>Something went wrong...</ErrorMessage>
+            ) : (
+              <ErrorMessage>No posts to show.</ErrorMessage>
+            )}
+          </FlipMove>
+        </PostList>
       </Container>
     </Wrapper>
   );
 }
 
 export default Blog;
+
+// TODO: figure out how cms is going to work, prob based on that one tutorial, then MAKE IT!
+// TODO: add filtering by tag
+// TODO (later, maybe...): add filtering by search (title/tag?)
