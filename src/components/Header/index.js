@@ -65,6 +65,10 @@ const Brand = styled(Link)`
   span {
     color: ${({ theme }) => theme.colors.primary};
   }
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.text};
+  }
 `;
 
 const UserLabel = styled.div`

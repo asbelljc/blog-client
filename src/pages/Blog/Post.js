@@ -5,6 +5,11 @@ import axios from 'axios';
 import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
+import Prism from 'prismjs';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
+import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
+import prism from './style/prism';
+// import '../../style/prismjs.css';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -42,12 +47,57 @@ const Tags = styled.div`
     transition: background 200ms;
 
     &:hover {
+      color: ${({ theme }) => theme.colors.body};
       background: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
 
-const Body = styled.div``;
+const Body = styled.div`
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    padding: 1.2em 0 0.6em 0;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  /* ...change this to .pre-header or similar for final product... */
+  .blog-post-body-code-snippet-header {
+    background-color: ${({ theme }) => theme.colors.preHeaderBg};
+    border-radius: 0.4rem 0.4rem 0 0;
+    font-size: 1.3rem;
+    padding: 1rem;
+    cursor: default;
+
+    * {
+      color: ${({ theme }) => theme.colors.preHeader};
+    }
+  }
+
+  blockquote {
+    padding: 32px;
+    margin-top: 0px;
+    color: rgba(0, 0, 0, 0.8);
+    border: none;
+    background: ${({ theme }) => theme.colors.primaryTintHeavy};
+    border-radius: 0.4rem;
+    line-height: 1;
+
+    * {
+      font-size: 2rem;
+      font-style: italic;
+      padding: 0;
+    }
+  }
+
+  ${prism}
+`;
 
 export default function Post() {
   const [post, setPost] = useState(null);
@@ -82,6 +132,10 @@ export default function Post() {
 
     getPost();
   }, [slug, navigate]);
+
+  useEffect(() => {
+    Prism.highlightAll();
+  }, [post]);
 
   return (
     <>

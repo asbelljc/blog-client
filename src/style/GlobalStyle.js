@@ -25,6 +25,13 @@ const GlobalStyle = createGlobalStyle`
 
   code {
     font-family: 'Roboto Mono', monospace;
+    font-size: 1.4rem;
+
+    :not(pre &) {
+      background: ${({ theme }) => theme.colors.prism.bg};
+      border-radius: 0.4rem;
+      padding: 0 0.4rem 0 0.2rem;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -50,6 +57,31 @@ const GlobalStyle = createGlobalStyle`
 
   h6 {
     font-size: 1.07rem;
+  }
+
+  p, ol, ul {
+    font-size: 1.6rem;
+    padding-bottom: 1rem;
+  }
+
+  ol, ul {
+    list-style-position: inside;
+    padding-left: 1rem;
+  }
+
+  ol li::before {
+    content: '';
+    padding-right: 0.5rem;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+    text-decoration: none;
+    transition: none;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.primaryGlow};
+    }
   }
 
   /**

@@ -154,10 +154,14 @@ const Tags = styled.div`
     transition: background 200ms;
 
     &:hover {
+      color: ${({ theme }) =>
+        theme.colors.body}; /* override default from GlobalStyle */
       background: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
+
+const ErrorMessage = styled.div``;
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -215,23 +219,27 @@ function Blog() {
           </Text>
         </Description>
         <BlogList screen={screen} paddingTop={headingHeight}>
-          {posts
-            ? posts.map((post, index) => (
-                <BlogListItem key={index}>
-                  <span>{post.date}</span>
-                  <Title to={post.slug}>
-                    <h2>{post.title}</h2>
-                  </Title>
-                  <Tags>
-                    {post.tags.map((tag) => (
-                      <Link to="#" key={tag}>
-                        {tag}
-                      </Link>
-                    ))}
-                  </Tags>
-                </BlogListItem>
-              ))
-            : null}
+          {posts && !error ? (
+            posts.map((post, index) => (
+              <BlogListItem key={index}>
+                <span>{post.date}</span>
+                <Title to={post.slug}>
+                  <h2>{post.title}</h2>
+                </Title>
+                <Tags>
+                  {post.tags.map((tag) => (
+                    <Link to="#" key={tag}>
+                      {tag}
+                    </Link>
+                  ))}
+                </Tags>
+              </BlogListItem>
+            ))
+          ) : error ? (
+            <ErrorMessage>Something went wrong...</ErrorMessage>
+          ) : (
+            <ErrorMessage>No posts to show.</ErrorMessage>
+          )}
           {/* {dummyBlogListData.map((item, index) => {
             const date = `${
               [
