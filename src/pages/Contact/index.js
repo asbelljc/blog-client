@@ -152,7 +152,7 @@ export default function Contact() {
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [messageError, setMessageError] = useState(false);
-  const [submissionError, setSubmissionError] = useState(true);
+  const [submissionError, setSubmissionError] = useState(false);
 
   const { screen } = useContext(ScreenContext);
 
@@ -170,7 +170,6 @@ export default function Contact() {
 
     if (!name.trim()) {
       setNameError(true);
-      // state doesn't update immediately and we need immediate results to prevent submission of invalid form - so use return values
       return false;
     } else {
       setNameError(false);
@@ -207,6 +206,7 @@ export default function Contact() {
 
     setSubmissionError(false);
 
+    // can't check [field]Error states here because they don't update immediately - use validator return values instead
     const isNameValid = validateName();
     const isEmailValid = validateEmail();
     const isMessageValid = validateMessage();
