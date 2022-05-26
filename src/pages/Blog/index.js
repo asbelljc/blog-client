@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlipMove from 'react-flip-move';
+import { useTheme } from 'styled-components';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -40,10 +41,8 @@ const Heading = styled.h1`
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
   font-family: 'Nunito Sans';
   font-size: 1.6rem;
-  /* font-weight: 600; */
 
   a {
     color: ${({ theme }) => theme.colors.primary};
@@ -60,7 +59,6 @@ const PostList = styled.div`
   margin-left: ${({ screen }) => (screen === 'wide' ? 'auto' : 'none')};
   align-self: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'auto')};
   width: ${({ screen }) => (screen === 'wide' ? '55%' : 'auto')};
-  /* min-width: ${({ screen }) => (screen === 'wide' ? '50%' : 'none')}; */
   display: flex;
   flex-direction: column;
   padding-top: ${({ screen, paddingTop }) =>
@@ -68,7 +66,7 @@ const PostList = styled.div`
   font-size: 1.6rem;
 `;
 
-const BlogListItem = styled.div`
+const PostListItem = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -230,6 +228,8 @@ function Blog() {
 
   const { screen } = useContext(ScreenContext);
 
+  const theme = useTheme();
+
   const headingRef = useRef(null);
   const { height: headingHeight } = useResizeObserver(headingRef);
 
@@ -248,9 +248,18 @@ function Blog() {
           <Text>
             <p>
               Welcome to my blog! I write here periodically on various topics
-              within software development, with an emphasis on tutorials. This
-              part of the site is currently under construction, so please check
-              back soon!
+              within software development, with an emphasis on tutorials.
+            </p>
+            <p
+              style={{
+                color: theme.colors.inactive,
+                fontSize: '1.4rem',
+                fontStyle: 'italic',
+              }}
+            >
+              This part of the site is currently under construction. Feel free
+              to play around with the UI in the meantime, and please check back
+              soon!
             </p>
           </Text>
           <FilterBox screen={screen}>
@@ -284,7 +293,7 @@ function Blog() {
                   return tagFilter ? post.tags.includes(tagFilter) : true;
                 })
                 .map((post) => (
-                  <BlogListItem key={post.title}>
+                  <PostListItem key={post.title}>
                     <span>{post.date}</span>
                     <Title to={post.slug}>
                       <h2>{post.title}</h2>
@@ -299,7 +308,7 @@ function Blog() {
                         </button>
                       ))}
                     </Tags>
-                  </BlogListItem>
+                  </PostListItem>
                 ))
             ) : error ? (
               <ListMessage error>Something went wrong...</ListMessage>

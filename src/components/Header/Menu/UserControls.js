@@ -26,7 +26,7 @@ const UserButton = styled(Button)`
 const LoginField = styled.input`
   height: 3.2rem;
   /* this keeps it from being too wide on desktops */
-  flex-grow: ${({ screen }) => (screen === 'medium' ? 1 : 0)};
+  flex-grow: ${({ screen }) => (screen !== 'wide' ? 1 : 0)};
   min-width: 0; /* this lets it flex-shrink properly */
   padding: 0 0.8rem;
   border: none;
