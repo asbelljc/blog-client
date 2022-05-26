@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ScreenContext } from '../../App';
 import styled, { css } from 'styled-components';
 import validator from 'validator';
@@ -126,6 +126,22 @@ const SuccessMessage = styled.div`
   color: ${({ theme }) => theme.colors.inactive};
 `;
 
+const SubmitButton = styled(Button)`
+  background-color: ${({ theme, error }) =>
+    error ? theme.colors.inactive : theme.colors.primary};
+  border: 1px solid
+    ${({ theme, error }) =>
+      error ? theme.colors.inactive : theme.colors.primary};
+
+  &:hover {
+    background-color: ${({ theme, error }) =>
+      error ? theme.colors.inactive : theme.colors.primaryGlow};
+    border: 1px solid
+      ${({ theme, error }) =>
+        error ? theme.colors.inactive : theme.colors.primaryGlow};
+  }
+`;
+
 export default function Contact() {
   const [success, setSuccess] = useState(false);
 
@@ -136,7 +152,7 @@ export default function Contact() {
   const [nameError, setNameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [messageError, setMessageError] = useState(false);
-  const [submissionError, setSubmissionError] = useState(false);
+  const [submissionError, setSubmissionError] = useState(true);
 
   const { screen } = useContext(ScreenContext);
 
@@ -148,68 +164,67 @@ export default function Contact() {
   const containerRef = useRef(null);
   const { width: containerWidth } = useResizeObserver(containerRef);
 
-  const validateName = async () => {
+  const validateName = () => {
     // if there was a request error before, user no longer needs to see it
     setSubmissionError(false);
 
     if (!name.trim()) {
-      console.log('nameError');
       setNameError(true);
+      // state doesn't update immediately and we need immediate results to prevent submission of invalid form - so use return values
+      return false;
     } else {
       setNameError(false);
+      return true;
     }
   };
 
-  const validateEmail = async () => {
+  const validateEmail = () => {
     setSubmissionError(false);
 
     if (!validator.isEmail(email)) {
-      console.log('emailError');
-
       setEmailError(true);
+      return false;
     } else {
       setEmailError(false);
+      return true;
     }
   };
 
-  const validateMessage = async () => {
+  const validateMessage = () => {
     setSubmissionError(false);
 
     if (!message.trim()) {
-      console.log('messageError');
-
       setMessageError(true);
+      return false;
     } else {
       setMessageError(false);
+      return true;
     }
   };
 
-  const validateThen = (e, callback) => {
+  const validateAndSubmit = (e) => {
     e.preventDefault();
 
     setSubmissionError(false);
 
-    validateName();
-    validateEmail();
-    validateMessage();
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    const isMessageValid = validateMessage();
 
-    if (!nameError && !emailError && !messageError) {
-      callback();
-    }
-  };
-
-  const submit = () => {
-    setSubmissionError(false);
-    try {
-      emailjs.sendForm(
-        process.env.REACT_APP_EMAIL_SVC_ID,
-        process.env.REACT_APP_EMAIL_TEMP_ID,
-        form.current,
-        process.env.REACT_APP_EMAIL_PUBLIC_KEY
-      );
-      setSuccess(true);
-    } catch (error) {
-      setSubmissionError(true);
+    if (!isNameValid || !isEmailValid || !isMessageValid) {
+      return;
+    } else {
+      try {
+        emailjs.sendForm(
+          process.env.REACT_APP_EMAIL_SVC_ID,
+          process.env.REACT_APP_EMAIL_TEMP_ID,
+          form.current,
+          process.env.REACT_APP_EMAIL_PUBLIC_KEY
+        );
+        setSuccess(true);
+      } catch (error) {
+        setSubmissionError(true);
+      }
     }
   };
 
@@ -230,7 +245,12 @@ export default function Contact() {
           </Text>
           {screen === 'wide' && <Social />}
         </Description>
-        <Form ref={form} screen={screen} paddingTop={headingHeight}>
+        <Form
+          ref={form}
+          screen={screen}
+          paddingTop={headingHeight}
+          onSubmit={validateAndSubmit}
+        >
           {success ? (
             <SuccessMessage>
               Thanks for reaching out - <br />I will message you back as soon as
@@ -265,13 +285,12 @@ export default function Contact() {
                 onChange={(e) => setMessage(e.target.value)}
                 onBlur={validateMessage}
               />
-              <Button
+              <SubmitButton
                 solid
-                type="button"
-                onClick={(e) => validateThen(e, submit)}
+                error={nameError || emailError || messageError}
               >
                 Submit
-              </Button>
+              </SubmitButton>
               <ErrorMessages
                 nameError={nameError}
                 emailError={emailError}
