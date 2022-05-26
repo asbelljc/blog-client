@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { ScreenContext } from '../../App';
 import styled, { css } from 'styled-components';
 import validator from 'validator';
@@ -8,6 +8,7 @@ import PageWrapper from '../../components/PageWrapper';
 import Social from './Social';
 import Button from '../../components/Button';
 import ErrorMessages from './ErrorMessages';
+import Loader from '../../components/Loader';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -143,6 +144,7 @@ const SubmitButton = styled(Button)`
 `;
 
 export default function Contact() {
+  const [submissionLoading, setSubmissionLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const [name, setName] = useState('');
@@ -201,7 +203,7 @@ export default function Contact() {
     }
   };
 
-  const validateAndSubmit = (e) => {
+  const validateAndSubmit = async (e) => {
     e.preventDefault();
 
     setSubmissionError(false);
@@ -214,15 +216,19 @@ export default function Contact() {
     if (!isNameValid || !isEmailValid || !isMessageValid) {
       return;
     } else {
+      setSubmissionLoading(true);
+
       try {
-        emailjs.sendForm(
+        await emailjs.sendForm(
           process.env.REACT_APP_EMAIL_SVC_ID,
           process.env.REACT_APP_EMAIL_TEMP_ID,
           form.current,
           process.env.REACT_APP_EMAIL_PUBLIC_KEY
         );
+        setSubmissionLoading(false);
         setSuccess(true);
       } catch (error) {
+        setSubmissionLoading(false);
         setSubmissionError(true);
       }
     }
@@ -256,6 +262,8 @@ export default function Contact() {
               Thanks for reaching out - <br />I will message you back as soon as
               I can!
             </SuccessMessage>
+          ) : submissionLoading ? (
+            <Loader />
           ) : (
             <>
               <NameInput
