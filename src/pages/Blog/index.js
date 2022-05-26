@@ -59,7 +59,7 @@ const Text = styled.div`
 const PostList = styled.div`
   margin-left: ${({ screen }) => (screen === 'wide' ? 'auto' : 'none')};
   align-self: ${({ screen }) => (screen === 'wide' ? 'flex-end' : 'auto')};
-  width: ${({ screen }) => (screen === 'wide' ? '50%' : 'auto')};
+  width: ${({ screen }) => (screen === 'wide' ? '55%' : 'auto')};
   /* min-width: ${({ screen }) => (screen === 'wide' ? '50%' : 'none')}; */
   display: flex;
   flex-direction: column;
@@ -239,7 +239,7 @@ function Blog() {
   return (
     <Wrapper>
       <Container screen={screen} ref={containerRef}>
-        <Description screen={screen} maxWidth={containerWidth * 0.5}>
+        <Description screen={screen} maxWidth={containerWidth * 0.45}>
           <Heading screen={screen} ref={headingRef}>
             <span>{'{ '}</span>
             Blog
@@ -249,8 +249,8 @@ function Blog() {
             <p>
               Welcome to my blog! I write here periodically on various topics
               within software development, with an emphasis on tutorials. This
-              part of the site is currently under construction, so check back
-              soon!
+              part of the site is currently under construction, so please check
+              back soon!
             </p>
           </Text>
           <FilterBox screen={screen}>
