@@ -31,13 +31,18 @@ const LoginField = styled.input`
   padding: 0 0.8rem;
   border: none;
   border-radius: 0.5rem;
-  background: rgba(0, 0, 0, 0.08);
+  background: ${({ theme }) =>
+    theme.dark ? 'rgba(0, 0, 0, 0.16)' : 'rgba(0, 0, 0, 0.08)'};
   font-size: 1.4rem;
+
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+  }
 
   ${({ error }) =>
     error &&
     css`
-      border: 1px solid ${({ theme }) => theme.colors.error};
+      outline: 1px solid ${({ theme }) => theme.colors.error};
     `};
 `;
 

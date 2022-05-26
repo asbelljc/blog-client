@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useLocation } from 'react-router-dom';
 
 const Wrapper = styled.footer`
   display: flex;
@@ -48,23 +49,27 @@ const Social = styled.div`
 `;
 
 export default function Footer() {
+  const location = useLocation();
+
   return (
     <Wrapper>
-      <Social>
-        <a href="http://github.com/asbelljc" target="_blank" rel="noreferrer">
-          <FontAwesomeIcon icon={faGithub} size="2x" />
-        </a>
-        <a
-          href="http://linkedin.com/in/jcasbell"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <FontAwesomeIcon icon={faLinkedinIn} size="2x" />
-        </a>
-        <a href="mailto:asbelljc@gmail.com">
-          <FontAwesomeIcon icon={faEnvelope} size="2x" />
-        </a>
-      </Social>
+      {location.pathname !== '/contact' && (
+        <Social>
+          <a href="http://github.com/asbelljc" target="_blank" rel="noreferrer">
+            <FontAwesomeIcon icon={faGithub} size="2x" />
+          </a>
+          <a
+            href="http://linkedin.com/in/jcasbell"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faLinkedinIn} size="2x" />
+          </a>
+          <a href="mailto:asbelljc@gmail.com">
+            <FontAwesomeIcon icon={faEnvelope} size="2x" />
+          </a>
+        </Social>
+      )}
       <Copyright>
         Copyright <span>©</span> {new Date().getFullYear()} Jonathan Asbell
         <br />
