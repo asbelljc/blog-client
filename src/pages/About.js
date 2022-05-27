@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { ScreenContext } from '../App';
-import src from '../assets/headshot.jpg';
+import src from '../assets/about/headshot.jpg';
 
 const Wrapper = styled(PageWrapper)`
   min-height: 100vh;
@@ -33,7 +33,6 @@ const Body = styled.div`
   gap: 1.8rem;
   font-family: 'Nunito Sans';
   font-size: 1.6rem;
-  /* font-weight: 600; */
 
   a {
     color: ${({ theme }) => theme.colors.primary};
@@ -100,7 +99,6 @@ const Headshot = styled.div`
     transition: transform 250ms;
   }
 
-  /* @media (hover: hover) { */
   &:hover {
     img {
       filter: none;
@@ -110,7 +108,10 @@ const Headshot = styled.div`
       transform: translate3d(1.6rem, 1.6rem, 0);
     }
   }
-  /* } */
+
+  &:empty {
+    display: none;
+  }
 `;
 
 function About() {
