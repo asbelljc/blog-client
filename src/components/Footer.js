@@ -14,7 +14,7 @@ const Wrapper = styled.footer`
   margin-top: 6.4rem;
   padding: 0.75em 0;
   font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-align: center;
 
   span {
