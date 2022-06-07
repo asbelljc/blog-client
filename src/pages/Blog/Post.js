@@ -11,7 +11,14 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
 
-const Wrapper = styled(PageWrapper)``;
+const Wrapper = styled(PageWrapper)`
+  hr {
+    background: ${({ theme }) => theme.colors.primary};
+    height: 0.3rem;
+    border: none;
+    margin: 1.6rem 0;
+  }
+`;
 
 const Heading = styled.div`
   display: flex;

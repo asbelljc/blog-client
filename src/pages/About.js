@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { ScreenContext } from '../App';
 import src from '../assets/about/headshot.jpg';
+import { faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled(PageWrapper)`
   min-height: 100vh;
@@ -93,9 +94,8 @@ const Headshot = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 100rem;
-    border: ${({ screen }) => (screen === 'narrow' ? '3px' : '5px')} solid
-      ${({ theme }) => theme.colors.primary};
-    transform: translate3d(0, 0, 0), scale(1);
+    border: 5px solid ${({ theme }) => theme.colors.primary};
+    transform: scale(1);
     transition: transform 250ms;
   }
 
@@ -105,7 +105,7 @@ const Headshot = styled.div`
     }
 
     &::after {
-      transform: translate3d(1.6rem, 1.6rem, 0);
+      transform: scale(1.1);
     }
   }
 

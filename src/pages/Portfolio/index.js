@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { ScreenContext } from '../../App';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import PageWrapper from '../../components/PageWrapper';
 import projectData from './projectData';
+import testSrc from '../../assets/portfolio/portfolioSite/thumbnail.jpg';
 
 const Wrapper = styled(PageWrapper)`
   align-items: stretch;
@@ -22,14 +22,15 @@ const Heading = styled.h1`
 const Project = styled.div`
   position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  padding: 1.6rem;
+  flex-direction: ${({ screen }) => (screen === 'wide' ? 'row' : 'column')};
+  align-items: center;
+  gap: ${({ screen }) => (screen !== 'wide' ? '1.6rem' : '3.2rem')};
+  padding: ${({ screen }) => (screen !== 'wide' ? '1.6rem' : '3.2rem')};
   border-top: 2px solid ${({ theme }) => theme.colors.primary};
   border-bottom: 2px solid ${({ theme }) => theme.colors.primary};
   margin-bottom: -2px;
   will-change: background;
-  transition: background 200ms;
+  transition: background 300ms;
 
   &::before {
     content: ' ';
@@ -41,7 +42,7 @@ const Project = styled.div`
     background: ${({ theme }) => theme.colors.primary};
     transform: scaleY(0);
     transform-origin: top;
-    transition: transform 200ms;
+    transition: transform 300ms;
   }
 
   &::after {
@@ -54,7 +55,7 @@ const Project = styled.div`
     background: ${({ theme }) => theme.colors.primary};
     transform: scaleY(0);
     transform-origin: bottom;
-    transition: transform 200ms;
+    transition: transform 300ms;
   }
 
   span {
@@ -75,12 +76,35 @@ const Project = styled.div`
   }
 `;
 
-const Title = styled(Link)`
+const Thumbnail = styled.a`
+  display: block;
+  overflow: ${({ screen }) => (screen === 'wide' ? 'visible' : 'hidden')};
+  max-height: ${({ screen }) => (screen === 'wide' ? 'none' : '30rem')};
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.5);
+
+  img {
+    display: block;
+    width: ${({ screen }) => (screen === 'wide' ? '30rem' : '100%')};
+  }
+`;
+
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: ${({ screen }) => (screen === 'wide' ? 'flex-start' : 'center')};
+  gap: 1rem;
+  padding: 1rem 0;
+`;
+
+const Title = styled.a`
   text-decoration: none;
+  text-align: ${({ screen }) => (screen !== 'wide' ? 'center' : 'left')};
 
   h2 {
     will-change: color;
     transition: color 200ms;
+    padding: 1rem 0;
+    line-height: 1.15;
   }
 
   &:hover {
@@ -88,6 +112,19 @@ const Title = styled(Link)`
       color: ${({ theme }) => theme.colors.primary};
     }
   }
+`;
+
+const Description = styled.p`
+  font-size: 1.6rem;
+
+  strong {
+    font-weight: 900;
+  }
+`;
+
+const Links = styled.div`
+  font-size: 1.6rem;
+  color: ${({ theme }) => theme.colors.inactive};
 `;
 
 function Portfolio() {
@@ -100,33 +137,39 @@ function Portfolio() {
         Portfolio
         <span>{' }'}</span>
       </Heading>
-      {/* <ProjectList> */}
-      <Project>
-        <Title to="#">
-          <h2>a</h2>
-        </Title>
-      </Project>
-      <Project>
-        <Title to="#">
-          <h2>b</h2>
-        </Title>
-      </Project>
-      <Project>
-        <Title to="#">
-          <h2>c</h2>
-        </Title>
-      </Project>
-      <Project>
-        <Title to="#">
-          <h2>d</h2>
-        </Title>
-      </Project>
-      <Project>
-        <Title to="#">
-          <h2>e</h2>
-        </Title>
-      </Project>
-      {/* </ProjectList> */}
+      {projectData.map((project) => (
+        <Project key={project.title} screen={screen}>
+          {screen !== 'wide' ? (
+            <Title href={project.repoUrl} target="_blank" screen={screen}>
+              <h2>{project.title}</h2>
+            </Title>
+          ) : null}
+          <Thumbnail href={project.demoUrl} target="_blank" screen={screen}>
+            <div>
+              <img src={project.thumbnailPath} alt={project.thumbnailAlt} />
+            </div>
+          </Thumbnail>
+          <Info screen={screen}>
+            {screen === 'wide' ? (
+              <Title href={project.repoUrl} target="_blank" screen={screen}>
+                <h2>{project.title}</h2>
+              </Title>
+            ) : null}
+            <Description
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
+            <Links>
+              <a href={project.repoUrl} target="_blank">
+                Repo
+              </a>
+              {' | '}
+              <a href={project.demoUrl} target="_blank">
+                Demo
+              </a>
+            </Links>
+          </Info>
+        </Project>
+      ))}
     </Wrapper>
   );
 }
