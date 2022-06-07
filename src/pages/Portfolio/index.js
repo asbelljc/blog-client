@@ -3,7 +3,6 @@ import { ScreenContext } from '../../App';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import projectData from './projectData';
-import testSrc from '../../assets/portfolio/portfolioSite/thumbnail.jpg';
 
 const Wrapper = styled(PageWrapper)`
   align-items: stretch;
@@ -159,11 +158,11 @@ function Portfolio() {
               dangerouslySetInnerHTML={{ __html: project.description }}
             />
             <Links>
-              <a href={project.repoUrl} target="_blank">
+              <a href={project.repoUrl} target="_blank" rel="noreferrer">
                 Repo
               </a>
               {' | '}
-              <a href={project.demoUrl} target="_blank">
+              <a href={project.demoUrl} target="_blank" rel="noreferrer">
                 Demo
               </a>
             </Links>
