@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import Loader from '../../components/Loader';
 import CommentList from '../../components/CommentList';
+import CommentForm from '../../components/CommentForm';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
@@ -153,24 +154,6 @@ export default function Post() {
     getPost();
   }, [slug, navigate]);
 
-  // useEffect(() => {
-  //   async function getComments() {
-  //     try {
-  //       const { data } = await axios.get(`/posts/${post._id}/comments`, {
-  //         timeout: 10000,
-  //       });
-
-  //       setComments(data.comments);
-  //     } catch {
-  //       setCommentsError(true);
-  //     }
-  //   }
-
-  //   if (post) {
-  //     getComments();
-  //   }
-  // }, [post]);
-
   useEffect(() => {
     Prism.highlightAll();
   }, [post]);
@@ -192,6 +175,7 @@ export default function Post() {
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
           <hr />
+          <CommentForm post={post} />
           <CommentList post={post} />
         </>
       ) : (

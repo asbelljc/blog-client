@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { SessionContext } from '../App';
 
 const Container = styled.div`
   padding: 1.6rem;
@@ -78,25 +79,24 @@ const Controls = styled.div`
   }
 `;
 
-export default function Comment({
-  id,
-  post,
-  username,
-  dateTime,
-  body,
-  canEdit,
-}) {
-  const [editing, setEditing] = useState(false);
+export default function Comment({ id, post, username, dateTime, body }) {
   const [commentBody, setCommentBody] = useState(body);
+
+  const [editing, setEditing] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState(false);
+
+  const { session } = useContext(SessionContext);
+
+  const canEdit =
+    !!session && (username === session.username || session.status === 'admin');
 
   const startEditing = () => {
     setEditError(false);
     setEditing(true);
   };
 
-  const cancelEdit = () => {
+  const cancelEditing = () => {
     setCommentBody(body);
     setEditing(false);
   };
@@ -132,6 +132,10 @@ export default function Comment({
     }
   };
 
+  const deleteComment = async () => {
+    // TODO
+  };
+
   return (
     <Container>
       <h4>{username}</h4>
@@ -154,7 +158,7 @@ export default function Comment({
         <Controls>
           {editing ? (
             <>
-              <button onClick={cancelEdit}>Cancel</button>
+              <button onClick={cancelEditing}>Cancel</button>
               {' | '}
               <button onClick={submitEdit}>Submit</button>
             </>

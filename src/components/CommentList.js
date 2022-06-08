@@ -1,7 +1,6 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { SessionContext } from '../App';
 import Comment from './Comment';
 
 const Wrapper = styled.div`
@@ -17,8 +16,6 @@ const Wrapper = styled.div`
 export default function CommentList({ post }) {
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(false);
-
-  const { session } = useContext(SessionContext);
 
   useEffect(() => {
     async function getComments() {
@@ -50,11 +47,6 @@ export default function CommentList({ post }) {
             username={comment.user.username}
             dateTime={comment.date_time_formatted}
             body={comment.body}
-            canEdit={
-              !!session &&
-              (comment.user.username === session.username ||
-                session.status === 'admin')
-            }
           />
         ))
       ) : !error ? (
