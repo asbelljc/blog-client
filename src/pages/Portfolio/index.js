@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { ScreenContext } from '../../App';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
-import projectData from './projectData';
+import projectData from '../../assets/portfolio/projectData';
 
 const Wrapper = styled(PageWrapper)`
   align-items: stretch;

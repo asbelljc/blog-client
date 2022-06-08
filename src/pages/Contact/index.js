@@ -5,9 +5,9 @@ import validator from 'validator';
 import emailjs from '@emailjs/browser';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import PageWrapper from '../../components/PageWrapper';
-import Social from './Social';
+import Social from '../../components/ContactSocial';
 import Button from '../../components/Button';
-import ErrorMessages from './ErrorMessages';
+import ErrorMessages from '../../components/ContactErrorMessages';
 import Loader from '../../components/Loader';
 
 const Wrapper = styled(PageWrapper)``;

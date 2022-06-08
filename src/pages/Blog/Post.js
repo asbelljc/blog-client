@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import Loader from '../../components/Loader';
+import CommentList from '../../components/CommentList';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
@@ -16,7 +17,7 @@ const Wrapper = styled(PageWrapper)`
     background: ${({ theme }) => theme.colors.primary};
     height: 0.3rem;
     border: none;
-    margin: 1.6rem 0;
+    margin: 3.2rem 0;
   }
 `;
 
@@ -118,6 +119,8 @@ const Body = styled.div`
 
 export default function Post() {
   const [post, setPost] = useState(null);
+  // const [comments, setComments] = useState([]);
+  // const [commentsError, setCommentsError] = useState(false);
 
   const { screen } = useContext(ScreenContext);
 
@@ -150,6 +153,24 @@ export default function Post() {
     getPost();
   }, [slug, navigate]);
 
+  // useEffect(() => {
+  //   async function getComments() {
+  //     try {
+  //       const { data } = await axios.get(`/posts/${post._id}/comments`, {
+  //         timeout: 10000,
+  //       });
+
+  //       setComments(data.comments);
+  //     } catch {
+  //       setCommentsError(true);
+  //     }
+  //   }
+
+  //   if (post) {
+  //     getComments();
+  //   }
+  // }, [post]);
+
   useEffect(() => {
     Prism.highlightAll();
   }, [post]);
@@ -170,6 +191,8 @@ export default function Post() {
             </Tags>
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
+          <hr />
+          <CommentList post={post} />
         </>
       ) : (
         <Loader />

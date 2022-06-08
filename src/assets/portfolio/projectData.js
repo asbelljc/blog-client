@@ -1,9 +1,9 @@
-import portfolioSiteThumbnail from '../../assets/portfolio/portfolioSite/thumbnail.jpg';
-import resumeBuilderThumbnail from '../../assets/portfolio/resumeBuilder/thumbnail.jpg';
-import weatherAppThumbnail from '../../assets/portfolio/weatherApp/thumbnail.jpg';
-import libraryThumbnail from '../../assets/portfolio/library/thumbnail.jpg';
-import ticTacToeThumbnail from '../../assets/portfolio/ticTacToe/thumbnail.jpg';
-import reactWordpressThumbnail from '../../assets/portfolio/reactWordpress/thumbnail.jpg';
+import portfolioSiteThumbnail from './portfolioSite/thumbnail.jpg';
+import resumeBuilderThumbnail from './resumeBuilder/thumbnail.jpg';
+import weatherAppThumbnail from './weatherApp/thumbnail.jpg';
+import libraryThumbnail from './library/thumbnail.jpg';
+import ticTacToeThumbnail from './ticTacToe/thumbnail.jpg';
+import reactWordpressThumbnail from './reactWordpress/thumbnail.jpg';
 
 const projects = [
   {
