@@ -12,6 +12,7 @@ import Prism from 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
+import CommentSection from '../../components/CommentSection';
 
 const Wrapper = styled(PageWrapper)`
   hr {
@@ -175,6 +176,8 @@ export default function Post() {
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
           <hr />
+          {/* TODO: lift state up into CommentSection so successfully submitted comments instantly appear in list */}
+          {/* <CommentSection post={post} /> */}
           <CommentForm post={post} />
           <CommentList post={post} />
         </>
@@ -184,5 +187,3 @@ export default function Post() {
     </Wrapper>
   );
 }
-
-// TODO: figure out fetching and showing comments

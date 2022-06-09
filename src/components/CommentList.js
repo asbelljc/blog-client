@@ -11,6 +11,15 @@ const Wrapper = styled.div`
     color: ${({ theme }) => theme.colors.inactive};
     margin-bottom: 1rem;
   }
+
+  .none-msg,
+  .error-msg {
+    font-size: 1.3rem;
+  }
+
+  .error-msg {
+    color: ${({ theme }) => theme.colors.error};
+  }
 `;
 
 export default function CommentList({ post }) {
@@ -50,9 +59,9 @@ export default function CommentList({ post }) {
           />
         ))
       ) : !error ? (
-        <span>Be the first to comment!</span>
+        <span className="none-msg">Be the first to comment!</span>
       ) : (
-        <span>Something went wrong.</span>
+        <span className="error-msg">Something went wrong.</span>
       )}
     </Wrapper>
   );
