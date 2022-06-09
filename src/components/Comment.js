@@ -83,8 +83,9 @@ export default function Comment({ id, post, username, dateTime, body }) {
   const [commentBody, setCommentBody] = useState(body);
 
   const [editing, setEditing] = useState(false);
-  const [editLoading, setEditLoading] = useState(false);
-  const [editError, setEditError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [deleted, setDeleted] = useState(false);
+  const [error, setError] = useState(false);
 
   const { session } = useContext(SessionContext);
 
@@ -92,7 +93,7 @@ export default function Comment({ id, post, username, dateTime, body }) {
     !!session && (username === session.username || session.status === 'admin');
 
   const startEditing = () => {
-    setEditError(false);
+    setError(false);
     setEditing(true);
   };
 
@@ -103,7 +104,7 @@ export default function Comment({ id, post, username, dateTime, body }) {
 
   const submitEdit = async () => {
     setEditing(false);
-    setEditLoading(true);
+    setLoading(true);
 
     try {
       await axios.put(
@@ -123,54 +124,76 @@ export default function Comment({ id, post, username, dateTime, body }) {
         }
       );
 
-      setEditLoading(false);
-      setEditError(false);
+      setLoading(false);
+      setError(false);
     } catch {
-      setEditLoading(false);
-      setEditError(true);
+      setLoading(false);
+      setError(true);
       setCommentBody(body);
     }
   };
 
   const deleteComment = async () => {
-    // TODO
+    setLoading(true);
+
+    try {
+      await axios.delete(`/posts/${post}/comments/${id}`, {
+        withCredentials: true,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        timeout: 10000,
+      });
+
+      setLoading(false);
+      setError(false);
+      setDeleted(true);
+    } catch {
+      setLoading(false);
+      setError(true);
+    }
   };
 
   return (
-    <Container>
-      <h4>{username}</h4>
-      <span>{dateTime}</span>
-      {editing ? (
-        <textarea
-          autoFocus
-          rows="8"
-          value={commentBody}
-          onChange={(e) => setCommentBody(e.target.value)}
-        />
-      ) : !editLoading && !editError ? (
-        <p>{commentBody}</p>
-      ) : !editError ? (
-        <span className="loading">Loading...</span>
-      ) : (
-        <span className="error">Something went wrong.</span>
-      )}
-      {canEdit && (
-        <Controls>
+    <>
+      {!deleted && (
+        <Container>
+          <h4>{username}</h4>
+          <span>{dateTime}</span>
           {editing ? (
-            <>
-              <button onClick={cancelEditing}>Cancel</button>
-              {' | '}
-              <button onClick={submitEdit}>Submit</button>
-            </>
+            <textarea
+              autoFocus
+              rows="8"
+              value={commentBody}
+              onChange={(e) => setCommentBody(e.target.value)}
+            />
+          ) : !loading && !error ? (
+            <p>{commentBody}</p>
+          ) : !error ? (
+            <span className="loading">Loading...</span>
           ) : (
-            <>
-              <button onClick={startEditing}>Edit</button>
-              {' | '}
-              <button>Delete</button>
-            </>
+            <span className="error">Something went wrong.</span>
           )}
-        </Controls>
+          {canEdit && !loading ? (
+            <Controls>
+              {editing ? (
+                <>
+                  <button onClick={cancelEditing}>Cancel</button>
+                  {' | '}
+                  <button onClick={submitEdit}>Submit</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={startEditing}>Edit</button>
+                  {' | '}
+                  <button onClick={deleteComment}>Delete</button>
+                </>
+              )}
+            </Controls>
+          ) : null}
+        </Container>
       )}
-    </Container>
+    </>
   );
 }
