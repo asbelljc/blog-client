@@ -56,6 +56,7 @@ export default function CommentList({ post }) {
             username={comment.user.username}
             dateTime={comment.date_time_formatted}
             body={comment.body}
+            edited={comment.edited}
           />
         ))
       ) : !error ? (

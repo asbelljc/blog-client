@@ -79,10 +79,18 @@ const Controls = styled.div`
   }
 `;
 
-export default function Comment({ id, post, username, dateTime, body }) {
+export default function Comment({
+  id,
+  post,
+  username,
+  dateTime,
+  body,
+  edited,
+}) {
   const [commentBody, setCommentBody] = useState(body);
 
   const [editing, setEditing] = useState(false);
+  const [hasBeenEdited, setHasBeenEdited] = useState(edited);
   const [loading, setLoading] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [error, setError] = useState(false);
@@ -126,6 +134,7 @@ export default function Comment({ id, post, username, dateTime, body }) {
 
       setLoading(false);
       setError(false);
+      setHasBeenEdited(true);
     } catch {
       setLoading(false);
       setError(true);
@@ -160,7 +169,10 @@ export default function Comment({ id, post, username, dateTime, body }) {
       {!deleted && (
         <Container>
           <h4>{username}</h4>
-          <span>{dateTime}</span>
+          <span>
+            {dateTime}
+            {hasBeenEdited && ' (edited)'}
+          </span>
           {editing ? (
             <textarea
               autoFocus
