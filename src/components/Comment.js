@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SessionContext } from '../App';
+import useTimeout from '../hooks/useTimeout';
 
 const Container = styled.div`
   padding: 1.6rem;
@@ -60,6 +61,8 @@ const Controls = styled.div`
   gap: 0.6rem;
   color: ${({ theme }) => theme.colors.inactive};
   padding-top: 0.8rem;
+  font-size: 1.1rem;
+  line-height: 1;
 
   button {
     display: flex;
@@ -71,6 +74,11 @@ const Controls = styled.div`
     line-height: 1;
     color: ${({ theme }) => theme.colors.inactive};
     transition: none;
+
+    &.undo-delete {
+      color: ${({ theme }) => theme.colors.error};
+      font-weight: 500;
+    }
 
     &:hover {
       cursor: pointer;
@@ -93,6 +101,7 @@ export default function Comment({
   const [hasBeenEdited, setHasBeenEdited] = useState(edited);
   const [loading, setLoading] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [willBeDeleted, setWillBeDeleted] = useState(false);
   const [error, setError] = useState(false);
 
   const { session } = useContext(SessionContext);
@@ -143,6 +152,7 @@ export default function Comment({
   };
 
   const deleteComment = async () => {
+    setWillBeDeleted(false);
     setLoading(true);
 
     try {
@@ -163,6 +173,8 @@ export default function Comment({
       setError(true);
     }
   };
+
+  useTimeout(deleteComment, willBeDeleted ? 10000 : null);
 
   return (
     <>
@@ -195,11 +207,21 @@ export default function Comment({
                   {' | '}
                   <button onClick={submitEdit}>Submit</button>
                 </>
+              ) : willBeDeleted ? (
+                <>
+                  {'Comment will be deleted | '}
+                  <button
+                    className="undo-delete"
+                    onClick={() => setWillBeDeleted(false)}
+                  >
+                    Undo
+                  </button>
+                </>
               ) : (
                 <>
                   <button onClick={startEditing}>Edit</button>
                   {' | '}
-                  <button onClick={deleteComment}>Delete</button>
+                  <button onClick={() => setWillBeDeleted(true)}>Delete</button>
                 </>
               )}
             </Controls>
