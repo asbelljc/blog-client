@@ -6,20 +6,20 @@ import Comment from './Comment';
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
 
-  h2 {
-    color: ${({ theme }) => theme.colors.inactive};
-    margin-bottom: 1rem;
-  }
+const Heading = styled.h2`
+  color: ${({ theme }) => theme.colors.inactive};
+  margin-bottom: 1rem;
+`;
 
-  .none-msg,
-  .error-msg {
-    font-size: 1.3rem;
-  }
+const NoneMsg = styled.span`
+  font-size: 1.3rem;
+`;
 
-  .error-msg {
-    color: ${({ theme }) => theme.colors.error};
-  }
+const ErrorMsg = styled.span`
+  font-size: 1.3rem;
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 export default function CommentList({ post }) {
@@ -46,7 +46,7 @@ export default function CommentList({ post }) {
 
   return (
     <Wrapper>
-      <h2>Comments</h2>
+      <Heading>Comments</Heading>
       {comments.length && !error ? (
         comments.map((comment) => (
           <Comment
@@ -60,9 +60,9 @@ export default function CommentList({ post }) {
           />
         ))
       ) : !error ? (
-        <span className="none-msg">Be the first to comment!</span>
+        <NoneMsg>Be the first to comment!</NoneMsg>
       ) : (
-        <span className="error-msg">Something went wrong.</span>
+        <ErrorMsg>Something went wrong.</ErrorMsg>
       )}
     </Wrapper>
   );

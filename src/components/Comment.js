@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SessionContext } from '../App';
-import useTimeout from '../hooks/useTimeout';
+import useInterval from '../hooks/useInterval';
 
 const Container = styled.div`
   padding: 1.6rem;
@@ -102,6 +102,7 @@ export default function Comment({
   const [loading, setLoading] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [willBeDeleted, setWillBeDeleted] = useState(false);
+  const [secondsTillDelete, setSecondsTillDelete] = useState(5);
   const [error, setError] = useState(false);
 
   const { session } = useContext(SessionContext);
@@ -174,7 +175,25 @@ export default function Comment({
     }
   };
 
-  useTimeout(deleteComment, willBeDeleted ? 10000 : null);
+  const countdownThenDelete = () => {
+    if (secondsTillDelete > 1) {
+      setSecondsTillDelete(secondsTillDelete - 1);
+      return;
+    }
+
+    deleteComment();
+  };
+
+  const initializeDelete = () => {
+    setWillBeDeleted(true);
+  };
+
+  const cancelDelete = () => {
+    setWillBeDeleted(false);
+    setSecondsTillDelete(5);
+  };
+
+  useInterval(countdownThenDelete, willBeDeleted ? 1000 : null);
 
   return (
     <>
@@ -209,11 +228,10 @@ export default function Comment({
                 </>
               ) : willBeDeleted ? (
                 <>
-                  {'Comment will be deleted | '}
-                  <button
-                    className="undo-delete"
-                    onClick={() => setWillBeDeleted(false)}
-                  >
+                  {'Comment will be deleted in '}
+                  {secondsTillDelete}
+                  {' seconds | '}
+                  <button className="undo-delete" onClick={cancelDelete}>
                     Undo
                   </button>
                 </>
@@ -221,7 +239,7 @@ export default function Comment({
                 <>
                   <button onClick={startEditing}>Edit</button>
                   {' | '}
-                  <button onClick={() => setWillBeDeleted(true)}>Delete</button>
+                  <button onClick={initializeDelete}>Delete</button>
                 </>
               )}
             </Controls>

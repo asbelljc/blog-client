@@ -14,13 +14,13 @@ import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
 import CommentSection from '../../components/CommentSection';
 
-const Wrapper = styled(PageWrapper)`
-  hr {
-    background: ${({ theme }) => theme.colors.primary};
-    height: 0.3rem;
-    border: none;
-    margin: 3.2rem 0;
-  }
+const Wrapper = styled(PageWrapper)``;
+
+const Divider = styled.hr`
+  background: ${({ theme }) => theme.colors.primary};
+  height: 0.3rem;
+  border: none;
+  margin: 3.2rem 0;
 `;
 
 const Heading = styled.div`
@@ -28,17 +28,17 @@ const Heading = styled.div`
   flex-direction: column;
   align-items: flex-start;
   padding: 1.2rem 0 3.6rem 0;
+`;
 
-  h1 {
-    font-size: ${({ screen }) => (screen === 'narrow' ? '3.6rem' : '4.2rem')};
-    text-align: left;
-    padding: 1.2rem 0 1.8rem 0;
-  }
+const TimeStamp = styled.span`
+  font-size: 1.3rem;
+  color: ${({ theme }) => theme.colors.inactive};
+`;
 
-  span {
-    font-size: 1.3rem;
-    color: ${({ theme }) => theme.colors.inactive};
-  }
+const Title = styled.h1`
+  font-size: ${({ screen }) => (screen === 'narrow' ? '3.6rem' : '4.2rem')};
+  text-align: left;
+  padding: 1.2rem 0 1.8rem 0;
 `;
 
 const Tags = styled.div`
@@ -164,8 +164,8 @@ export default function Post() {
       {post ? (
         <>
           <Heading screen={screen}>
-            <span>{post.date_time}</span>
-            <h1>{post.title}</h1>
+            <TimeStamp>{post.date_time}</TimeStamp>
+            <Title screen={screen}>{post.title}</Title>
             <Tags>
               {post.tags.map((tag) => (
                 <Link to={`/blog?tag=${encodeURI(tag)}`} key={tag}>
@@ -175,7 +175,7 @@ export default function Post() {
             </Tags>
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
-          <hr />
+          <Divider />
           {/* TODO: lift state up into CommentSection so successfully submitted comments instantly appear in list */}
           {/* <CommentSection post={post} /> */}
           <CommentForm post={post} />
