@@ -6,8 +6,6 @@ import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import Loader from '../../components/Loader';
-import CommentList from '../../components/CommentList';
-import CommentForm from '../../components/CommentForm';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
@@ -176,10 +174,7 @@ export default function Post() {
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
           <Divider />
-          {/* TODO: lift state up into CommentSection so successfully submitted comments instantly appear in list */}
-          {/* <CommentSection post={post} /> */}
-          <CommentForm post={post} />
-          <CommentList post={post} />
+          <CommentSection post={post} />
         </>
       ) : (
         <Loader />

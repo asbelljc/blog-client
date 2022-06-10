@@ -94,13 +94,14 @@ export default function Comment({
   dateTime,
   body,
   edited,
+  onDelete,
 }) {
   const [commentBody, setCommentBody] = useState(body);
 
   const [editing, setEditing] = useState(false);
   const [hasBeenEdited, setHasBeenEdited] = useState(edited);
   const [loading, setLoading] = useState(false);
-  const [deleted, setDeleted] = useState(false);
+  // const [deleted, setDeleted] = useState(false);
   const [willBeDeleted, setWillBeDeleted] = useState(false);
   const [secondsTillDelete, setSecondsTillDelete] = useState(5);
   const [error, setError] = useState(false);
@@ -168,7 +169,7 @@ export default function Comment({
 
       setLoading(false);
       setError(false);
-      setDeleted(true);
+      onDelete();
     } catch {
       setLoading(false);
       setError(true);
@@ -196,56 +197,52 @@ export default function Comment({
   useInterval(countdownThenDelete, willBeDeleted ? 1000 : null);
 
   return (
-    <>
-      {!deleted && (
-        <Container>
-          <h4>{username}</h4>
-          <span>
-            {dateTime}
-            {hasBeenEdited && ' (edited)'}
-          </span>
-          {editing ? (
-            <textarea
-              autoFocus
-              rows="8"
-              value={commentBody}
-              onChange={(e) => setCommentBody(e.target.value)}
-            />
-          ) : !loading && !error ? (
-            <p>{commentBody}</p>
-          ) : !error ? (
-            <span className="loading">Loading...</span>
-          ) : (
-            <span className="error">Something went wrong.</span>
-          )}
-          {canEdit && !loading ? (
-            <Controls>
-              {editing ? (
-                <>
-                  <button onClick={cancelEditing}>Cancel</button>
-                  {' | '}
-                  <button onClick={submitEdit}>Submit</button>
-                </>
-              ) : willBeDeleted ? (
-                <>
-                  {'Comment will be deleted in '}
-                  {secondsTillDelete}
-                  {' seconds | '}
-                  <button className="undo-delete" onClick={cancelDelete}>
-                    Undo
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button onClick={startEditing}>Edit</button>
-                  {' | '}
-                  <button onClick={initializeDelete}>Delete</button>
-                </>
-              )}
-            </Controls>
-          ) : null}
-        </Container>
+    <Container>
+      <h4>{username}</h4>
+      <span>
+        {dateTime}
+        {hasBeenEdited && ' (edited)'}
+      </span>
+      {editing ? (
+        <textarea
+          autoFocus
+          rows="8"
+          value={commentBody}
+          onChange={(e) => setCommentBody(e.target.value)}
+        />
+      ) : !loading && !error ? (
+        <p>{commentBody}</p>
+      ) : !error ? (
+        <span className="loading">Loading...</span>
+      ) : (
+        <span className="error">Something went wrong.</span>
       )}
-    </>
+      {canEdit && !loading ? (
+        <Controls>
+          {editing ? (
+            <>
+              <button onClick={cancelEditing}>Cancel</button>
+              {' | '}
+              <button onClick={submitEdit}>Submit</button>
+            </>
+          ) : willBeDeleted ? (
+            <>
+              {'Comment will be deleted in '}
+              {secondsTillDelete}
+              {' seconds | '}
+              <button className="undo-delete" onClick={cancelDelete}>
+                Undo
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={startEditing}>Edit</button>
+              {' | '}
+              <button onClick={initializeDelete}>Delete</button>
+            </>
+          )}
+        </Controls>
+      ) : null}
+    </Container>
   );
 }

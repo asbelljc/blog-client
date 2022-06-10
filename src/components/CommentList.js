@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import Comment from './Comment';
 
@@ -22,28 +20,7 @@ const ErrorMsg = styled.span`
   color: ${({ theme }) => theme.colors.error};
 `;
 
-export default function CommentList({ post }) {
-  const [comments, setComments] = useState([]);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    async function getComments() {
-      try {
-        const { data } = await axios.get(`/posts/${post._id}/comments`, {
-          timeout: 10000,
-        });
-
-        setComments(data.comments);
-      } catch {
-        setError(true);
-      }
-    }
-
-    if (post) {
-      getComments();
-    }
-  }, [post]);
-
+export default function CommentList({ comments, error, onDelete }) {
   return (
     <Wrapper>
       <Heading>Comments</Heading>
@@ -57,6 +34,7 @@ export default function CommentList({ post }) {
             dateTime={comment.date_time_formatted}
             body={comment.body}
             edited={comment.edited}
+            onDelete={() => onDelete(comment._id)}
           />
         ))
       ) : !error ? (

@@ -1,8 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import Button from './Button';
 import { ScreenContext, SessionContext } from '../App';
-import axios from 'axios';
 import { CSSTransition } from 'react-transition-group';
 import { useTheme } from 'styled-components';
 import Loader from './Loader';
@@ -48,7 +47,7 @@ const SubmitButton = styled(Button)`
     screen === 'narrow' ? 'stretch' : 'flex-start'};
 `;
 
-const Message = styled.div`
+const LoginMessage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,6 +55,22 @@ const Message = styled.div`
   font-style: italic;
   color: ${({ theme }) => theme.colors.inactive};
   margin-bottom: 3.2rem;
+`;
+
+const SuccessMessage = styled.div`
+  height: fit-content;
+  margin-bottom: 0.4rem;
+  font-size: 1.2rem;
+  text-align: center;
+
+  /* critical bits for react-transition-group */
+  &.success-enter {
+    opacity: 0;
+  }
+  &.success-enter-active {
+    opacity: 1;
+    transition: opacity ${({ theme }) => theme.timeouts.toggleMenu}ms;
+  }
 `;
 
 const ErrorMessage = styled.div`
@@ -75,74 +90,26 @@ const ErrorMessage = styled.div`
   }
 `;
 
-export default function CommentForm({ post }) {
-  const [body, setBody] = useState('');
-  const [sending, setSending] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [validationError, setValidationError] = useState(false);
-  const [submissionError, setSubmissionError] = useState(false);
-
+export default function CommentForm({
+  body,
+  onSetBody,
+  onSubmit,
+  sending,
+  success,
+  validationError,
+  submissionError,
+}) {
   const { screen } = useContext(ScreenContext);
   const { session } = useContext(SessionContext);
 
   const theme = useTheme();
 
-  const validate = () => {
-    setSubmissionError(false);
-
-    if (!body.trim()) {
-      setValidationError(true);
-      return false;
-    } else {
-      setValidationError(false);
-      return true;
-    }
-  };
-
-  const validateAndSubmit = async (e) => {
-    e.preventDefault();
-
-    setSubmissionError(false);
-
-    const isCommentValid = validate();
-
-    if (!isCommentValid) {
-      return;
-    } else {
-      setSending(true);
-
-      try {
-        await axios.post(
-          `/posts/${post._id}/comments`,
-          {
-            body,
-          },
-          {
-            withCredentials: true,
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            timeout: 10000,
-          }
-        );
-        setSending(false);
-        setSuccess(true);
-      } catch (error) {
-        setSending(false);
-        setSubmissionError(true);
-      }
-    }
-  };
-
   return (
     <>
-      {success ? (
-        <Message>Thanks for commenting!</Message>
-      ) : sending ? (
+      {sending ? (
         <Loader />
       ) : !session ? (
-        <Message>You must be logged in to comment.</Message>
+        <LoginMessage>You must be logged in to comment.</LoginMessage>
       ) : (
         <>
           <CSSTransition
@@ -157,13 +124,21 @@ export default function CommentForm({ post }) {
                 : 'Something went wrong.'}
             </ErrorMessage>
           </CSSTransition>
-          <Container screen={screen} onSubmit={validateAndSubmit}>
+          <CSSTransition
+            in={success}
+            timeout={theme.timeouts.toggleMenu}
+            classNames="success"
+            unmountOnExit
+          >
+            <SuccessMessage>Thanks for commenting!</SuccessMessage>
+          </CSSTransition>
+          <Container screen={screen} onSubmit={onSubmit}>
             <Input
               rows="10"
               placeholder="Leave a comment"
               error={validationError}
               value={body}
-              onChange={(e) => setBody(e.target.value)}
+              onChange={(e) => onSetBody(e.target.value)}
             />
             <SubmitButton screen={screen} solid>
               Submit
