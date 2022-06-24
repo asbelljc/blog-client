@@ -12,7 +12,7 @@ const projects = [
     thumbnailPath: portfolioSiteThumbnail,
     thumbnailAlt: 'Screenshot of a blog page showing a list of posts.',
     repoUrl: 'https://github.com/asbelljc/portfolio-site',
-    demoUrl: '#',
+    demoUrl: '/',
   },
   {
     title: 'Resume Builder',
@@ -34,7 +34,7 @@ const projects = [
   },
   {
     title: 'Library',
-    description: `An app for recording and tracking progress in your book collection. With a few <strong>CSS</strong> hacks and the help of the <strong>AnimateCSSGrid</strong> library, it presents an experimental UI built on <strong>neumorphic design</strong> principles.`,
+    description: `An app for recording and tracking progress in your book collection. With a few <strong>CSS</strong> hacks and the help of the <strong>AnimateCSSGrid</strong> library, it showcases an experimental UI built on <strong>neumorphic design</strong> principles.`,
     thumbnailPath: libraryThumbnail,
     thumbnailAlt:
       'Screenshot of a library tracking app, showing a list of arbitrary books as an example.',

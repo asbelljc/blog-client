@@ -153,14 +153,15 @@ function About() {
             <li>JavaScript</li>
             <li>TypeScript</li>
             <li>React</li>
+            <li>Node.js</li>
+            <li>Express</li>
+            <li>MongoDB</li>
+            <li>Styled Components</li>
             <li>React Router</li>
             <li>React Transition Group</li>
             <li>Framer</li>
-            <li>Styled Components</li>
-            <li>Node.js</li>
-            <li>Express</li>
+            <li>GSAP</li>
             <li>Passport</li>
-            <li>MongoDB</li>
             <li>Python</li>
             <li>WordPress</li>
           </ul>

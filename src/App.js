@@ -5,7 +5,6 @@ import { useTheme } from 'styled-components';
 import Header from './components/Header';
 import Layout from './components/Layout';
 import { Home, About, Blog, Portfolio, Contact } from './pages';
-import Particles from './components/Particles';
 import AnimatedRoutes from './components/AnimatedRoutes';
 import Footer from './components/Footer';
 import Post from './pages/Blog/Post';
@@ -22,20 +21,8 @@ function App() {
   const [justSignedUp, setJustSignedUp] = useState(false);
   const [requestErrors, setRequestErrors] = useState([]);
   const [screen, setScreen] = useState(measureScreen());
-  const [usingParticles, setUsingParticles] = useState(
-    location.pathname === '/' || location.pathname === '/about'
-  );
 
   const theme = useTheme();
-
-  // allows us to limit Particles use to Home and About, for aesthetics and performance
-  useEffect(() => {
-    if (location.pathname === '/' || location.pathname === '/about') {
-      setUsingParticles(true);
-    } else {
-      setUsingParticles(false);
-    }
-  }, [location]);
 
   // allows for JS-based breakpoint styling instead of CSS media queries
   useEffect(() => {
@@ -198,7 +185,6 @@ function App() {
           </Route>
         </AnimatedRoutes>
         <Footer />
-        {/* <Particles shown={usingParticles} /> */}
       </SessionContext.Provider>
     </ScreenContext.Provider>
   );
