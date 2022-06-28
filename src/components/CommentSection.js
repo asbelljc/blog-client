@@ -3,6 +3,7 @@ import axios from 'axios';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import { SessionContext } from '../App';
+import { apiURL } from '../utils/api';
 
 export default function CommentSection({ post }) {
   const [comments, setComments] = useState([]);
@@ -18,9 +19,12 @@ export default function CommentSection({ post }) {
   useEffect(() => {
     async function getComments() {
       try {
-        const { data } = await axios.get(`/posts/${post._id}/comments`, {
-          timeout: 10000,
-        });
+        const { data } = await axios.get(
+          `${apiURL}/posts/${post._id}/comments`,
+          {
+            timeout: 10000,
+          }
+        );
 
         setComments(data.comments);
       } catch {
@@ -70,7 +74,7 @@ export default function CommentSection({ post }) {
 
       try {
         const { data } = await axios.post(
-          `/posts/${post._id}/comments`,
+          `${apiURL}/posts/${post._id}/comments`,
           {
             body,
           },

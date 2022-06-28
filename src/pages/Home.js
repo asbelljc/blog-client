@@ -5,7 +5,6 @@ import { CSSTransition } from 'react-transition-group';
 import PageWrapper from '../components/PageWrapper';
 import Button from '../components/Button';
 import DotGrid from '../components/DotGrid';
-import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled(PageWrapper)`
   position: relative;
@@ -15,8 +14,6 @@ const Wrapper = styled(PageWrapper)`
   height: 100vh;
   padding-top: 0; /* override header-based padding because full-screen */
 `;
-
-const DotGridAnimation = styled(DotGrid)``;
 
 const Greeting = styled.div`
   user-select: none;
@@ -86,11 +83,11 @@ function Home() {
       exit={{ opacity: 0 }}
       onAnimationComplete={() => setReadyForContent(true)}
     >
-      <DotGridAnimation
+      <DotGrid
         dotSpacing={screen === 'narrow' ? 30 : 40}
         dotColor={theme.colors.dotGridColor}
         lineWidth={screen === 'narrow' ? 6 : 8}
-        alphaTickCount={100}
+        alphaTickCount={50}
         maxMagnitude={screen === 'narrow' ? 15 : 20}
         radius={2000}
       />

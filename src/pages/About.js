@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { ScreenContext } from '../App';
 import src from '../assets/about/headshot.jpg';
-import { faScaleBalanced } from '@fortawesome/free-solid-svg-icons';
 
 const Wrapper = styled(PageWrapper)`
   min-height: 100vh;

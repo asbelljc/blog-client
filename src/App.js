@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 import { Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { apiURL } from './utils/api';
 import { useTheme } from 'styled-components';
 import Header from './components/Header';
 import Layout from './components/Layout';
@@ -39,7 +40,7 @@ function App() {
   useEffect(() => {
     async function syncSession() {
       try {
-        const { data } = await axios.get(`/auth/session`, {
+        const { data } = await axios.get(`${apiURL}/auth/session`, {
           withCredentials: true,
           headers: {
             Accept: 'application/json',
@@ -77,7 +78,7 @@ function App() {
   async function signup(username, password) {
     try {
       const { data } = await axios.post(
-        `/auth/signup`,
+        `${apiURL}/auth/signup`,
         {
           username,
           password,
@@ -111,7 +112,7 @@ function App() {
   async function login(username, password) {
     try {
       const { data } = await axios.post(
-        `/auth/login`,
+        `${apiURL}/auth/login`,
         {
           username,
           password,
@@ -145,7 +146,7 @@ function App() {
       'secondaryAuthToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
     try {
-      await axios.post(`/auth/logout`, {
+      await axios.post(`${apiURL}/auth/logout`, {
         credentials: 'include',
         headers: {
           Accept: 'application/json',

@@ -10,6 +10,7 @@ import useResizeObserver from '../../hooks/useResizeObserver';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlipMove from 'react-flip-move';
 import { useTheme } from 'styled-components';
+import { apiURL } from '../../utils/api';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -204,7 +205,7 @@ function Blog() {
   useEffect(() => {
     async function getPosts() {
       try {
-        const { data } = await axios.get('/posts', { timeout: 10000 });
+        const { data } = await axios.get(`${apiURL}/posts`, { timeout: 10000 });
 
         const postList = await data.posts.map((post) => ({
           ...post,

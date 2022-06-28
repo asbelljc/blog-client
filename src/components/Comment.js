@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SessionContext } from '../App';
 import useInterval from '../hooks/useInterval';
+import { apiURL } from '../utils/api';
 
 const Container = styled.div`
   padding: 1.6rem;
@@ -127,7 +128,7 @@ export default function Comment({
 
     try {
       await axios.put(
-        `/posts/${post}/comments/${id}`,
+        `${apiURL}/posts/${post}/comments/${id}`,
         {
           body: commentBody,
           user: username,
@@ -158,7 +159,7 @@ export default function Comment({
     setLoading(true);
 
     try {
-      await axios.delete(`/posts/${post}/comments/${id}`, {
+      await axios.delete(`${apiURL}/posts/${post}/comments/${id}`, {
         withCredentials: true,
         headers: {
           Accept: 'application/json',

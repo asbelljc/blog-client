@@ -11,6 +11,7 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
 import CommentSection from '../../components/CommentSection';
+import { apiURL } from '../../utils/api';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -131,7 +132,9 @@ export default function Post() {
   useEffect(() => {
     async function getPost() {
       try {
-        const { data } = await axios.get(`/posts/${slug}`, { timeout: 10000 });
+        const { data } = await axios.get(`${apiURL}/posts/${slug}`, {
+          timeout: 10000,
+        });
 
         const post = {
           ...data.post,
