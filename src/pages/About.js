@@ -31,7 +31,7 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.8rem;
-  font-family: 'Nunito Sans';
+  font-family: 'Nunito Sans', sans-serif;
   font-size: 1.6rem;
 
   a {

@@ -42,7 +42,7 @@ const Heading = styled.h1`
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: 'Nunito Sans';
+  font-family: 'Nunito Sans', sans-serif;
   font-size: 1.6rem;
 
   a {
@@ -139,7 +139,7 @@ const Title = styled(Link)`
 `;
 
 const Tags = styled.div`
-  font-family: 'Roboto Mono';
+  font-family: 'Roboto Mono', monospace;
   font-size: 1.2rem;
   display: flex;
   gap: 0.3rem;

@@ -6,7 +6,7 @@ export default css`
     color: ${({ theme }) => theme.colors.prism.fontMain};
     background: none;
     text-shadow: 0 0.1rem rgba(0, 0, 0, 0.3);
-    font-family: 'Roboto Mono' monospace;
+    font-family: 'Roboto Mono', monospace;
     text-align: left;
     white-space: pre;
     word-spacing: normal;

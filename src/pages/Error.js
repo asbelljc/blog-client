@@ -23,7 +23,7 @@ const Text = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.8rem;
-  font-family: 'Nunito Sans';
+  font-family: 'Nunito Sans', sans-serif;
   font-size: 1.6rem;
 
   a {

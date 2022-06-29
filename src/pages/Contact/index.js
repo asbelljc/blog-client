@@ -45,7 +45,7 @@ const Heading = styled.h1`
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: 'Nunito Sans';
+  font-family: 'Nunito Sans', sans-serif;
   font-size: 1.6rem;
 
   a {

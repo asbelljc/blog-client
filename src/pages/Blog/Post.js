@@ -41,7 +41,7 @@ const Title = styled.h1`
 `;
 
 const Tags = styled.div`
-  font-family: 'Roboto Mono';
+  font-family: 'Roboto Mono', monospace;
   font-size: 1.2rem;
   display: flex;
   align-self: stretch;
