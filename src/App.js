@@ -34,7 +34,7 @@ function App() {
     window.addEventListener('resize', updateMedia);
 
     return () => window.removeEventListener('resize', updateMedia);
-  });
+  }, []);
 
   // check session status on startup/refresh
   useEffect(() => {
