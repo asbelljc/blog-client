@@ -179,11 +179,10 @@ function Header() {
     };
 
     const updateVisibility = () => {
-      if (
-        Math.abs(scrollY - window.scrollY) > 150 ||
-        window.scrollY === 0 ||
-        scrollY === 0
-      ) {
+      // together these if blocks prevent unwanted show/hide behavior on "bounce" overscroll effect (common to mobile browsers)
+
+      // trigger hide action after 150px of scroll unless at top - then trigger immediately on scroll
+      if (Math.abs(scrollY - window.scrollY) > 150 || scrollY === 0) {
         if (getScrollDirection() === 'down' && !isMenuOpen) {
           setIsHidden(true);
         } else {
@@ -192,11 +191,11 @@ function Header() {
 
         setScrollY(window.scrollY);
       }
-
-      // if (window.scrollY === 0) {
-      //   setScrollY(window.scrollY);
-      //   setIsHidden(false);
-      // }
+      // scroll *to* scrollTop triggers reveal regardless of distance scrolled to get there
+      if (window.scrollY === 0) {
+        setScrollY(window.scrollY);
+        setIsHidden(false);
+      }
     };
 
     window.addEventListener('scroll', updateVisibility);
@@ -216,7 +215,7 @@ function Header() {
     if (requestErrors.length) {
       setMenuOpen(true); // open menu to reveal request error message
     }
-  }, [requestErrors, setMenuOpen]);
+  }, [requestErrors]);
 
   // critical bits for content-based dynamic resizing
   const content = useRef(null);
