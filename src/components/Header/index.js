@@ -179,7 +179,11 @@ function Header() {
     };
 
     const updateVisibility = () => {
-      if (Math.abs(scrollY - window.scrollY) > 150 || scrollY === 0) {
+      if (
+        Math.abs(scrollY - window.scrollY) > 150 ||
+        window.scrollY === 0 ||
+        scrollY === 0
+      ) {
         if (getScrollDirection() === 'down' && !isMenuOpen) {
           setIsHidden(true);
         } else {
@@ -189,10 +193,10 @@ function Header() {
         setScrollY(window.scrollY);
       }
 
-      if (window.scrollY === 0) {
-        setScrollY(window.scrollY);
-        setIsHidden(false);
-      }
+      // if (window.scrollY === 0) {
+      //   setScrollY(window.scrollY);
+      //   setIsHidden(false);
+      // }
     };
 
     window.addEventListener('scroll', updateVisibility);
