@@ -179,7 +179,11 @@ function Header() {
     };
 
     const updateVisibility = () => {
-      if (getScrollDirection() === 'down' && !isMenuOpen) {
+      if (
+        getScrollDirection() === 'down' &&
+        window.scrollY > 0 &&
+        !isMenuOpen
+      ) {
         setIsHidden(true);
       } else {
         setIsHidden(false);
