@@ -179,17 +179,15 @@ function Header() {
     };
 
     const updateVisibility = () => {
-      if (
-        getScrollDirection() === 'down' &&
-        window.scrollY > 0 &&
-        !isMenuOpen
-      ) {
-        setIsHidden(true);
-      } else {
-        setIsHidden(false);
-      }
+      if (Math.abs(scrollY - window.scrollY) > 150) {
+        if (getScrollDirection() === 'down' && !isMenuOpen) {
+          setIsHidden(true);
+        } else {
+          setIsHidden(false);
+        }
 
-      setScrollY(window.scrollY);
+        setScrollY(window.scrollY);
+      }
     };
 
     window.addEventListener('scroll', updateVisibility);
