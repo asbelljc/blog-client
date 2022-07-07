@@ -124,6 +124,10 @@ const Description = styled.p`
 const Links = styled.div`
   font-size: 1.6rem;
   color: ${({ theme }) => theme.colors.inactive};
+
+  a {
+    font-weight: bold;
+  }
 `;
 
 function Portfolio() {

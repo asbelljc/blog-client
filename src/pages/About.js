@@ -35,6 +35,7 @@ const Body = styled.div`
   font-size: 1.6rem;
 
   a {
+    font-weight: bold;
     color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
     transition: none;
