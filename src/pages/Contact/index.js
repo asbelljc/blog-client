@@ -160,11 +160,9 @@ export default function Contact() {
 
   const form = useRef(null);
 
-  const headingRef = useRef(null);
-  const { height: headingHeight } = useResizeObserver(headingRef);
+  const [headingRef, { height: headingHeight }] = useResizeObserver();
 
-  const containerRef = useRef(null);
-  const { width: containerWidth } = useResizeObserver(containerRef);
+  const [containerRef, { width: containerWidth }] = useResizeObserver();
 
   const validateName = () => {
     // if there was a request error before, user no longer needs to see it

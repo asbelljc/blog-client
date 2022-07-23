@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { SessionContext, ScreenContext } from '../../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -217,9 +217,8 @@ function Header() {
     }
   }, [requestErrors]);
 
-  // critical bits for content-based dynamic resizing
-  const content = useRef(null);
-  const rect = useResizeObserver(content);
+  // critical bit for content-based dynamic resizing
+  const [content, rect] = useResizeObserver();
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -231,11 +231,9 @@ function Blog() {
 
   const theme = useTheme();
 
-  const headingRef = useRef(null);
-  const { height: headingHeight } = useResizeObserver(headingRef);
+  const [headingRef, { height: headingHeight }] = useResizeObserver();
 
-  const containerRef = useRef(null);
-  const { width: containerWidth } = useResizeObserver(containerRef);
+  const [containerRef, { width: containerWidth }] = useResizeObserver();
 
   return (
     <Wrapper>
