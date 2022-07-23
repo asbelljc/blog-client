@@ -162,11 +162,6 @@ function DotGrid({
   const [mouseMoved, setMouseMoved] = useState(false);
   const mouseOver = useRef(false);
 
-  // TESTING
-  // useEffect(() => {
-  //   console.log(canvasBox.left, canvasBox.width);
-  // }, [canvasBox.left, canvasBox.width]);
-
   // UPDATE MOUSE STATE
   useEffect(() => {
     const canvas = canvasRef.current;
