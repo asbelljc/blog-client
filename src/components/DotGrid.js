@@ -153,8 +153,7 @@ function DotGrid({
   radius,
 }) {
   const canvasRef = useRef(null);
-  const canvasBoxRef = useRef(null);
-  const canvasBox = useResizeAndWindowObserver(canvasBoxRef);
+  const [canvasBoxRef, canvasBox] = useResizeAndWindowObserver();
 
   const dots = useRef(null);
 
