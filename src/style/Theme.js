@@ -11,8 +11,7 @@ const contentWidth = (screen) =>
 const greetingFontSize = (screen) =>
   screen === 'narrow' ? '2.8rem' : screen === 'medium' ? '3.6rem' : '4.8rem';
 
-const themeTransition =
-  'color 250ms linear, background 250ms linear, box-shadow 250ms linear';
+const themeTransition = 'background 250ms linear';
 
 export const lightTheme = {
   light: true,

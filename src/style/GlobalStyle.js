@@ -28,9 +28,11 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1.4rem;
 
     :not(pre &) {
-      background: ${({ theme }) => theme.colors.prism.bg};
+      background: ${({ theme }) =>
+        theme.light ? 'rgba(127, 127, 127, 0.2)' : 'rgba(127, 127, 127, 0.4)'};
       border-radius: 0.4rem;
-      padding: 0 0.4rem 0 0.2rem;
+      padding: 0.1em;
+      transition: none;
     }
   }
 
@@ -39,24 +41,28 @@ const GlobalStyle = createGlobalStyle`
     line-height: 1;
   }
 
+  h1 {
+    font-size: 4.8rem;
+  }
+
   h2 {
-    font-size: 2.4rem;
+    font-size: 3.2rem;
   }
 
   h3 {
-    font-size: 1.87rem;
+    font-size: 2.4rem;
   }
 
   h4 {
-    font-size: 1.6rem;
+    font-size: 1.87rem;
   }
 
   h5 {
-    font-size: 1.33rem;
+    font-size: 1.6rem;
   }
 
   h6 {
-    font-size: 1.07rem;
+    font-size: 1.33rem;
   }
 
   p, ol, ul {
@@ -65,8 +71,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ol, ul {
-    list-style-position: inside;
-    padding-left: 1rem;
+    list-style-position: outside;
+    padding-left: 2.8rem;
   }
 
   ol li::before {

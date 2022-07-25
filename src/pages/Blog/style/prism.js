@@ -28,7 +28,13 @@ export default css`
     padding: 1.4rem;
     margin: 0;
     overflow: auto;
-    border-radius: 0 0 0.4rem 0.4rem;
+    border-radius: 0.6rem;
+  }
+
+  .blog-post-body-code-snippet-header
+    + .line-numbers
+    > pre[class*='language-'] {
+    border-radius: 0 0 0.6rem 0.6rem;
   }
 
   :not(pre) > code[class*='language-'],

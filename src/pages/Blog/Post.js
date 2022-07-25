@@ -13,13 +13,10 @@ import prism from './style/prism';
 import CommentSection from '../../components/CommentSection';
 import { apiURL } from '../../utils/api';
 
-const Wrapper = styled(PageWrapper)``;
-
-const Divider = styled.hr`
-  background: ${({ theme }) => theme.colors.primary};
-  height: 0.3rem;
-  border: none;
-  margin: 3.2rem 0;
+const Wrapper = styled(PageWrapper)`
+  max-width: 72rem;
+  margin: ${({ screen }) =>
+    screen === 'narrow' ? 'auto' : '6.4rem auto 0 auto'};
 `;
 
 const Heading = styled.div`
@@ -35,9 +32,10 @@ const TimeStamp = styled.span`
 `;
 
 const Title = styled.h1`
-  font-size: ${({ screen }) => (screen === 'narrow' ? '3.6rem' : '4.2rem')};
+  font-size: ${({ screen }) => (screen === 'narrow' ? '3.6rem' : '6rem')};
   text-align: left;
-  padding: 1.2rem 0 1.8rem 0;
+  padding: ${({ screen }) =>
+    screen === 'narrow' ? '1.2rem 0 1.8rem 0' : '2.4rem 0 3.6rem 0'};
 `;
 
 const Tags = styled.div`
@@ -73,13 +71,36 @@ const Tags = styled.div`
 `;
 
 const Body = styled.div`
-  h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    padding: 1.2em 0 0.6em 0;
+    padding: 2.8rem 0 2.8rem 0;
+  }
+
+  h2 {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+
+    &::after {
+      content: '';
+      flex-grow: 1;
+      height: 0.3rem;
+      margin-left: 0.6rem;
+      background: ${({ theme }) => theme.colors.primary};
+    }
+  }
+
+  li::marker {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  p {
+    line-height: 2.8rem;
+    font-size: 1.8rem;
+    padding-bottom: 2.8rem;
   }
 
   img {
@@ -89,7 +110,7 @@ const Body = styled.div`
   /* ...change this to .pre-header or similar for final product... */
   .blog-post-body-code-snippet-header {
     background-color: ${({ theme }) => theme.colors.preHeaderBg};
-    border-radius: 0.4rem 0.4rem 0 0;
+    border-radius: 0.6rem 0.6rem 0 0;
     font-size: 1.3rem;
     padding: 1rem;
     cursor: default;
@@ -100,15 +121,16 @@ const Body = styled.div`
   }
 
   blockquote {
-    padding: 32px;
+    padding: 4.2rem;
     margin-top: 0px;
+    margin-bottom: 2.8rem;
     color: rgba(0, 0, 0, 0.8);
     border: none;
     background: ${({ theme }) => theme.colors.primaryTintHeavy};
-    border-radius: 0.4rem;
+    border-radius: 0.6rem;
     line-height: 1;
 
-    * {
+    > * {
       font-size: 2rem;
       font-style: italic;
       padding: 0;
@@ -120,8 +142,6 @@ const Body = styled.div`
 
 export default function Post() {
   const [post, setPost] = useState(null);
-  // const [comments, setComments] = useState([]);
-  // const [commentsError, setCommentsError] = useState(false);
 
   const { screen } = useContext(ScreenContext);
 
@@ -161,7 +181,7 @@ export default function Post() {
   }, [post]);
 
   return (
-    <Wrapper>
+    <Wrapper screen={screen}>
       {post ? (
         <>
           <Heading screen={screen}>
@@ -176,7 +196,6 @@ export default function Post() {
             </Tags>
           </Heading>
           <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
-          <Divider />
           <CommentSection post={post} />
         </>
       ) : (
