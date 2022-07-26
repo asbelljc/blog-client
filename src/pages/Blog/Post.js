@@ -8,6 +8,7 @@ import PageWrapper from '../../components/PageWrapper';
 import Loader from '../../components/Loader';
 import Prism from 'prismjs';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
+import 'prismjs/plugins/line-highlight/prism-line-highlight';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
 import CommentSection from '../../components/CommentSection';
@@ -137,7 +138,7 @@ const Body = styled.div`
     }
   }
 
-  ${prism}
+  ${({ theme }) => (theme.light ? prism.light : prism.dark)};
 `;
 
 export default function Post() {
