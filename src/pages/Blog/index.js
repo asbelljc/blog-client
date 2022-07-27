@@ -9,7 +9,6 @@ import Button from '../../components/Button';
 import useResizeObserver from '../../hooks/useResizeObserver';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlipMove from 'react-flip-move';
-import { useTheme } from 'styled-components';
 import { apiURL } from '../../utils/api';
 
 const Wrapper = styled(PageWrapper)``;
@@ -228,8 +227,6 @@ function Blog() {
   }, []);
 
   const { screen } = useContext(ScreenContext);
-
-  const theme = useTheme();
 
   const [headingRef, { height: headingHeight }] = useResizeObserver();
 
