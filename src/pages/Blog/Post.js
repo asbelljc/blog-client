@@ -7,8 +7,7 @@ import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import Loader from '../../components/Loader';
 import Prism from 'prismjs';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
-import 'prismjs/plugins/line-highlight/prism-line-highlight';
+import 'prismjs/plugins/line-highlight/prism-line-highlight.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
 import CommentSection from '../../components/CommentSection';
@@ -150,6 +149,22 @@ export default function Post() {
 
   const { post: slug } = useParams();
 
+  const handleLineHighlights = () => {
+    const blocksWithLineHighlights = Array.from(
+      document.querySelectorAll('[data-line]')
+    );
+
+    blocksWithLineHighlights.forEach((block) => {
+      const lines = block.getAttribute('data-line');
+      const pre = block.querySelector('pre');
+
+      if (lines && pre) {
+        // prism line-highlight plugin is looking for this attribute
+        pre.setAttribute('data-line', lines);
+      }
+    });
+  };
+
   useEffect(() => {
     async function getPost() {
       try {
@@ -178,7 +193,10 @@ export default function Post() {
   }, [slug, navigate]);
 
   useEffect(() => {
-    Prism.highlightAll();
+    if (post) {
+      handleLineHighlights();
+      Prism.highlightAll();
+    }
   }, [post]);
 
   return (

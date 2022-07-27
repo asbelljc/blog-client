@@ -166,12 +166,12 @@ const prism = {
   light: css`
     code[class*='language-'],
     pre[class*='language-'] {
-      background: hsl(0, 0%, 94%);
       color: hsl(230, 8%, 24%);
       font-family: 'Roboto Mono', monospace;
       direction: ltr;
       text-align: left;
-      white-space: pre;
+      white-space: pre-wrap;
+      word-wrap: normal;
       word-spacing: normal;
       word-break: normal;
       line-height: 1.5;
@@ -201,15 +201,28 @@ const prism = {
 
     /* Code blocks */
     pre[class*='language-'] {
-      padding: 1.4rem;
+      position: relative;
+      padding: 0 1.4rem;
       margin: 0;
       overflow: auto;
-      border-radius: 0.6rem;
     }
 
-    .blog-post-body-code-snippet-header
-      + .line-numbers
-      > pre[class*='language-'] {
+    .blog-post-body-code-snippet {
+      border-radius: 0.6rem;
+      background: hsl(0, 0%, 94%);
+      padding-bottom: 1.4rem;
+      margin-bottom: 2.8rem;
+
+      &.no-header {
+        padding-top: 1.4rem;
+      }
+    }
+
+    .blog-post-body-code-snippet-header {
+      margin-bottom: 1.4rem;
+    }
+
+    .blog-post-body-code-snippet-header + pre[class*='language-'] {
       border-radius: 0 0 0.6rem 0.6rem;
     }
 
@@ -423,6 +436,8 @@ const prism = {
     /* Line Highlight plugin overrides */
     /* The highlighted line itself */
     .line-highlight.line-highlight {
+      position: absolute;
+      left: 0;
       background: hsla(0, 0%, 24%, 0.05);
     }
 
@@ -593,13 +608,13 @@ const prism = {
   dark: css`
     code[class*='language-'],
     pre[class*='language-'] {
-      background: hsl(0, 0%, 16%);
       color: hsl(220, 14%, 71%);
       text-shadow: 0 1px rgba(0, 0, 0, 0.3);
       font-family: 'Roboto Mono', monospace;
       direction: ltr;
       text-align: left;
       white-space: pre-wrap;
+      word-wrap: normal;
       word-spacing: normal;
       word-break: normal;
       line-height: 1.5;
@@ -631,15 +646,28 @@ const prism = {
 
     /* Code blocks */
     pre[class*='language-'] {
-      padding: 1.4rem;
-      margin: 0;
+      position: relative;
+      padding: 0 1.4rem;
       overflow: auto;
       border-radius: 0.6rem;
     }
 
-    .blog-post-body-code-snippet-header
-      + .line-numbers
-      > pre[class*='language-'] {
+    .blog-post-body-code-snippet {
+      border-radius: 0.6rem;
+      background: hsl(0, 0%, 14%);
+      padding-bottom: 1.4rem;
+      margin-bottom: 2.8rem;
+
+      &.no-header {
+        padding-top: 1.4rem;
+      }
+    }
+
+    .blog-post-body-code-snippet-header {
+      margin-bottom: 1.4rem;
+    }
+
+    .blog-post-body-code-snippet-header + pre[class*='language-'] {
       border-radius: 0 0 0.6rem 0.6rem;
     }
 
@@ -862,6 +890,8 @@ const prism = {
     /* Line Highlight plugin overrides */
     /* The highlighted line itself */
     .line-highlight.line-highlight {
+      left: 0;
+      position: absolute;
       background: hsla(0, 0%, 80%, 0.04);
     }
 

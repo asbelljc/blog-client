@@ -23,6 +23,12 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Nunito Sans', sans-serif;
   }
 
+  pre {
+    box-sizing: content-box;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.4rem;
+  }
+
   code {
     font-family: 'Roboto Mono', monospace;
     font-size: 1.4rem;
