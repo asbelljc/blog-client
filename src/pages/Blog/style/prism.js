@@ -170,7 +170,7 @@ const prism = {
       font-family: 'Roboto Mono', monospace;
       direction: ltr;
       text-align: left;
-      white-space: pre-wrap;
+      white-space: pre;
       word-wrap: normal;
       word-spacing: normal;
       word-break: normal;
@@ -202,7 +202,7 @@ const prism = {
     /* Code blocks */
     pre[class*='language-'] {
       position: relative;
-      padding: 0 1.4rem;
+      padding: 0 1.4rem 1.4rem;
       margin: 0;
       overflow: auto;
     }
@@ -210,7 +210,6 @@ const prism = {
     .blog-post-body-code-snippet {
       border-radius: 0.6rem;
       background: hsl(0, 0%, 94%);
-      padding-bottom: 1.4rem;
       margin-bottom: 2.8rem;
 
       &.no-header {
@@ -613,7 +612,7 @@ const prism = {
       font-family: 'Roboto Mono', monospace;
       direction: ltr;
       text-align: left;
-      white-space: pre-wrap;
+      white-space: pre;
       word-wrap: normal;
       word-spacing: normal;
       word-break: normal;
@@ -647,7 +646,7 @@ const prism = {
     /* Code blocks */
     pre[class*='language-'] {
       position: relative;
-      padding: 0 1.4rem;
+      padding: 0 1.4rem 1.4rem;
       overflow: auto;
       border-radius: 0.6rem;
     }
@@ -655,7 +654,6 @@ const prism = {
     .blog-post-body-code-snippet {
       border-radius: 0.6rem;
       background: hsl(0, 0%, 14%);
-      padding-bottom: 1.4rem;
       margin-bottom: 2.8rem;
 
       &.no-header {

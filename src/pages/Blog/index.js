@@ -249,17 +249,6 @@ function Blog() {
               Welcome to my blog! I write here periodically on various topics
               within software development, with an emphasis on tutorials.
             </p>
-            <p
-              style={{
-                color: theme.colors.inactive,
-                fontSize: '1.4rem',
-                fontStyle: 'italic',
-              }}
-            >
-              This part of the site is currently under construction. Feel free
-              to play around with the UI in the meantime, and please check back
-              soon!
-            </p>
           </Text>
           <FilterBox screen={screen}>
             <AnimatePresence>
