@@ -10,6 +10,7 @@ import useResizeObserver from '../../hooks/useResizeObserver';
 import { motion, AnimatePresence } from 'framer-motion';
 import FlipMove from 'react-flip-move';
 import { apiURL } from '../../utils/api';
+import { Helmet } from 'react-helmet-async';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -233,77 +234,87 @@ function Blog() {
   const [containerRef, { width: containerWidth }] = useResizeObserver();
 
   return (
-    <Wrapper>
-      <Container screen={screen} ref={containerRef}>
-        <Description screen={screen} maxWidth={containerWidth * 0.45}>
-          <Heading screen={screen} ref={headingRef}>
-            <span>{'{ '}</span>
-            Blog
-            <span>{' }'}</span>
-          </Heading>
-          <Text>
-            <p>
-              Welcome to my blog! I write here periodically on various topics
-              within software development, with an emphasis on tutorials.
-            </p>
-          </Text>
-          <FilterBox screen={screen}>
-            <AnimatePresence>
-              {(() => {
-                const tag = searchParams.get('tag');
-                return (
-                  tag && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <span>Filtering by tag '{tag}'</span>
-                      <Button onClick={() => setSearchParams({})}>
-                        {screen === 'medium' ? 'Clear Filter' : 'Clear'}
-                      </Button>
-                    </motion.div>
-                  )
-                );
-              })()}
-            </AnimatePresence>
-          </FilterBox>
-        </Description>
-        <PostList screen={screen} paddingTop={headingHeight}>
-          <FlipMove>
-            {posts.length && !error ? (
-              posts
-                .filter((post) => {
-                  const tagFilter = searchParams.get('tag');
-                  return tagFilter ? post.tags.includes(tagFilter) : true;
-                })
-                .map((post) => (
-                  <PostListItem key={post.title}>
-                    <span>{post.date}</span>
-                    <Title to={post.slug}>
-                      <h2>{post.title}</h2>
-                    </Title>
-                    <Tags>
-                      {post.tags.map((tag) => (
-                        <button
-                          onClick={() => setSearchParams({ tag })}
-                          key={tag}
-                        >
-                          {tag}
-                        </button>
-                      ))}
-                    </Tags>
-                  </PostListItem>
-                ))
-            ) : error ? (
-              <ListMessage error>Something went wrong...</ListMessage>
-            ) : (
-              <ListMessage>No posts to show.</ListMessage>
-            )}
-          </FlipMove>
-        </PostList>
-      </Container>
-    </Wrapper>
+    <>
+      <Helmet>
+        <title>Blog | Jonathan Asbell</title>
+        <meta
+          name="description"
+          content="View the blog of Jonathan Asbell, full stack web developer. Featuring tutorials and discussion around software development."
+        />
+        <link rel="canonical" href="/blog" />
+      </Helmet>
+      <Wrapper>
+        <Container screen={screen} ref={containerRef}>
+          <Description screen={screen} maxWidth={containerWidth * 0.45}>
+            <Heading screen={screen} ref={headingRef}>
+              <span>{'{ '}</span>
+              Blog
+              <span>{' }'}</span>
+            </Heading>
+            <Text>
+              <p>
+                Welcome to my blog! I write here periodically on various topics
+                within software development, with an emphasis on tutorials.
+              </p>
+            </Text>
+            <FilterBox screen={screen}>
+              <AnimatePresence>
+                {(() => {
+                  const tag = searchParams.get('tag');
+                  return (
+                    tag && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <span>Filtering by tag '{tag}'</span>
+                        <Button onClick={() => setSearchParams({})}>
+                          {screen === 'medium' ? 'Clear Filter' : 'Clear'}
+                        </Button>
+                      </motion.div>
+                    )
+                  );
+                })()}
+              </AnimatePresence>
+            </FilterBox>
+          </Description>
+          <PostList screen={screen} paddingTop={headingHeight}>
+            <FlipMove>
+              {posts.length && !error ? (
+                posts
+                  .filter((post) => {
+                    const tagFilter = searchParams.get('tag');
+                    return tagFilter ? post.tags.includes(tagFilter) : true;
+                  })
+                  .map((post) => (
+                    <PostListItem key={post.title}>
+                      <span>{post.date}</span>
+                      <Title to={post.slug}>
+                        <h2>{post.title}</h2>
+                      </Title>
+                      <Tags>
+                        {post.tags.map((tag) => (
+                          <button
+                            onClick={() => setSearchParams({ tag })}
+                            key={tag}
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </Tags>
+                    </PostListItem>
+                  ))
+              ) : error ? (
+                <ListMessage error>Something went wrong...</ListMessage>
+              ) : (
+                <ListMessage>No posts to show.</ListMessage>
+              )}
+            </FlipMove>
+          </PostList>
+        </Container>
+      </Wrapper>
+    </>
   );
 }
 

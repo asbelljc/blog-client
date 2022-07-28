@@ -3,6 +3,7 @@ import { ScreenContext } from '../../App';
 import styled from 'styled-components';
 import PageWrapper from '../../components/PageWrapper';
 import projectData from '../../assets/portfolio/projectData';
+import { Helmet } from 'react-helmet-async';
 
 const Wrapper = styled(PageWrapper)`
   align-items: stretch;
@@ -134,46 +135,56 @@ function Portfolio() {
   const { screen } = useContext(ScreenContext);
 
   return (
-    <Wrapper>
-      <Heading screen={screen}>
-        <span>{'{ '}</span>
-        Portfolio
-        <span>{' }'}</span>
-      </Heading>
-      {projectData.map((project) => (
-        <Project key={project.title} screen={screen}>
-          {screen !== 'wide' ? (
-            <Title href={project.repoUrl} target="_blank" screen={screen}>
-              <h2>{project.title}</h2>
-            </Title>
-          ) : null}
-          <Thumbnail href={project.demoUrl} target="_blank" screen={screen}>
-            <div>
-              <img src={project.thumbnailPath} alt={project.thumbnailAlt} />
-            </div>
-          </Thumbnail>
-          <Info screen={screen}>
-            {screen === 'wide' ? (
+    <>
+      <Helmet>
+        <title>Portfolio | Jonathan Asbell</title>
+        <meta
+          name="description"
+          content="View the portfolio of Jonathan Asbell, full stack web developer. Projects include a blog site, a resume builder, and a weather app."
+        />
+        <link rel="canonical" href="/portfolio" />
+      </Helmet>
+      <Wrapper>
+        <Heading screen={screen}>
+          <span>{'{ '}</span>
+          Portfolio
+          <span>{' }'}</span>
+        </Heading>
+        {projectData.map((project) => (
+          <Project key={project.title} screen={screen}>
+            {screen !== 'wide' ? (
               <Title href={project.repoUrl} target="_blank" screen={screen}>
                 <h2>{project.title}</h2>
               </Title>
             ) : null}
-            <Description
-              dangerouslySetInnerHTML={{ __html: project.description }}
-            />
-            <Links>
-              <a href={project.repoUrl} target="_blank" rel="noreferrer">
-                Repo
-              </a>
-              {' | '}
-              <a href={project.demoUrl} target="_blank" rel="noreferrer">
-                Demo
-              </a>
-            </Links>
-          </Info>
-        </Project>
-      ))}
-    </Wrapper>
+            <Thumbnail href={project.demoUrl} target="_blank" screen={screen}>
+              <div>
+                <img src={project.thumbnailPath} alt={project.thumbnailAlt} />
+              </div>
+            </Thumbnail>
+            <Info screen={screen}>
+              {screen === 'wide' ? (
+                <Title href={project.repoUrl} target="_blank" screen={screen}>
+                  <h2>{project.title}</h2>
+                </Title>
+              ) : null}
+              <Description
+                dangerouslySetInnerHTML={{ __html: project.description }}
+              />
+              <Links>
+                <a href={project.repoUrl} target="_blank" rel="noreferrer">
+                  Repo
+                </a>
+                {' | '}
+                <a href={project.demoUrl} target="_blank" rel="noreferrer">
+                  Demo
+                </a>
+              </Links>
+            </Info>
+          </Project>
+        ))}
+      </Wrapper>
+    </>
   );
 }
 
