@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useContext } from 'react';
 import { ScreenContext } from '../App';
 import src from '../assets/about/headshot.jpg';
+import { Helmet } from 'react-helmet-async';
 
 const Wrapper = styled(PageWrapper)`
   min-height: 100vh;
@@ -118,71 +119,81 @@ function About() {
   const { screen } = useContext(ScreenContext);
 
   return (
-    <Wrapper>
-      <Heading screen={screen}>
-        <span>{'{ '}</span>
-        About
-        <span>{' }'}</span>
-      </Heading>
-      <Content screen={screen}>
-        <Headshot screen={screen}>
-          <img
-            src={src}
-            alt="The author's portrait. A young man smiling at the camera."
-          />
-        </Headshot>
-        <Body>
-          <p>
-            Hi! My name is Jonathan and I'm a software engineer who likes to
-            build things for the web. I discovered a passion for programming in
-            2020 when I learned some Python as part of a 3D modeling course. I
-            had long been seeking a field that was both creatively and
-            analytically fulfilling, and as I learned to code I knew that my
-            search was reaching an exciting conclusion. I soon dedicated myself
-            to learning software development full-time.
-          </p>
-          <p>
-            Fast-forward to today, and I am proud to have cultivated a deep and
-            fast-growing knowledge of modern web development. I've had the
-            privilege of designing and developing websites for a digital
-            marketing agency, and I'm eager to see where my career takes me
-            next!
-          </p>
-          <p>Here are some technologies I've been working with recently:</p>
-          <ul>
-            <li>JavaScript</li>
-            <li>TypeScript</li>
-            <li>React</li>
-            <li>Node.js</li>
-            <li>Express</li>
-            <li>MongoDB</li>
-            <li>Styled Components</li>
-            <li>React Router</li>
-            <li>React Transition Group</li>
-            <li>Framer</li>
-            <li>GSAP</li>
-            <li>Passport</li>
-            <li>Python</li>
-            <li>WordPress</li>
-          </ul>
-          <p>
-            You'll see all but a few of these in action as you explore my site.
-            As an example, you'll notice the drop-down menu gives you an
-            opportunity to sign up and log in. This helps me keep track of
-            comments on my <Link to="/blog">blog</Link> and limit access to my
-            content management system, but it serves as a proof-of-concept more
-            than anything else. No sensitive data is stored and emails will
-            never be shared with anyone, so have fun with it! And if you'd like
-            a demo of the CMS and API, please don't hesitate to{' '}
-            <Link to="/contact">reach out</Link>.
-          </p>
-          <p>
-            Learn more about this project and others in my{' '}
-            <Link to="/portfolio">portfolio</Link>!
-          </p>
-        </Body>
-      </Content>
-    </Wrapper>
+    <>
+      <Helmet>
+        <title>About | Jonathan Asbell</title>
+        <meta
+          name="description"
+          content="Learn more about Jonathan Asbell, full stack web developer. Technologies of interest include JavaScript, React, Express, and MongoDB."
+        />
+        <link rel="canonical" href="/about" />
+      </Helmet>
+      <Wrapper>
+        <Heading screen={screen}>
+          <span>{'{ '}</span>
+          About
+          <span>{' }'}</span>
+        </Heading>
+        <Content screen={screen}>
+          <Headshot screen={screen}>
+            <img
+              src={src}
+              alt="The author's portrait. A young man smiling at the camera."
+            />
+          </Headshot>
+          <Body>
+            <p>
+              Hi! My name is Jonathan and I'm a software engineer who likes to
+              build things for the web. I discovered a passion for programming
+              in 2020 when I learned some Python as part of a 3D modeling
+              course. I had long been seeking a field that was both creatively
+              and analytically fulfilling, and as I learned to code I knew that
+              my search was reaching an exciting conclusion. I soon dedicated
+              myself to learning software development full-time.
+            </p>
+            <p>
+              Fast-forward to today, and I am proud to have cultivated a deep
+              and fast-growing knowledge of modern web development. I've had the
+              privilege of designing and developing websites for a digital
+              marketing agency, and I'm eager to see where my career takes me
+              next!
+            </p>
+            <p>Here are some technologies I've been working with recently:</p>
+            <ul>
+              <li>JavaScript</li>
+              <li>TypeScript</li>
+              <li>React</li>
+              <li>Node.js</li>
+              <li>Express</li>
+              <li>MongoDB</li>
+              <li>Styled Components</li>
+              <li>React Router</li>
+              <li>React Transition Group</li>
+              <li>Framer</li>
+              <li>GSAP</li>
+              <li>Passport</li>
+              <li>Python</li>
+              <li>WordPress</li>
+            </ul>
+            <p>
+              You'll see all but a few of these in action as you explore my
+              site. As an example, you'll notice the drop-down menu gives you an
+              opportunity to sign up and log in. This helps me keep track of
+              comments on my <Link to="/blog">blog</Link> and limit access to my
+              content management system, but it serves as a proof-of-concept
+              more than anything else. No sensitive data is stored and emails
+              will never be shared with anyone, so have fun with it! And if
+              you'd like a demo of the CMS and API, please don't hesitate to{' '}
+              <Link to="/contact">reach out</Link>.
+            </p>
+            <p>
+              Learn more about this project and others in my{' '}
+              <Link to="/portfolio">portfolio</Link>!
+            </p>
+          </Body>
+        </Content>
+      </Wrapper>
+    </>
   );
 }
 

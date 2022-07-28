@@ -9,6 +9,7 @@ import Social from '../../components/ContactSocial';
 import Button from '../../components/Button';
 import ErrorMessages from '../../components/ContactErrorMessages';
 import Loader from '../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const Wrapper = styled(PageWrapper)``;
 
@@ -233,81 +234,92 @@ export default function Contact() {
   };
 
   return (
-    <Wrapper>
-      <Container screen={screen} ref={containerRef}>
-        <Description screen={screen} maxWidth={containerWidth * 0.45}>
-          <Heading screen={screen} ref={headingRef}>
-            <span>{'{ '}</span>
-            Contact
-            <span>{' }'}</span>
-          </Heading>
-          <Text>
-            <p>
-              I'm seeking new opportunities! If you'd like to work with me, have
-              a question, or just want to say hello, the door is always open.
-            </p>
-          </Text>
-          {screen === 'wide' && <Social />}
-        </Description>
-        <Form
-          ref={form}
-          screen={screen}
-          paddingTop={headingHeight}
-          onSubmit={validateAndSubmit}
-        >
-          {success ? (
-            <SuccessMessage>
-              Thanks for reaching out - <br />I will message you back as soon as
-              I can!
-            </SuccessMessage>
-          ) : submissionLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <NameInput
-                name="from_name"
-                error={nameError}
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onBlur={validateName}
-              />
-              <EmailInput
-                name="reply_to"
-                error={emailError}
-                type="text"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onBlur={validateEmail}
-              />
-              <Message
-                name="message"
-                error={messageError}
-                placeholder="Message"
-                rows="14"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onBlur={validateMessage}
-              />
-              <SubmitButton
-                solid
-                error={nameError || emailError || messageError}
-              >
-                Submit
-              </SubmitButton>
-              <ErrorMessages
-                nameError={nameError}
-                emailError={emailError}
-                messageError={messageError}
-                submissionError={submissionError}
-              />
-            </>
-          )}
-        </Form>
-        {screen !== 'wide' && <Social />}
-      </Container>
-    </Wrapper>
+    <>
+      <Helmet>
+        <title>Contact | Jonathan Asbell</title>
+        <meta
+          name="description"
+          content="Contact Jonathan Asbell, full stack web developer. Now seeking new employment opportunities!"
+        />
+        <link rel="canonical" href="/contact" />
+      </Helmet>
+      <Wrapper>
+        <Container screen={screen} ref={containerRef}>
+          <Description screen={screen} maxWidth={containerWidth * 0.45}>
+            <Heading screen={screen} ref={headingRef}>
+              <span>{'{ '}</span>
+              Contact
+              <span>{' }'}</span>
+            </Heading>
+            <Text>
+              <p>
+                I'm seeking new opportunities! If you'd like to work with me,
+                have a question, or just want to say hello, the door is always
+                open.
+              </p>
+            </Text>
+            {screen === 'wide' && <Social />}
+          </Description>
+          <Form
+            ref={form}
+            screen={screen}
+            paddingTop={headingHeight}
+            onSubmit={validateAndSubmit}
+          >
+            {success ? (
+              <SuccessMessage>
+                Thanks for reaching out - <br />I will message you back as soon
+                as I can!
+              </SuccessMessage>
+            ) : submissionLoading ? (
+              <Loader />
+            ) : (
+              <>
+                <NameInput
+                  name="from_name"
+                  error={nameError}
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={validateName}
+                />
+                <EmailInput
+                  name="reply_to"
+                  error={emailError}
+                  type="text"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={validateEmail}
+                />
+                <Message
+                  name="message"
+                  error={messageError}
+                  placeholder="Message"
+                  rows="14"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onBlur={validateMessage}
+                />
+                <SubmitButton
+                  solid
+                  error={nameError || emailError || messageError}
+                >
+                  Submit
+                </SubmitButton>
+                <ErrorMessages
+                  nameError={nameError}
+                  emailError={emailError}
+                  messageError={messageError}
+                  submissionError={submissionError}
+                />
+              </>
+            )}
+          </Form>
+          {screen !== 'wide' && <Social />}
+        </Container>
+      </Wrapper>
+    </>
   );
 }

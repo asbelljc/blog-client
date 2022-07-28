@@ -5,6 +5,7 @@ import App from './App';
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './style/Theme';
 import GlobalStyle from './style/GlobalStyle';
+import { HelmetProvider } from 'react-helmet-async';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -28,14 +29,16 @@ function Index() {
   };
 
   return (
-    <ThemeControl.Provider value={{ toggleTheme }}>
-      <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-        <GlobalStyle />
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </ThemeControl.Provider>
+    <HelmetProvider>
+      <ThemeControl.Provider value={{ toggleTheme }}>
+        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+          <GlobalStyle />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </ThemeControl.Provider>
+    </HelmetProvider>
   );
 }
 

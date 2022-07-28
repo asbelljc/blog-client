@@ -12,6 +12,7 @@ import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import prism from './style/prism';
 import CommentSection from '../../components/CommentSection';
 import { apiURL } from '../../utils/api';
+import { Helmet } from 'react-helmet-async';
 
 const Wrapper = styled(PageWrapper)`
   max-width: 72rem;
@@ -200,26 +201,35 @@ export default function Post() {
   }, [post]);
 
   return (
-    <Wrapper screen={screen}>
-      {post ? (
-        <>
-          <Heading screen={screen}>
-            <TimeStamp>{post.date_time}</TimeStamp>
-            <Title screen={screen}>{post.title}</Title>
-            <Tags>
-              {post.tags.map((tag) => (
-                <Link to={`/blog?tag=${encodeURI(tag)}`} key={tag}>
-                  {tag}
-                </Link>
-              ))}
-            </Tags>
-          </Heading>
-          <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
-          <CommentSection post={post} />
-        </>
-      ) : (
-        <Loader />
+    <>
+      {post && (
+        <Helmet>
+          <title>{post.seo_title_tag} | Jonathan Asbell</title>
+          <meta name="description" content={post.seo_meta_description} />
+          <link rel="canonical" href={`/blog/${post.slug}`} />
+        </Helmet>
       )}
-    </Wrapper>
+      <Wrapper screen={screen}>
+        {post ? (
+          <>
+            <Heading screen={screen}>
+              <TimeStamp>{post.date_time}</TimeStamp>
+              <Title screen={screen}>{post.title}</Title>
+              <Tags>
+                {post.tags.map((tag) => (
+                  <Link to={`/blog?tag=${encodeURI(tag)}`} key={tag}>
+                    {tag}
+                  </Link>
+                ))}
+              </Tags>
+            </Heading>
+            <Body dangerouslySetInnerHTML={{ __html: post.markdown }} />
+            <CommentSection post={post} />
+          </>
+        ) : (
+          <Loader />
+        )}
+      </Wrapper>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import PageWrapper from '../components/PageWrapper';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 const Wrapper = styled(PageWrapper)`
   justify-content: center;
@@ -40,16 +41,22 @@ const Text = styled.div`
 
 export default function Error() {
   return (
-    <Wrapper>
-      <Heading>
-        <span>{'{ '}</span>
-        {':('}
-        <span>{' }'}</span>
-      </Heading>
-      <Text>
-        <span>Something went wrong. Sorry...</span>
-        <Link to="/">Back to home</Link>
-      </Text>
-    </Wrapper>
+    <>
+      <Helmet>
+        <title>Error | Jonathan Asbell</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
+      <Wrapper>
+        <Heading>
+          <span>{'{ '}</span>
+          {':('}
+          <span>{' }'}</span>
+        </Heading>
+        <Text>
+          <span>Something went wrong. Sorry...</span>
+          <Link to="/">Back to home</Link>
+        </Text>
+      </Wrapper>
+    </>
   );
 }
