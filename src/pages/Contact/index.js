@@ -120,6 +120,12 @@ const Message = styled.textarea`
     `};
 `;
 
+const CharactersRemaining = styled.span`
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.inactive};
+  text-align: center;
+`;
+
 const SuccessMessage = styled.div`
   font-size: 1.4rem;
   font-style: italic;
@@ -298,6 +304,7 @@ export default function Contact() {
                   error={messageError}
                   placeholder="Message"
                   rows="14"
+                  maxLength="3000"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onBlur={validateMessage}
@@ -308,6 +315,9 @@ export default function Contact() {
                 >
                   Submit
                 </SubmitButton>
+                <CharactersRemaining>
+                  {3000 - message.length} characters remaining
+                </CharactersRemaining>
                 <ErrorMessages
                   nameError={nameError}
                   emailError={emailError}
